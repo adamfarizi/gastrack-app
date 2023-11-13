@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('app');
-});
+Route::get('/', function () { return view('guest.login'); });
+Route::get('/signup', function () { return view('guest.signup'); });
+Route::get('/beranda', function () { return view('auth.beranda.beranda'); });
+Route::get('/sopir', function () { return view('auth.sopir.sopir'); });
+Route::get('/pengguna', function () { return view('auth.pengguna.pengguna'); });
+Route::get('/profil', function () { return view('auth.profil.profil'); });
