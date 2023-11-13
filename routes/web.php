@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,8 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () { return view('guest.login'); });
-Route::get('/signup', function () { return view('guest.signup'); });
+Route::get('/', [AuthController::class,'login']);
+Route::post('login_action', [AuthController::class,'login_action']);
+Route::get('/signup', [AuthController::class,'signup']);
+Route::post('signup_action', [AuthController::class,'signup_action']);
 Route::get('/beranda', function () { return view('auth.beranda.beranda'); });
 Route::get('/pembelian', function () { return view('auth.pembelian.pembelian'); });
 Route::get('/pengiriman', function () { return view('auth.pengiriman.pengiriman'); });

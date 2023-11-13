@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="../assets/img/local/logo1.png">
-    <title>
-        GasTrack | Masuk
-    </title>
+    <title>GasTrack | @yield('title', $title)</title>
     <!--     Fonts and icons     -->
     <link rel="stylesheet" type="text/css"
         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
@@ -63,17 +61,18 @@
                                     <h4 class="font-weight-bolder text-primary text-gradient">Selamat Datang</h4>
                                     <p class="mb-0">Masukkan email dan password anda !</p>
                                 </div>
-                                <form role="form" class="text-start">
+                                <form role="form" class="text-start" method="POST" action="{{ url('login_action') }}">
+                                    @csrf
                                     <div class="input-group input-group-outline my-3">
                                         <label class="form-label">Email</label>
-                                        <input type="email" class="form-control">
+                                        <input type="email" class="form-control" name="email" required>
                                     </div>
                                     <div class="input-group input-group-outline mb-3">
                                         <label class="form-label">Password</label>
-                                        <input type="password" class="form-control">
+                                        <input type="password" class="form-control" name="password" required>
                                     </div>
                                     <div class="text-center">
-                                        <button type="button" class="btn bg-gradient-primary w-100 my-4 mb-2">Masuk</button>
+                                        <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Masuk</button>
                                     </div>
                                     <p class="mt-4 text-sm text-center">
                                         Belum punya akun ?
