@@ -13,7 +13,7 @@
         <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link text-white active bg-gradient-primary" href="../pages/dashboard.html">
+                    <a class="nav-link text-white active bg-gradient-primary" href="{{ url('/beranda') }}">
                         <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">dashboard</i>
                         </div>
@@ -21,7 +21,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark " href="../pages/tables.html">
+                    <a class="nav-link text-dark " href="{{ url('/pembelian') }}">
                         <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">shopping_cart</i>
                         </div>
@@ -29,7 +29,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark " href="../pages/billing.html">
+                    <a class="nav-link text-dark " href="{{ url('/pengiriman') }}">
                         <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="fa fa-solid fa-dolly" style="color: #344767;"></i>                        
                         </div>
@@ -37,7 +37,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark " href="../pages/virtual-reality.html">
+                    <a class="nav-link text-dark " href="{{ url('/laporan') }}">
                         <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">receipt_long</i>
                         </div>
@@ -45,7 +45,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark " href="../pages/rtl.html">
+                    <a class="nav-link text-dark " href="{{ url('/sopir') }}">
                         <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">local_shipping</i>
                         </div>
@@ -53,7 +53,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark " href="../pages/notifications.html">
+                    <a class="nav-link text-dark " href="{{ url('/pengguna') }}">
                         <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">group</i>
                         </div>
@@ -65,7 +65,7 @@
                     </h6>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark " href="../pages/profile.html">
+                    <a class="nav-link text-dark " href="{{ url('/profil') }}">
                         <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">person</i>
                         </div>
