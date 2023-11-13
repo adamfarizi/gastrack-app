@@ -37,7 +37,7 @@
                         <div class="card z-index-0 fadeIn3 fadeInBottom">
                             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                                 <div class="bg-gradient-primary shadow-primary border-radius-xl py-3 pe-1  text-center">
-                                    <img class="w-50 mb-2" src="{{ asset('assets/img/local/logo6.png') }}" class="navbar-brand-img" alt="main_logo">
+                                    <img class="w-55 mb-0" src="{{ asset('assets/img/local/logo6.png') }}" class="navbar-brand-img" alt="main_logo">
                                 </div>
                             </div>
                             <div class="card-body">
@@ -94,19 +94,12 @@
                                 ©
                                 <script>
                                     document.write(new Date().getFullYear())
-                                </script>,
-                                made with <i class="fa fa-heart" aria-hidden="true"></i> by
-                                <a href="https://www.creative-tim.com" class="font-weight-bold text-white"
-                                    target="_blank">GasTrack Team</a>
-                                for a better web.
+                                </script>
+                                | GasTrack Team
                             </div>
                         </div>
                         <div class="col-12 col-md-6">
                             <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                                <li class="nav-item">
-                                    <a href="https://www.creative-tim.com" class="nav-link text-white"
-                                        target="_blank">Creative Tim</a>
-                                </li>
                                 <li class="nav-item">
                                     <a href="https://www.creative-tim.com/presentation" class="nav-link text-white"
                                         target="_blank">About Us</a>
