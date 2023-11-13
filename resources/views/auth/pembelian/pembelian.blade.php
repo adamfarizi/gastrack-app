@@ -128,3 +128,107 @@
         </div>
     </nav>
 @endsection
+@section('content')
+    <div class="row">
+        {{-- Total pengguna --}}
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card p-3 pt-2">
+                    <div class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                        <i class="material-icons opacity-10">receipt_long</i>
+                    </div>
+                    <div class="text-end pt-1">
+                        <p class="text-sm mb-0 text-capitalize">Total Pesanan</p>
+                        <h5 class="mb-0">10 pesanan</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- Total admin --}}
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card p-3 pt-2">
+                    <div class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                        <i class="material-icons opacity-10">support_agent</i>
+                    </div>
+                    <div class="text-end pt-1">
+                        <p class="text-sm mb-0 text-capitalize">Pesanan Masuk</p>
+                        <h5 class="mb-0">3 pesanan</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- Total pelanggan --}}
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card p-3 pt-2">
+                    <div class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                        <i class="material-icons opacity-10">factory</i>
+                    </div>
+                    <div class="text-end pt-1">
+                        <p class="text-sm mb-0 text-capitalize">Total Pelanggan</p>
+                        <h5 class="mb-0">50 pelanggan</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-3">
+        <div class="row">
+            {{-- Tabel Pembelian --}}
+            <div class="col-12 mb-4">
+                <div class="card">
+                    <div class="card-header pb-0 d-flex justify-content-between">
+                        <h6>Pembelian</h6>
+                        <a type="button" class="btn btn-sm bg-gradient-primary border-end" data-bs-toggle="modal" data-bs-target="#tambahpelanggan">
+                            <i class="fa fa-solid fa-plus me-2" style="color: #ffffff;"></i>
+                            Tambah Pembelian
+                        </a>
+                    </div>
+                    <div class="card-body px-3 pt-0 pb-2" style="min-height: 428px;">
+                        <div class="table-responsive p-0" style="max-height: 300px; overflow-y: auto;">
+                            <table class="table align-items-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No. Resi</th>
+                                        <th class="ps-5 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pelanggan</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Alamat</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pesanan</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="ps-4">
+                                            <p class="text-xs font-weight-bold mb-0">3542311</p>
+                                        </td>
+                                        <td>
+                                            <div class="ps-4">
+                                                <h6 class="mb-1 text-sm">PT Wijaya Abadi</h6>
+                                                <p class="text-xs text-secondary mb-0">pelanggan1@gmail.com</p>
+                                            </div>
+                                        </td>
+                                        <td class="text-wrap" style="max-width: 200px;">
+                                            <p class="text-xs py-1 mb-0">Jl. Singosari Gg.2 No.2, Kel. Patihan, Kec.Manguharjo, Kota Madiun</p>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-sm bg-gradient-success">Pesanan</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-sm bg-gradient-danger">Belum Bayar</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-sm bg-gradient-primary">Rincian</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+@endsection
