@@ -2,6 +2,12 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BerandaController;
+use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\PembelianController;
+use App\Http\Controllers\PenggunaController;
+use App\Http\Controllers\PengirimanController;
+use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\SopirController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,13 +29,19 @@ Route::middleware(['guest'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('logout', [AuthController::class, 'logout']);
-
+    
     Route::get('/beranda', [BerandaController::class,'index']);
-    Route::get('/pembelian', function () { return view('auth.pembelian.pembelian'); });
-    Route::get('/pengiriman', function () { return view('auth.pengiriman.pengiriman'); });
-    Route::get('/laporan', function () { return view('auth.laporan.laporan'); });
-    Route::get('/sopir', function () { return view('auth.sopir.sopir'); });
-    Route::get('/pengguna', function () { return view('auth.pengguna.pengguna'); });
-    Route::get('/profil', function () { return view('auth.profil.profil'); });
+
+    Route::get('/pembelian', [PembelianController::class,'index']);
+
+    Route::get('/pengiriman', [PengirimanController::class,'index']);
+
+    Route::get('/laporan', [LaporanController::class,'index']);
+
+    Route::get('/sopir', [SopirController::class,'index']);
+
+    Route::get('/pengguna', [PenggunaController::class,'index']);
+
+    Route::get('/profil', [ProfilController::class,'index']);
     
 });

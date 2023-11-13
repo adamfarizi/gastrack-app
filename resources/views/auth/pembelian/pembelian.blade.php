@@ -79,7 +79,7 @@
         <div class="sidenav-footer position-absolute w-100 bottom-0 ">
             <div class="mx-3">
                 <a class="btn bg-gradient-primary w-100"
-                    href=""
+                    href="{{ url('logout') }}"
                     type="button">Keluar</a>
             </div>
         </div>
