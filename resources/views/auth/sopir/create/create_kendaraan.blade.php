@@ -1,4 +1,4 @@
-<form action="" method="post" enctype="multipart/form-data">
+<form action="{{ url('/kendaraan/create') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="modal fade" id="tambahkendaraan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -10,8 +10,8 @@
                 <div class="modal-body">
                     <label>Nama Kendaraan <span class="text-danger">*</span></label>
                     <div class="input-group mb-3 input-group-outline">
-                        <input name="name" type="text" class="form-control" placeholder="Masukkan nama kendaraan"
-                            aria-label="name" value="">
+                        <input name="nama" type="text" class="form-control" placeholder="Masukkan nama kendaraan"
+                            aria-label="nama" value="">
                     </div>
                     <label>Plat Nomor Kendaraan <span class="text-danger">*</span></label>
                     <div class="input-group mb-3 input-group-outline">

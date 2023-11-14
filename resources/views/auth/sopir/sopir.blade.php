@@ -212,14 +212,14 @@
                                                 @if ($sopir->ketersediaan_sopir === 'tersedia')
                                                     <span class="badge badge-sm bg-gradient-success">Tersedia</span>
                                                 @else
-                                                    <span class="badge badge-sm bg-gradient-danger">Tidak Tersedia</span>
+                                                    <span class="badge badge-sm bg-gradient-danger">Tdk Tersedia</span>
                                                 @endif
                                             </td>
                                             <td class="text-center">
                                                 @if ($sopir->status_sopir === 'aktif')
                                                     <span class="badge badge-sm bg-gradient-success">Aktif</span>
                                                 @else
-                                                    <span class="badge badge-sm bg-gradient-danger">Tidak Aktif</span>
+                                                    <span class="badge badge-sm bg-gradient-danger">Tdk Aktif</span>
                                                 @endif
                                             </td>
                                             <td class="text-center">
@@ -283,50 +283,64 @@
                                         <th class="text-secondary opacity-7"></th>
                                     </tr>
                                 </thead>
-                                <tbody class="border-0" id="">
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div class="avatar avatar-sm me-3 bg-dark">
-                                                    <i class="material-icons opacity-10">local_shipping</i>
+                                @foreach ($kendaraans as $kendaraan)
+                                    <tbody class="border-0" id="table-kendaraan">
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="avatar avatar-sm me-3 bg-dark">
+                                                        <i class="material-icons opacity-10">local_shipping</i>
+                                                    </div>
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-sm">{{ $kendaraan->nopol_mobil }}</h6>
+                                                        <p class="text-xs text-secondary mb-0">{{ $kendaraan->identitas_mobil }}</p>
+                                                    </div>
                                                 </div>
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">AE 112345 DE</h6>
-                                                    <p class="text-xs text-secondary mb-0">Mitsubishi Putih</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="text-center">
-                                            <p class="text-xs font-weight-bold mb-0">Truk</p>
-                                            <p class="text-xs text-secondary mb-0">T-001</p>
-                                        </td>
-                                        <td class="text-center">
-                                            <span class="badge badge-sm bg-gradient-success">Tersedia</span>
-                                        </td>
-                                        <td class="text-center">
-                                            <span class="badge badge-sm bg-gradient-success">Aktif</span>
-                                        </td>
-                                        <td class="text-center">
-                                            <a class="cursor-pointer" id="dropdownTable" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="fa fa-ellipsis-v text-xs"></i>
-                                            </a>
-                                            <ul class="shadow dropdown-menu px-2 py-3 ms-sm-n4 ms-n5" aria-labelledby="dropdownTable">                                                  
-                                                <li>
-                                                    <a class="dropdown-item border-radius-md" href="javascript:;">
-                                                        <i class="fa fa-solid fa-pen" style="color: #252f40;"></i>
-                                                        <span class="ms-3">Edit</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item border-radius-md" href="javascript:;">
-                                                        <i class="fa fa-solid fa-trash" style="color: #ea0606;"></i>
-                                                        <span class="ms-3 text-danger">Hapus</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                </tbody>
+                                            </td>
+                                            <td class="text-center">
+                                                <p class="text-xs font-weight-bold mb-0">{{ $kendaraan->jenis_mobil }}</p>
+                                                <p class="text-xs text-secondary mb-0">T-{{ str_pad($kendaraan->id_mobil, 3, '0', STR_PAD_LEFT) }}</p>
+                                            </td>
+                                            <td class="text-center">
+                                                @if ($kendaraan->ketersediaan_mobil === 'tersedia')
+                                                    <span class="badge badge-sm bg-gradient-success">Tersedia</span>
+                                                @else
+                                                    <span class="badge badge-sm bg-gradient-danger">Tdk Tersedia</span>
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                @if ($kendaraan->status_mobil === 'aktif')
+                                                    <span class="badge badge-sm bg-gradient-success">Aktif</span>
+                                                @else
+                                                    <span class="badge badge-sm bg-gradient-danger">Tdk Aktif</span>
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                <a class="cursor-pointer" id="dropdownTable" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fa fa-ellipsis-v text-xs"></i>
+                                                </a>
+                                                <ul class="shadow dropdown-menu px-2 py-3 ms-sm-n4 ms-n5" aria-labelledby="dropdownTable">                                                  
+                                                    <li>
+                                                        <a class="dropdown-item border-radius-md" href="{{ url('/kendaraan/edit/'. $kendaraan->id_mobil) }}">
+                                                            <i class="fa fa-solid fa-pen" style="color: #252f40;"></i>
+                                                            <span class="ms-3">Edit</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <form action="{{ url('/kendaraan/delete/' . $kendaraan->id_mobil) }}" method="POST">
+                                                            @csrf
+                                                            @method('delete')
+                                                            <button type="submit" class="dropdown-item border-radius-md">
+                                                                <i class="fa fa-solid fa-trash" style="color: #ea0606;"></i>
+                                                                <span class="ms-3 text-danger">Hapus</span>
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                @endforeach
                             </table>
                         </div>
                     </div>

@@ -23,7 +23,7 @@ class SopirController extends Controller
             'total_sopir'=>$total_sopir,
             'total_kendaraan'=>$total_kendaraan,
             'sopirs'=>$sopir,
-            'kendaraan'=>$kendaraan,
+            'kendaraans'=>$kendaraan,
         ], $data);
     }
 
@@ -121,17 +121,14 @@ class SopirController extends Controller
     {
         $request->validate([
             'nama' => 'required',
-            'email' => 'required|unique:kendaraan',
-            'no_hp' => 'required', 
-            'password' => 'required',
-            'konfirmasi_password' => 'required|same:password',
+            'plat' => 'required', 
+            'jenis_kendaraan' => 'required',
         ]);
 
         $kendaraan = new Mobil([
-            'nama' => $request->nama,
-            'email' => $request->email,
-            'no_hp' => $request->no_hp, 
-            'password' => Hash::make($request->password), 
+            'identitas_mobil' => $request->nama,
+            'nopol_mobil' => $request->plat,
+            'jenis_mobil' => $request->jenis_kendaraan, 
         ]);
         
         $kendaraan->save();
@@ -151,52 +148,19 @@ class SopirController extends Controller
 
     public function edit_kendaraan_action($id_mobil, Request $request)
     {
-    
-        if ($request->old_password == null) {
-            $request->validate([
-                'nama' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
-                'no_hp' => 'required|string|max:15',
-            ]);
-    
-            $kendaraan = Mobil::find($id_mobil);
-            $kendaraan->nama = $request->input('nama');
-            $kendaraan->email = $request->input('email');
-            $kendaraan->no_hp = $request->input('no_hp');
-            $kendaraan->save();
-    
-            return redirect()->back()->with('success', 'Data berhasil diubah !');
-        } else {
-            $request->validate([
-                'nama' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
-                'no_hp' => 'required|string|max:15',
-                'old_password' => [
-                    'required',
-                    function ($attribute, $value, $fail) use ($id_mobil) {
-                        $kendaraan = Mobil::find($id_mobil);
-            
-                        if (!Hash::check($value, $kendaraan->password)) {
-                            $fail('Password baru salah !');
-                        }
-                    },
-                ],
-                'new_password' => 'required|confirmed',
-            ], [
-                'old_password.required' => 'Masukkan password lama !',
-                'new_password.required' => 'Masukkan password baru !',
-                'new_password.confirmed' => 'Konfirmasi password tidak sama !',
-            ]);
-    
-            $kendaraan = Mobil::find($id_mobil);
-            $kendaraan->nama = $request->input('nama');
-            $kendaraan->email = $request->input('email');
-            $kendaraan->no_hp = $request->input('no_hp');
-            $kendaraan->password = Hash::make($request->new_password);
-            $kendaraan->save();
-    
-            return redirect()->back()->with('success', 'Data & Password berhasil diubah !');
-        }
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'plat' => 'required|string|max:255',
+            'jenis_kendaraan' => 'required|string|max:15',
+        ]);
+
+        $kendaraan = Mobil::find($id_mobil);
+        $kendaraan->identitas_mobil = $request->input('nama');
+        $kendaraan->nopol_mobil = $request->input('plat');
+        $kendaraan->jenis_mobil = $request->input('jenis_kendaraan');
+        $kendaraan->save();
+
+        return redirect()->back()->with('success', 'Data berhasil diubah !');
     }
 
     public function hapus_kendaraan_action($id_mobil){
