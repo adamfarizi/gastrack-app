@@ -29,7 +29,7 @@ Route::middleware(['guest'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('logout', [AuthController::class, 'logout']);
-    
+
     Route::get('/beranda', [BerandaController::class,'index']);
 
     Route::get('/pembelian', [PembelianController::class,'index']);

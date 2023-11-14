@@ -179,44 +179,58 @@
                                 <tr>
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pengguna</th>
                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No Hp</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ketersediaan</th>
                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
                                 <th class="text-secondary opacity-7"></th>
                                 <th class="text-secondary opacity-7"></th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div class="avatar avatar-sm me-3 bg-dark">
-                                                <i class="fa fa-solid fa-vest opacity-10"></i>
+                            @foreach ($sopirs as $sopir)    
+                                <tbody id="table-sopir">
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="avatar avatar-sm me-3 bg-dark">
+                                                    <i class="fa fa-solid fa-vest opacity-10"></i>
+                                                </div>
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">{{ $sopir->nama }}</h6>
+                                                    <p class="text-xs text-secondary mb-0">{{ $sopir->email }}</p>
+                                                </div>
                                             </div>
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">Sopir 1</h6>
-                                                <p class="text-xs text-secondary mb-0">sopir1@gmail.com</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-center">
-                                        <p class="text-xs font-weight-bold mb-0">0881223144</p>
-                                    </td>
-                                    <td class="text-center">
-                                        <span class="badge badge-sm bg-gradient-success">Aktif</span>
-                                    </td>
-                                    <td class="text-center">
-                                        <a href="" class="text-dark font-weight-bold" data-toggle="tooltip" data-original-title="Edit user">
-                                            <i class="fa fa-solid fa-pen" style="color: #252f40;"></i>
-                                        </a>
-                                    </td>
-                                    <td class="text-center">
-                                        <form action="" method="POST">
-                                            <button type="submit" name="Delete" class="text-dark font-weight-bold border-0 bg-transparent">
-                                                <i class="fa fa-solid fa-trash" style="color: #ea0606;"></i>
-                                            </button>                                        
-                                        </form>
-                                    </td>
-                                </tr>
-                            </tbody>
+                                        </td>
+                                        <td class="text-center">
+                                            <p class="text-xs font-weight-bold mb-0">{{ $sopir->no_hp }}</p>
+                                        </td>
+                                        <td class="text-center">
+                                            @if ($sopir->ketersediaan_sopir === 'tersedia')
+                                                <span class="badge badge-sm bg-gradient-success">Aktif</span>
+                                            @else
+                                                <span class="badge badge-sm bg-gradient-danger">Tidak Aktif</span>
+                                            @endif
+                                        </td>
+                                        <td class="text-center">
+                                            @if ($sopir->status_sopir === 'aktif')
+                                                <span class="badge badge-sm bg-gradient-success">Aktif</span>
+                                            @else
+                                                <span class="badge badge-sm bg-gradient-danger">Tidak Aktif</span>
+                                            @endif
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="" class="text-dark font-weight-bold" data-toggle="tooltip" data-original-title="Edit user">
+                                                <i class="fa fa-solid fa-pen" style="color: #252f40;"></i>
+                                            </a>
+                                        </td>
+                                        <td class="text-center">
+                                            <form action="" method="POST">
+                                                <button type="submit" name="Delete" class="text-dark font-weight-bold border-0 bg-transparent">
+                                                    <i class="fa fa-solid fa-trash" style="color: #ea0606;"></i>
+                                                </button>                                        
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            @endforeach
                             </table>
                         </div>
                     </div>
