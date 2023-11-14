@@ -43,6 +43,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/sopir/edit_kendaraan', [SopirController::class,'edit_kendaraan']);
 
     Route::get('/pengguna', [PenggunaController::class,'index']);
+    Route::get('/pengguna/edit_pengguna', [PenggunaController::class,'edit_pengguna']);
+    Route::get('/pengguna/edit_admin', [PenggunaController::class,'edit_admin']);
 
     Route::get('/profil', [ProfilController::class,'index']);
     
