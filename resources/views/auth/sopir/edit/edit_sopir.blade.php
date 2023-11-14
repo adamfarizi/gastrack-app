@@ -33,7 +33,7 @@
                 <li class="nav-item">
                     <a class="nav-link text-dark " href="{{ url('/pengiriman') }}">
                         <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="fa fa-solid fa-dolly" style="color: #344767;"></i>                        
+                            <i class="fa fa-solid fa-dolly" style="color: #344767;"></i>
                         </div>
                         <span class="nav-link-text ms-1">Pengiriman</span>
                     </a>
@@ -47,7 +47,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white active bg-gradient-primary " href="{{ url('/sopir') }}">
+                    <a class="nav-link text-white active bg-gradient-primary " href="{{ url('/sopir&kendaraan') }}">
                         <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">local_shipping</i>
                         </div>
@@ -78,9 +78,7 @@
         </div>
         <div class="sidenav-footer position-absolute w-100 bottom-0 ">
             <div class="mx-3">
-                <a class="btn bg-gradient-primary w-100"
-                    href="{{ url('logout') }}"
-                    type="button">Keluar</a>
+                <a class="btn bg-gradient-primary w-100" href="{{ url('logout') }}" type="button">Keluar</a>
             </div>
         </div>
     </aside>
@@ -94,18 +92,19 @@
                     <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
                     <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Sopir</li>
                 </ol>
-                <h6 class="font-weight-bolder mb-0">Sopir</h6>
+                <h6 class="font-weight-bolder mb-0">Edit Sopir</h6>
             </nav>
             <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
                 <div class="ms-md-auto pe-md-3 d-flex align-items-center">
                     <ul class="navbar-nav justify-content-end me-5">
                         <div class="d-flex py-1">
                             <div class="my-auto">
-                                <img src="../assets/img/local/profil.png" class="border-radius-lg avatar-sm me-3 mt-1">
+                                <img src="{{ asset('../assets/img/local/profil.png') }}"
+                                    class="border-radius-lg avatar-sm me-3 mt-1">
                             </div>
                             <div class="d-flex flex-column justify-content-center">
                                 <h6 class="text-sm font-weight-normal mb-1">
-                                    <span class="font-weight-bold"> Super Admin </span>
+                                    <span class="font-weight-bold"> {{ Auth::user()->nama }} </span>
                                 </h6>
                                 <p class="text-xs text-secondary mb-0 ">
                                     <i class="fa fa-solid fa-circle" style="color: #82d616;"></i>
@@ -128,62 +127,77 @@
         </div>
     </nav>
 @endsection
-
 @section('content')
-    <div class="card-header pb-0 text-left">
-        <h3 class="font-weight-bolder text-primary text-gradient">Edit Sopir</h3>
-        <p class="mb-0">Silahkan lengkapi data diri user dengan benar</p>
-    </div>
-    <div class="card-body">
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <span class="alert-text text-white"><strong>Success!</strong> {{ session('success') }}</span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        @endif
-        @if ($errors->any())
-            @foreach ($errors->all() as $err)
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <span class="alert-text text-white"><strong>Alert!</strong> {{ $err }}</span>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card my-4">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                            <h3 class="px-4 font-weight-bolder text-white">Edit Sopir</h3>
+                            <p class="px-4 text-white">Silahkan ubah data diri sopir dengan benar</p>
+                        </div>
+                    </div>
+                    <div class="card-body px-4">
+                        <form role="form text-left border" action="{{ url('/sopir/edit/' . $sopir->id_sopir) }}"
+                            method="POST">
+                            @csrf
+                            <label>Nama</label>
+                            <div class="input-group input-group-outline mb-3 bg-white">
+                                <input name="nama" type="text" class="form-control" aria-label="nama"
+                                    value="{{ $sopir->nama }}">
+                            </div>
+                            <label>Email</label>
+                            <div class="input-group input-group-outline mb-3 bg-white">
+                                <input name="email" type="text" class="form-control" aria-label="email"
+                                    value="{{ $sopir->email }}">
+                            </div>
+                            <label>No Hp</label>
+                            <div class="input-group input-group-outline mb-3 bg-white">
+                                <input name="no_hp" type="text" class="form-control" aria-label="no_hp"
+                                    value="{{ $sopir->no_hp }}" oninput="validateInput(this)">
+                                <div id="error-message" style="color: red;"></div>
+                            </div>
+                            <label>Password</label>
+                            <div class="input-group input-group-outline mb-3">
+                                <input name="old_password" type="password" class="form-control"
+                                    aria-label="old_password" value="" placeholder="Password Lama">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group input-group-outline mb-3">
+                                        <input name="new_password" type="password" class="form-control"
+                                            aria-label="new_password" value="" placeholder="Password Baru">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group input-group-outline mb-3">
+                                        <input name="new_password_confirmation" type="password" class="form-control"
+                                            aria-label="new_password_confirmation" value="" placeholder="Konfirmasi Password Baru">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" name="submit"
+                                    class="btn bg-gradient-primary btn-lg w-100 mt-4 mb-0" values="Update">Update</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            @endforeach
-        @endif
-        <form role="form text-left border" action="" method="POST">
-            @csrf
-            @method('PUT')
-            <label>Name</label>
-            <div class="input-group input-group-outline mb-3 bg-white">
-                <input name="name" type="text" class="form-control" aria-label="name" value="Asep Kuncen">
             </div>
-            <label>Email</label>
-            <div class="input-group input-group-outline mb-3 bg-white">
-                <input name="email" type="text" class="form-control" aria-label="email" value="sopir1@example.com">
-            </div>
-            <label>No Hp</label>
-            <div class="input-group input-group-outline mb-3 bg-white">
-                <input name="no_hp" type="text" class="form-control" aria-label="name" value="08123413532" oninput="validateInput(this)">
-                <div id="error-message" style="color: red;"></div>
-            </div>
-            <div class="text-center">
-                <button type="submit" name="submit" class="btn btn-round bg-gradient-primary btn-lg w-100 mt-4 mb-0" values="Update">Update</button>
-            </div>
-        </form>        
+        </div>
     </div>
 @endsection
+@section('js')
+    <script>
+        function validateInput(inputElement) {
+            var inputValue = inputElement.value;
 
-<script>
-    function validateInput(inputElement) {
-        var inputValue = inputElement.value;
-    
-        if (!/^\d+$/.test(inputValue)) {
-            inputElement.setCustomValidity("Hanya boleh memasukkan angka.");
-        } else {
-            inputElement.setCustomValidity("");
+            if (!/^\d+$/.test(inputValue)) {
+                inputElement.setCustomValidity("Hanya boleh memasukkan angka.");
+            } else {
+                inputElement.setCustomValidity("");
+            }
         }
-    }
-</script>
+    </script>
+@endsection

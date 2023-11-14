@@ -5,22 +5,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-    <link rel="icon" type="image/png" href="../assets/img/local/logo1.png">
+    <link rel="icon" type="image/png" href="{{ asset('../assets/img/local/logo1.png') }}">
     <title>GasTrack admin | @yield('title', $title)</title>
-
-    <!--     Fonts and icons     -->
-    <link rel="stylesheet" type="text/css"
-        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
+    <!-- Fonts and icons -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
     <!-- Nucleo Icons -->
-    <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
-    <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
+    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
     <!-- Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <!-- CSS Files -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link id="pagestyle" href="../assets/css/material-dashboard.css?v=3.1.0" rel="stylesheet" />
+    <link id="pagestyle" href="{{ asset('assets/css/material-dashboard.css?v=3.1.0') }}" rel="stylesheet" />
     <!-- Nepcha Analytics (nepcha.com) -->
     <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
     <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
@@ -31,6 +29,38 @@
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         @yield('navbar')
         <div class="container-fluid py-4 pe-3">
+            @if (session('success'))
+                <div class="position-fixed top-2 end-1 z-index-3">
+                    <div class="toast fade show p-2 bg-white" role="alert" aria-live="assertive" id="successToast" aria-atomic="true">
+                        <div class="toast-header border-0">
+                            <i class="material-icons text-success me-2">check</i>
+                            <span class="me-auto font-weight-bold">Success!</span>
+                            <small class="text-body">sekarang</small>
+                            <i class="fas fa-times text-md ms-3 cursor-pointer" data-bs-dismiss="toast" aria-label="Close"></i>
+                        </div>
+                        <hr class="horizontal dark m-0">
+                        <div class="toast-body">
+                            {{ session('success') }}
+                        </div>
+                    </div>
+                </div>
+            @endif
+            @if ($errors->any())
+                @foreach ($errors->all() as $err)
+                    <div class="toast fade show p-2 mt-2 bg-white position-fixed top-2 end-1 z-index-3" role="alert" aria-live="assertive" id="dangerToast" aria-atomic="true">
+                        <div class="toast-header border-0">
+                            <i class="material-icons text-danger me-2">campaign</i>
+                            <span class="me-auto text-gradient text-danger font-weight-bold">Peringatan !</span>
+                            <small class="text-body">sekarang</small>
+                            <i class="fas fa-times text-md ms-3 cursor-pointer" data-bs-dismiss="toast" aria-label="Close"></i>
+                        </div>
+                        <hr class="horizontal dark m-0">
+                        <div class="toast-body">
+                            {{$err}}
+                        </div>
+                    </div>
+                @endforeach
+            @endif
             @yield('content')
             <footer class="footer py-4  ">
                 <div class="container-fluid">
@@ -105,12 +135,13 @@
             </div>
         </div>
     </div> --}}
-    <!--   Core JS Files   -->
-    <script src="../assets/js/core/popper.min.js"></script>
-    <script src="../assets/js/core/bootstrap.min.js"></script>
-    <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
-    <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
-    <script src="../assets/js/plugins/chartjs.min.js"></script>
+    <!-- Core JS Files -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
+    <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/chartjs.min.js') }}"></script>
     @yield('js')
     <script>
         var win = navigator.platform.indexOf('Win') > -1;
@@ -121,10 +152,27 @@
             Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
         }
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var dangerToastElement = document.getElementById('dangerToast');
+            function hideDangerToast() {
+                var bsDangerToast = new bootstrap.Toast(dangerToastElement);
+                bsDangerToast.hide();
+            }
+            setTimeout(hideDangerToast, 2000);
+    
+            var successToastElement = document.getElementById('successToast');
+            function hideSuccessToast() {
+                var bsSuccessToast = new bootstrap.Toast(successToastElement);
+                bsSuccessToast.hide();
+            }
+            setTimeout(hideSuccessToast, 2000);
+        });
+    </script>
     <!-- Github buttons -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-    <script src="../assets/js/material-dashboard.min.js?v=3.1.0"></script>
+    <script src="{{ asset('assets/js/material-dashboard.min.js?v=3.1.0') }}"></script>
 </body>
 
 </html>

@@ -33,7 +33,7 @@
                 <li class="nav-item">
                     <a class="nav-link text-dark " href="{{ url('/pengiriman') }}">
                         <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="fa fa-solid fa-dolly" style="color: #344767;"></i>                        
+                            <i class="fa fa-solid fa-dolly" style="color: #344767;"></i>
                         </div>
                         <span class="nav-link-text ms-1">Pengiriman</span>
                     </a>
@@ -47,7 +47,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white active bg-gradient-primary " href="{{ url('/sopir') }}">
+                    <a class="nav-link text-white active bg-gradient-primary " href="{{ url('/sopir&kendaraan') }}">
                         <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">local_shipping</i>
                         </div>
@@ -78,9 +78,7 @@
         </div>
         <div class="sidenav-footer position-absolute w-100 bottom-0 ">
             <div class="mx-3">
-                <a class="btn bg-gradient-primary w-100"
-                    href="{{ url('logout') }}"
-                    type="button">Keluar</a>
+                <a class="btn bg-gradient-primary w-100" href="{{ url('logout') }}" type="button">Keluar</a>
             </div>
         </div>
     </aside>
@@ -101,7 +99,7 @@
                     <ul class="navbar-nav justify-content-end me-5">
                         <div class="d-flex py-1">
                             <div class="my-auto">
-                                <img src="../assets/img/local/profil.png" class="border-radius-lg avatar-sm me-3 mt-1">
+                                <img src="{{ asset('../assets/img/local/profil.png') }}" class="border-radius-lg avatar-sm me-3 mt-1">
                             </div>
                             <div class="d-flex flex-column justify-content-center">
                                 <h6 class="text-sm font-weight-normal mb-1">
@@ -134,12 +132,13 @@
         <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card p-3 pt-2">
-                    <div class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                    <div
+                        class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
                         <i class="fa fa-solid fa-vest opacity-10"></i>
                     </div>
                     <div class="text-end pt-1">
                         <p class="text-sm mb-0 text-capitalize">Total Sopir</p>
-                        <h5 class="mb-0">20 sopir</h5>
+                        <h5 class="mb-0">{{ $total_sopir }} sopir</h5>
                     </div>
                 </div>
             </div>
@@ -148,12 +147,13 @@
         <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card p-3 pt-2">
-                    <div class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                    <div
+                        class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
                         <i class="material-icons opacity-10">local_shipping</i>
                     </div>
                     <div class="text-end pt-1">
                         <p class="text-sm mb-0 text-capitalize">Total Kendaraan</p>
-                        <h5 class="mb-0">5 kendaraan</h5>
+                        <h5 class="mb-0">{{ $total_kendaraan }} kendaraan</h5>
                     </div>
                 </div>
             </div>
@@ -175,48 +175,79 @@
                     <div class="card-body px-3 pt-0 pb-2" style="min-height: 370px;">
                         <div class="table-responsive p-0" style="max-height: 350px; overflow-y: auto;">
                             <table class="table align-items-center mb-0">
-                            <thead>
-                                <tr>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pengguna</th>
-                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No Hp</th>
-                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
-                                <th class="text-secondary opacity-7"></th>
-                                <th class="text-secondary opacity-7"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div class="avatar avatar-sm me-3 bg-dark">
-                                                <i class="fa fa-solid fa-vest opacity-10"></i>
-                                            </div>
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">Sopir 1</h6>
-                                                <p class="text-xs text-secondary mb-0">sopir1@gmail.com</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-center">
-                                        <p class="text-xs font-weight-bold mb-0">0881223144</p>
-                                    </td>
-                                    <td class="text-center">
-                                        <span class="badge badge-sm bg-gradient-success">Aktif</span>
-                                    </td>
-                                    <td class="text-center">
-                                        <a href="" class="text-dark font-weight-bold" data-toggle="tooltip" data-original-title="Edit user">
-                                            <i class="fa fa-solid fa-pen" style="color: #252f40;"></i>
-                                        </a>
-                                    </td>
-                                    <td class="text-center">
-                                        <form action="" method="POST">
-                                            <button type="submit" name="Delete" class="text-dark font-weight-bold border-0 bg-transparent">
-                                                <i class="fa fa-solid fa-trash" style="color: #ea0606;"></i>
-                                            </button>                                        
-                                        </form>
-                                    </td>
-                                </tr>
-                            </tbody>
+                                <thead>
+                                    <tr>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Pengguna</th>
+                                        <th
+                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            No Hp</th>
+                                        <th
+                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Ketersediaan</th>
+                                        <th
+                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Status</th>
+                                        <th class="text-secondary opacity-7"></th>
+                                    </tr>
+                                </thead>
+                                @foreach ($sopirs as $sopir)
+                                    <tbody class="border-0" id="table-sopir">
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="avatar avatar-sm me-3 bg-dark">
+                                                        <i class="fa fa-solid fa-vest opacity-10"></i>
+                                                    </div>
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-sm">{{ $sopir->nama }}</h6>
+                                                        <p class="text-xs text-secondary mb-0">{{ $sopir->email }}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <p class="text-xs font-weight-bold mb-0">{{ $sopir->no_hp }}</p>
+                                            </td>
+                                            <td class="text-center">
+                                                @if ($sopir->ketersediaan_sopir === 'tersedia')
+                                                    <span class="badge badge-sm bg-gradient-success">Tersedia</span>
+                                                @else
+                                                    <span class="badge badge-sm bg-gradient-danger">Tidak Tersedia</span>
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                @if ($sopir->status_sopir === 'aktif')
+                                                    <span class="badge badge-sm bg-gradient-success">Aktif</span>
+                                                @else
+                                                    <span class="badge badge-sm bg-gradient-danger">Tidak Aktif</span>
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                <a class="cursor-pointer" id="dropdownTable" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fa fa-ellipsis-v text-xs"></i>
+                                                </a>
+                                                <ul class="shadow dropdown-menu px-2 py-3 ms-sm-n4 ms-n5" aria-labelledby="dropdownTable">                                                  
+                                                    <li>
+                                                        <a class="dropdown-item border-radius-md" href="{{ url('/sopir/edit/'. $sopir->id_sopir) }}">
+                                                            <i class="fa fa-solid fa-pen" style="color: #252f40;"></i>
+                                                            <span class="ms-3">Edit</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <form action="{{ url('/sopir/delete/' . $sopir->id_sopir) }}" method="POST">
+                                                            @csrf
+                                                            @method('delete')
+                                                            <button type="submit" class="dropdown-item border-radius-md">
+                                                                <i class="fa fa-solid fa-trash" style="color: #ea0606;"></i>
+                                                                <span class="ms-3 text-danger">Hapus</span>
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                @endforeach
                             </table>
                         </div>
                     </div>
@@ -236,52 +267,66 @@
                     <div class="card-body px-3 pt-0 pb-2" style="min-height: 370px;">
                         <div class="table-responsive p-0" style="max-height: 350px; overflow-y: auto;">
                             <table class="table align-items-center mb-0">
-                            <thead>
-                                <tr>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Identitas Kendaraan</th>
-                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jenis</th>
-                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No Kendaraan</th>
-                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
-                                <th class="text-secondary opacity-7"></th>
-                                <th class="text-secondary opacity-7"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div class="avatar avatar-sm me-3 bg-dark">
-                                                <i class="material-icons opacity-10">local_shipping</i>
+                                <thead>
+                                    <tr>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Identitas Kendaraan</th>
+                                        <th
+                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Jenis</th>
+                                        <th
+                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Ketersediaan</th>
+                                        <th
+                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Status</th>
+                                        <th class="text-secondary opacity-7"></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="border-0" id="">
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="avatar avatar-sm me-3 bg-dark">
+                                                    <i class="material-icons opacity-10">local_shipping</i>
+                                                </div>
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">AE 112345 DE</h6>
+                                                    <p class="text-xs text-secondary mb-0">Mitsubishi Putih</p>
+                                                </div>
                                             </div>
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">AE 112345 DE</h6>
-                                                <p class="text-xs text-secondary mb-0">Mitsubishi Putih</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-center">
-                                        <p class="text-xs font-weight-bold mb-0">Truk</p>
-                                    </td>
-                                    <td class="text-center">
-                                        <p class="text-xs font-weight-bold mb-0">T-001</p>
-                                    </td>
-                                    <td class="text-center">
-                                        <span class="badge badge-sm bg-gradient-success">Aktif</span>
-                                    </td>
-                                    <td class="text-center">
-                                        <a href="" class="text-dark font-weight-bold" data-toggle="tooltip" data-original-title="Edit user">
-                                            <i class="fa fa-solid fa-pen" style="color: #252f40;"></i>
-                                        </a>
-                                    </td>
-                                    <td class="text-center">
-                                        <form action="" method="POST">
-                                            <button type="submit" name="Delete" class="text-dark font-weight-bold border-0 bg-transparent">
-                                                <i class="fa fa-solid fa-trash" style="color: #ea0606;"></i>
-                                            </button>                                        
-                                        </form>
-                                    </td>
-                                </tr>
-                            </tbody>
+                                        </td>
+                                        <td class="text-center">
+                                            <p class="text-xs font-weight-bold mb-0">Truk</p>
+                                            <p class="text-xs text-secondary mb-0">T-001</p>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-sm bg-gradient-success">Tersedia</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge badge-sm bg-gradient-success">Aktif</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="cursor-pointer" id="dropdownTable" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fa fa-ellipsis-v text-xs"></i>
+                                            </a>
+                                            <ul class="shadow dropdown-menu px-2 py-3 ms-sm-n4 ms-n5" aria-labelledby="dropdownTable">                                                  
+                                                <li>
+                                                    <a class="dropdown-item border-radius-md" href="javascript:;">
+                                                        <i class="fa fa-solid fa-pen" style="color: #252f40;"></i>
+                                                        <span class="ms-3">Edit</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item border-radius-md" href="javascript:;">
+                                                        <i class="fa fa-solid fa-trash" style="color: #ea0606;"></i>
+                                                        <span class="ms-3 text-danger">Hapus</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </tbody>
                             </table>
                         </div>
                     </div>
