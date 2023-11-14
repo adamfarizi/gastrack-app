@@ -49,6 +49,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/kendaraan/delete/{id}', [SopirController::class,'hapus_kendaraan_action']);
 
     Route::get('/pengguna', [PenggunaController::class,'index']);
+    Route::get('/pengguna/edit_pengguna', [PenggunaController::class,'edit_pengguna']);
+    Route::get('/pengguna/edit_admin', [PenggunaController::class,'edit_admin']);
 
     Route::get('/profil', [ProfilController::class,'index']);
     

@@ -47,7 +47,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white active bg-gradient-primary " href="{{ url('/sopir&kendaraan') }}">
+                    <a class="nav-link text-white active bg-gradient-primary " href="{{ url('/sopir') }}">
                         <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">local_shipping</i>
                         </div>
@@ -101,11 +101,11 @@
                     <ul class="navbar-nav justify-content-end me-5">
                         <div class="d-flex py-1">
                             <div class="my-auto">
-                                <img src="{{ asset('../assets/img/local/profil.png') }}" class="border-radius-lg avatar-sm me-3 mt-1">
+                                <img src="../assets/img/local/profil.png" class="border-radius-lg avatar-sm me-3 mt-1">
                             </div>
                             <div class="d-flex flex-column justify-content-center">
                                 <h6 class="text-sm font-weight-normal mb-1">
-                                    <span class="font-weight-bold">  {{ Auth::user()->nama }}  </span>
+                                    <span class="font-weight-bold"> Super Admin </span>
                                 </h6>
                                 <p class="text-xs text-secondary mb-0 ">
                                     <i class="fa fa-solid fa-circle" style="color: #82d616;"></i>
