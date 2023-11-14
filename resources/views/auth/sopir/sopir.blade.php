@@ -47,7 +47,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white active bg-gradient-primary " href="{{ url('/sopir') }}">
+                    <a class="nav-link text-white active bg-gradient-primary " href="{{ url('/sopir&kendaraan') }}">
                         <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">local_shipping</i>
                         </div>
@@ -153,7 +153,7 @@
                     </div>
                     <div class="text-end pt-1">
                         <p class="text-sm mb-0 text-capitalize">Total Kendaraan</p>
-                        <h5 class="mb-0">5 kendaraan</h5>
+                        <h5 class="mb-0">{{ $total_kendaraan }} kendaraan</h5>
                     </div>
                 </div>
             </div>

@@ -47,7 +47,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark " href="{{ url('/sopir') }}">
+                    <a class="nav-link text-dark " href="{{ url('/sopir&kendaraan') }}">
                         <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">local_shipping</i>
                         </div>

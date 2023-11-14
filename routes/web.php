@@ -38,7 +38,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/laporan', [LaporanController::class,'index']);
 
-    Route::get('/sopir', [SopirController::class,'index']);
+    Route::get('/sopir&kendaraan', [SopirController::class,'index']);
     Route::post('/sopir/create', [SopirController::class,'tambah_sopir_action']);
     Route::get('/sopir/edit/{id}', [SopirController::class,'edit_sopir']);
     Route::post('/sopir/edit/{id}', [SopirController::class,'edit_sopir_action']);
