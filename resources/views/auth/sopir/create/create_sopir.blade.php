@@ -1,4 +1,4 @@
-<form action="" method="post" enctype="multipart/form-data">
+<form action="{{ url('/sopir/create') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="modal fade" id="tambahsopir" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -10,18 +10,18 @@
                 <div class="modal-body">
                     <label>Nama <span class="text-danger">*</span></label>
                     <div class="input-group mb-3 input-group-outline">
-                        <input name="name" type="text" class="form-control" placeholder="Masukkan nama sopir"
-                            aria-label="name" value="">
+                        <input name="nama" type="text" class="form-control" placeholder="Masukkan nama sopir"
+                            aria-label="nama" value="{{ old('nama') }}">
                     </div>
                     <label>Email <span class="text-danger">*</span></label>
                     <div class="input-group mb-3 input-group-outline">
                         <input name="email" type="email" class="form-control" placeholder="Masukkan email sopir"
-                            aria-label="email" value="">
+                            aria-label="email" value="{{ old('email') }}">
                     </div>
                     <label>No Hp <span class="text-danger">*</span></label>
                     <div class="input-group mb-3 input-group-outline">
                         <input name="no_hp" type="number" class="form-control" placeholder="Masukkan nomor hp"
-                            aria-label="no_hp" value="">
+                            aria-label="no_hp" value="{{ old('no_hp') }}">
                     </div>
                     <label>Password <span class="text-danger">*</span></label>
                     <div class="input-group mb-3 input-group-outline">
@@ -42,3 +42,4 @@
         </div>
     </div>
 </form>
+

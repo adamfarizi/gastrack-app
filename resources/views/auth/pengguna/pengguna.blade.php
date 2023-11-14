@@ -101,11 +101,11 @@
                     <ul class="navbar-nav justify-content-end me-5">
                         <div class="d-flex py-1">
                             <div class="my-auto">
-                                <img src="../assets/img/local/profil.png" class="border-radius-lg avatar-sm me-3 mt-1">
+                                <img src="{{ asset('../assets/img/local/profil.png') }}" class="border-radius-lg avatar-sm me-3 mt-1">
                             </div>
                             <div class="d-flex flex-column justify-content-center">
                                 <h6 class="text-sm font-weight-normal mb-1">
-                                    <span class="font-weight-bold"> Super Admin </span>
+                                    <span class="font-weight-bold">  {{ Auth::user()->nama }}  </span>
                                 </h6>
                                 <p class="text-xs text-secondary mb-0 ">
                                     <i class="fa fa-solid fa-circle" style="color: #82d616;"></i>

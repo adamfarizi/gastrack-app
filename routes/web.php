@@ -39,7 +39,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/laporan', [LaporanController::class,'index']);
 
     Route::get('/sopir', [SopirController::class,'index']);
-    Route::get('/sopir/edit_sopir/{id}', [SopirController::class,'edit_sopir']);
+    Route::post('/sopir/create', [SopirController::class,'tambah_sopir_action']);
+    Route::get('/sopir/edit/{id}', [SopirController::class,'edit_sopir']);
+    Route::post('/sopir/edit/{id}', [SopirController::class,'edit_sopir_action']);
+    Route::delete('/sopir/delete/{id}', [SopirController::class,'hapus_sopir_action']);
     Route::get('/sopir/edit_kendaraan', [SopirController::class,'edit_kendaraan']);
 
     Route::get('/pengguna', [PenggunaController::class,'index']);
