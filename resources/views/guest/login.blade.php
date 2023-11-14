@@ -28,8 +28,41 @@
     <main class="main-content  mt-0">
         <div class="page-header align-items-start min-vh-100"
             style="background-image: url('../assets/img/local/bg_login2.png');">
-            <span class="mask bg-gradient-dark opacity-6"></span>                
+            <span class="mask bg-gradient-dark opacity-6"></span>
             <div class="container my-auto">
+            @if (session('success'))
+                <div class="position-fixed top-2 end-1 z-index-2">
+                    <div class="toast fade show p-2 bg-white" role="alert" aria-live="assertive" id="successToast" aria-atomic="true">
+                        <div class="toast-header border-0">
+                            <i class="material-icons text-success me-2">check</i>
+                            <span class="me-auto font-weight-bold">Success!</span>
+                            <small class="text-body">sekarang</small>
+                            <i class="fas fa-times text-md ms-3 cursor-pointer" data-bs-dismiss="toast" aria-label="Close"></i>
+                        </div>
+                        <hr class="horizontal dark m-0">
+                        <div class="toast-body">
+                            {{ session('success') }}
+                        </div>
+                    </div>
+                </div>
+            @endif
+            @if ($errors->any())
+                @foreach ($errors->all() as $err)
+                    <div class="toast fade show p-2 mt-2 bg-white position-fixed top-2 end-1 z-index-2" role="alert" aria-live="assertive" id="dangerToast" aria-atomic="true">
+                        <div class="toast-header border-0">
+                            <i class="material-icons text-danger me-2">campaign</i>
+                            <span class="me-auto text-gradient text-danger font-weight-bold">Peringatan !</span>
+                            <small class="text-body">sekarang</small>
+                            <i class="fas fa-times text-md ms-3 cursor-pointer" data-bs-dismiss="toast" aria-label="Close"></i>
+                        </div>
+                        <hr class="horizontal dark m-0">
+                        <div class="toast-body">
+                            {{$err}}
+                        </div>
+                    </div>
+                @endforeach
+            @endif
+                
                 <div class="row">
                     <div class="col-lg-4 col-md-8 col-12 mx-auto">
                         <div class="card z-index-0 fadeIn3 fadeInBottom">
@@ -39,24 +72,6 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                @if (session('success'))
-                                    <div class="alert alert-success alert-dismissible text-white fade show position-absolute" role="alert" style="z-index: 100;">
-                                        <span class="alert-text"><strong>Success ! </strong>{{ session('success') }}</span>
-                                        <button type="button" class="btn-close pt-3" data-bs-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                                @if ($errors->any())
-                                    @foreach ($errors->all() as $err)
-                                        <div class="alert alert-danger alert-dismissible text-white fade show position-absolute" role="alert" style="z-index: 100;">
-                                            <span class="alert-text"><strong>Alert ! </strong>{{ $err }}</span>
-                                            <button type="button" class="btn-close pt-3" data-bs-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    @endforeach
-                                @endif
                                 <div class="pb-0 text-left bg-transparent text-center">
                                     <h4 class="font-weight-bolder text-primary text-gradient">Selamat Datang</h4>
                                     <p class="mb-0">Masukkan email dan password anda !</p>
@@ -72,7 +87,7 @@
                                         <input type="password" class="form-control" name="password" required>
                                     </div>
                                     <div class="text-center">
-                                        <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Masuk</button>
+                                        <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2 toast-btn" data-target="dangerToast">Masuk</button>
                                     </div>
                                     <p class="mt-4 text-sm text-center">
                                         Belum punya akun ?
@@ -136,6 +151,24 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="../assets/js/material-dashboard.min.js?v=3.1.0"></script>
+    <!-- Tambahkan script untuk mengatur waktu penghilangan notifikasi -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var dangerToastElement = document.getElementById('dangerToast');
+            function hideDangerToast() {
+                var bsDangerToast = new bootstrap.Toast(dangerToastElement);
+                bsDangerToast.hide();
+            }
+            setTimeout(hideDangerToast, 2000);
+    
+            var successToastElement = document.getElementById('successToast');
+            function hideSuccessToast() {
+                var bsSuccessToast = new bootstrap.Toast(successToastElement);
+                bsSuccessToast.hide();
+            }
+            setTimeout(hideSuccessToast, 2000);
+        });
+    </script>
 </body>
 
 </html>

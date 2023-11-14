@@ -128,3 +128,227 @@
         </div>
     </nav>
 @endsection
+@section('content')
+    <div class="row">
+        {{-- Total pengguna --}}
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card p-3 pt-2">
+                    <div class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                        <i class="material-icons opacity-10">receipt_long</i>
+                    </div>
+                    <div class="text-end pt-1">
+                        <p class="text-sm mb-0 text-capitalize">Total Pesanan</p>
+                        <h5 class="mb-0">10 pesanan</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- Total admin --}}
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card p-3 pt-2">
+                    <div class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                        <i class="material-icons opacity-10">support_agent</i>
+                    </div>
+                    <div class="text-end pt-1">
+                        <p class="text-sm mb-0 text-capitalize">Pesanan Masuk</p>
+                        <h5 class="mb-0">3 pesanan</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- Total pelanggan --}}
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card p-3 pt-2">
+                    <div class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                        <i class="material-icons opacity-10">factory</i>
+                    </div>
+                    <div class="text-end pt-1">
+                        <p class="text-sm mb-0 text-capitalize">Total Pelanggan</p>
+                        <h5 class="mb-0">50 pelanggan</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-3">
+        <div class="row">
+            {{-- Tabel Pembelian --}}
+            <div class="col-12 mb-4">
+                <div class="card">
+                    <div class="card-header pb-0 d-flex justify-content-between">
+                        <h6>Pembelian</h6>
+                        <a type="button" class="btn btn-sm bg-gradient-primary border-end" data-bs-toggle="modal" data-bs-target="#tambahpelanggan">
+                            <i class="fa fa-solid fa-plus me-2" style="color: #ffffff;"></i>
+                            Tambah Pembelian
+                        </a>
+                    </div>
+                    <div class="card-body px-3 pt-0 pb-2" style="min-height: 428px;">
+                        <div class="table-responsive p-0" style="max-height: 300px; overflow-y: auto;">
+                            <table class="table align-items-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No. Resi</th>
+                                        <th class="ps-5 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pelanggan</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Alamat</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pesanan</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="ps-4">
+                                            <p class="text-xs font-weight-bold mb-0">3542311</p>
+                                        </td>
+                                        <td>
+                                            <div class="ps-4">
+                                                <h6 class="mb-1 text-sm">PT Wijaya Abadi</h6>
+                                                <p class="text-xs text-secondary mb-0">pelanggan1@gmail.com</p>
+                                            </div>
+                                        </td>
+                                        <td class="text-wrap" style="max-width: 200px;">
+                                            <p class="text-xs py-1 mb-0">Jl. Singosari Gg.2 No.2, Kel. Patihan, Kec.Manguharjo, Kota Madiun</p>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="#" class="badge badge-sm bg-gradient-success text-white" data-bs-toggle="modal" data-bs-target="#modalPesanan">
+                                                Lihat Pesanan
+                                            </a>
+                                        </td>                                        
+                                        <td class="text-center">
+                                            <span class="badge badge-sm bg-gradient-danger">Belum Bayar</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="#" class="badge badge-sm bg-gradient-primary text-white" data-bs-toggle="modal" data-bs-target="#rincianModal">
+                                                Rincian
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal Pesanan --}}
+    <div class="modal fade" id="modalPesanan" tabindex="-1" role="dialog" aria-labelledby="modalPesananLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalPesananLabel">Detail Pesanan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3 text-end border-bottom pb-0">
+                        <p>Tanggal: 10-11-2023</p>
+                    </div>
+                    <div class="mb-3">
+                        <p class="mb-0"><strong>Pesanan Awal:</strong> <span class="float-end pe-3">10 bar</span></p>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item">Pesanan 1: <span class="float-end">25 bar</span></li>
+                        <li class="list-group-item">Pesanan 2: <span class="float-end">5 bar</span></li>
+                        <li class="list-group-item">Pesanan 3: <span class="float-end">15 bar</span></li>
+                    </ul>
+                    <div class="mt-3 border-bottom pb-3">
+                        <p class="mb-0"><strong>Pesanan Akhir:</strong> <span class="float-end pe-3">15 bar</span></p>
+                    </div>                                    
+                    <div class="mt-3">
+                        <p class="mb-0"><strong>Total:</strong> <span class="float-end">715 kubik</span></p>
+                    </div>
+                </div>                                                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary shadow" data-bs-dismiss="modal">Tutup</button>
+                </div>                                
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal Rincian --}}
+    <div class="row">
+        <div class="col-md-4">
+            <div class="modal fade" id="rincianModal" tabindex="-1" role="dialog"
+                aria-labelledby="modal-default" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <img class="ms-2 position-absolute top-50 start-50 translate-middle d-sm-block" src="{{ asset('assets/img/local/logo7.png') }}" height="150" alt="main_logo" style="z-index: 0; opacity: 0.3; display:none;">
+                        <div class="modal-header">
+                            <h6 class="modal-title text-uppercase" id="modal-title-default">Rincian Pesanan</h6>
+                            <button type="button" class="btn-close text-dark" data-bs-dismiss="modal"
+                                aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body p-2" style="max-height:500px; overflow-y: auto;">
+                            <div class="border border-2 py-3 px-2">
+                                <div class="row">
+                                    <div class="col">
+                                        <img class="ms-2" src="{{ asset('assets/img/local/logo5.png') }}" height="30" alt="main_logo">
+                                    </div>
+                                    <div class="col text-end mt-1 me-2">
+                                        <p>10-11-2023</p>
+                                    </div>
+                                </div>
+                                <hr class="border border-dark" style="width: 100%">
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="pb-0 mb-4">RESI : 0841329124</p>
+                                    </div>
+                                    <div class="col">
+                                        <p class="pb-0 me-2 mb-4 text-end">Dikirim</p>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <h6>Invoice Number: <span class="text-muted">#123456</span></h6>
+                                            <p>Date: <span class="text-muted">2023-01-01</span></p>
+                                        </div>
+                                        <div class="col text-end">
+                                            <h6>Tagihan untuk:</h6>
+                                            <p>PT Selep Nglames<br>
+                                               Jl. Merdeka No. 123, Kelurahan Bahagia, Kecamatan Sentosa, Kota Fiktif A<br>
+                                               agen1@example.com<br>
+                                               088111222</p>
+                                        </div>
+                                        <table class="table table-bordered ms-2">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th class="text-center">Item</th>
+                                                    <th class="text-center">Description</th>
+                                                    <th class="text-center">Quantity</th>
+                                                    <th class="text-center">Unit Price</th>
+                                                    <th class="text-center">Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-center">1</td>
+                                                    <td class="text-center">Gas Alam</td>
+                                                    <td class="text-center">20 bar</td>
+                                                    <td class="text-center">Rp 50.00</td>
+                                                    <td class="text-center">Rp 100.00</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>                                    
+                                    </div>
+                                    <div class="text-end mt-3">
+                                        <p><strong>Total: Rp 100.00</strong></p>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary shadow" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Print Invoice</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+@endsection
