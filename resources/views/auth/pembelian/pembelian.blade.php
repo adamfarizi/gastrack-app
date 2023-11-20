@@ -274,11 +274,12 @@
     {{-- Modal Rincian --}}
     <div class="row">
         <div class="col-md-4">
-            <div class="modal fade" id="rincianModal" tabindex="-1" role="dialog"
-                aria-labelledby="modal-default" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal fade" id="rincianModal" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
-                        <img class="ms-2 position-absolute top-50 start-50 translate-middle d-sm-block" src="{{ asset('assets/img/local/logo7.png') }}" height="150" alt="main_logo" style="z-index: 0; opacity: 0.3; display:none;">
+                        <img class="ms-2 position-absolute top-50 start-50 translate-middle d-sm-block"
+                            src="{{ asset('assets/img/local/logo7.png') }}" height="150" alt="main_logo"
+                            style="z-index: 0; opacity: 0.3; display:none;">
                         <div class="modal-header">
                             <h6 class="modal-title text-uppercase" id="modal-title-default">Rincian Pesanan</h6>
                             <button type="button" class="btn-close text-dark" data-bs-dismiss="modal"
@@ -286,16 +287,16 @@
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
-                        <div class="modal-body p-2" style="max-height:500px; overflow-y: auto;">
-                            <div class="border border-2 py-3 px-2">
-                                <div class="row">
-                                    <div class="col">
-                                        <img class="ms-2" src="{{ asset('assets/img/local/logo5.png') }}" height="30" alt="main_logo">
-                                    </div>
-                                    <div class="col text-end mt-1 me-2">
-                                        <p>10-11-2023</p>
-                                    </div>
+                    <div class="modal-body p-2" id="modal-body-content">
+                        <div class="border border-2 py-3 px-2">
+                            <div class="row">
+                                <div class="col">
+                                    <img class="ms-2" src="{{ asset('assets/img/local/logo5.png') }}" height="30" alt="main_logo">
                                 </div>
+                                <div class="col text-end mt-1 me-2">
+                                    <p>10-11-2023</p>
+                                </div>
+                            </div>
                                 <hr class="border border-dark" style="width: 100%">
                                 <div class="row">
                                     <div class="col">
@@ -316,16 +317,17 @@
                                                agen1@example.com<br>
                                                088111222</p>
                                         </div>
-                                        <table class="table table-bordered ms-2">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th class="text-center">Item</th>
-                                                    <th class="text-center">Description</th>
-                                                    <th class="text-center">Quantity</th>
-                                                    <th class="text-center">Unit Price</th>
-                                                    <th class="text-center">Total</th>
-                                                </tr>
-                                            </thead>
+                                        <div class="text-center ms-2">
+                                            <table class="table table-bordered">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th class="text-center">Item</th>
+                                                        <th class="text-center">Description</th>
+                                                        <th class="text-center">Quantity</th>
+                                                        <th class="text-center">Unit Price</th>
+                                                        <th class="text-center">Total</th>
+                                                    </tr>
+                                                </thead>
                                             <tbody>
                                                 <tr>
                                                     <td class="text-center">1</td>
@@ -335,7 +337,8 @@
                                                     <td class="text-center">Rp 100.00</td>
                                                 </tr>
                                             </tbody>
-                                        </table>                                    
+                                            </table>                                    
+                                        </div>
                                     </div>
                                     <div class="text-end mt-3">
                                         <p><strong>Total: Rp 100.00</strong></p>
@@ -350,5 +353,6 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
+    </div>   
 @endsection

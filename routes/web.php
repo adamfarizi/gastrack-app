@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\HalloEvent;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\LaporanController;
@@ -54,4 +55,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/profil', [ProfilController::class,'index']);
     
+});
+
+Route::get('/send-event', function () {
+    broadcast(new HalloEvent());
 });
