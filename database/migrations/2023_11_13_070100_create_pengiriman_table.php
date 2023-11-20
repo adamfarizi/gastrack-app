@@ -16,6 +16,7 @@ class CreatePengirimanTable extends Migration
             $table->string('bukti_gas_masuk');
             $table->string('kapasitas_gas_keluar');
             $table->string('bukti_gas_keluar');
+            $table->enum('status_pengiriman',['Dikirim', 'Diterima']);
             $table->string('sisa_gas');
             $table->unsignedBigInteger('id_sopir')->nullable();
             $table->unsignedBigInteger('id_mobil')->nullable();
