@@ -33,7 +33,7 @@
                 <li class="nav-item">
                     <a class="nav-link text-white active bg-gradient-primary" href="{{ url('/pengiriman') }}">
                         <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="fa fa-solid fa-dolly" style="color: #344767;"></i>                        
+                            <i class="fa fa-solid fa-dolly" style="color: #344767;"></i>
                         </div>
                         <span class="nav-link-text ms-1">Pengiriman</span>
                     </a>
@@ -78,9 +78,7 @@
         </div>
         <div class="sidenav-footer position-absolute w-100 bottom-0 ">
             <div class="mx-3">
-                <a class="btn bg-gradient-primary w-100"
-                    href="{{ url('logout') }}"
-                    type="button">Keluar</a>
+                <a class="btn bg-gradient-primary w-100" href="{{ url('logout') }}" type="button">Keluar</a>
             </div>
         </div>
     </aside>
@@ -101,11 +99,12 @@
                     <ul class="navbar-nav justify-content-end me-5">
                         <div class="d-flex py-1">
                             <div class="my-auto">
-                                <img src="{{ asset('../assets/img/local/profil.png') }}" class="border-radius-lg avatar-sm me-3 mt-1">
+                                <img src="{{ asset('../assets/img/local/profil.png') }}"
+                                    class="border-radius-lg avatar-sm me-3 mt-1">
                             </div>
                             <div class="d-flex flex-column justify-content-center">
                                 <h6 class="text-sm font-weight-normal mb-1">
-                                    <span class="font-weight-bold">  {{ Auth::user()->nama }}  </span>
+                                    <span class="font-weight-bold"> {{ Auth::user()->nama }} </span>
                                 </h6>
                                 <p class="text-xs text-secondary mb-0 ">
                                     <i class="fa fa-solid fa-circle" style="color: #82d616;"></i>
@@ -127,4 +126,294 @@
             </li>
         </div>
     </nav>
+@endsection
+
+@section('content')
+    <div class="row">
+        {{-- Total Pesanan --}}
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card p-3 pt-2">
+                    <div
+                        class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                        <i class="material-icons opacity-10">receipt_long</i>
+                    </div>
+                    <div class="text-end pt-1">
+                        <p class="text-sm mb-0 text-capitalize">Total Pesanan</p>
+                        <h5 class="mb-0">10 pesanan</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- Total Pesanan Masuk --}}
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card p-3 pt-2">
+                    <div
+                        class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                        <i class="material-symbols-outlined opacity-10">order_approve</i>
+                    </div>
+                    <div class="text-end pt-1">
+                        <p class="text-sm mb-0 text-capitalize">Pesanan Masuk</p>
+                        <h5 class="mb-0">3 pesanan</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- Total pelanggan --}}
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card p-3 pt-2">
+                    <div
+                        class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                        <i class="material-icons opacity-10">factory</i>
+                    </div>
+                    <div class="text-end pt-1">
+                        <p class="text-sm mb-0 text-capitalize">Total Pelanggan</p>
+                        <h5 class="mb-0">50 pelanggan</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- Tabel proses pesanan --}}
+    <div class="container mt-5">
+        <div class="card bg-white">
+            <div class="card-header pb-0">
+                <div class="row">
+                    <div class="col d-flex">
+                        <h4 class="card-title">Pesanan Diproses</h4>
+                        <span class="mt-1 ms-3">
+                            <a class="me-2"></a>
+                        </span>
+                    </div>
+                    <div class="col-md-2 col-sm-6 ml-auto">
+                        <div class="input-group mb-3 border rounded-2">
+                            <span class="input-group-text text-body me-2"><i class="fas fa-search"
+                                    aria-hidden="true"></i></span>
+                            <input type="text" class="form-control ms-2" id="searchInput_pesananDiproses"
+                                placeholder="Cari Pesanan ...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card-body px-0 pt-0 pb-2" style="min-height: 50px;">
+                    <div class="table-responsive p-0" style="max-height: 300px; overflow-y: auto;">
+                        <div class="text-center" id="noResultsMessage_pesananDiproses" style="display: none;">
+                            Pesanan tidak ditemukan.
+                        </div>
+                        <table id="table_pesananDiproses" class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Id Pengiriman</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-3">
+                                        Id Pesanan</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Informasi</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Kurir</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Truk</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Status</th>
+                                </tr>
+                            </thead>
+                            <form action="" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <tbody id="pesananDiproses_">
+                                    <tr class="text-dark">
+                                        <td class="align-middle text-sm text-center">54985213687</td>
+                                        <td class="align-middle text-sm text-center pt-4 pe-5   ">
+                                            <ul style="">54985213687</ul>
+                                        </td>
+                                        <td class="align-middle text-sm text-center">
+                                            <a href="#" type="button" data-id="more-info" data-bs-toggle="modal"
+                                                data-bs-target="#more-info">
+                                                <p class="pt-3" style="text-decoration: underline;">Selengkapnya
+                                                </p>
+                                            </a>
+                                        </td>
+                                        <td class="align-middle text-sm text-center">
+                                            <div class="border rounded-2">
+                                                <select class="form-control text-center" id="name_kurir" name="name_kurir">
+                                                    <option value="Belum Memilih">
+                                                        Belum Memilih
+                                                    </option>
+                                                    <option value="kurir">
+                                                        Sigit Rendang
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle text-sm text-center">
+                                            <div class="border rounded-2">
+                                                <select class="form-control text-center">
+                                                    <option value="Belum Memilih">Belum Memilih</option>
+                                                    <option value="truck">Hino Hijau</option>
+                                                </select>
+                                            </div>
+                                        </td>                                        
+                                        <td class="align-middle text-sm text-center pt-4">
+                                            <button type="submit"
+                                                class="btn bg-gradient-success btn-icon btn-sm ps-3 mt-1">
+                                                <span><i class="fa fa-solid fa-paper-plane me-3"
+                                                        style="color: #ffffff;"></i></span>
+                                                Kirim
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </form>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- Tabel dikirim --}}
+    <div class="container mt-5">
+        <div class="card bg-white">
+            <div class="card-header pb-0">
+                <div class="row">
+                    <div class="col d-flex">
+                        <h4 class="card-title">Pesanan Dikirim</h4>
+                        <span class="mt-1 ms-3">
+                            <a class="me-2"></a>
+                        </span>
+                    </div>
+                    <div class="col-md-2 col-sm-6 ml-auto">
+                        <div class="input-group mb-3 border rounded-2">
+                            <span class="input-group-text text-body me-2"><i class="fas fa-search"
+                                    aria-hidden="true"></i></span>
+                            <input type="text" class="form-control ms-2" id="searchInput_pesananDikirim"
+                                placeholder="Cari Pesanan ...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card-body px-0 pt-0 pb-2" style="min-height: 50px;">
+                    <div class="table-responsive p-0" style="max-height: 300px; overflow-y: auto;">
+                        <div class="text-center" id="noResultsMessage_pesananDikirim" style="display: none;">
+                            Pesanan tidak ditemukan.
+                        </div>
+                        <table id="table_pesananDikirim" class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Id Pesanan</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Tgl. Pesanan</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Pemesanan</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Jumlah Gas</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Alamat Pesanan</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Id Pengiriman</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Cek Pesanan</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pesananDikirim_">
+                                <tr class="text-dark">
+                                    <td class="align-middle text-sm text-center">123654789</td>
+                                    <td class="align-middle text-sm text-center">12-11-2023</td>
+                                    <td class="align-middle text-sm text-center">PT Sinar Patihan</td>
+                                    <td class="align-middle text-sm text-center">70 Bar</td>
+                                    <td class="align-middle text-sm text-center"
+                                        style="white-space: pre-wrap; word-wrap: break-word; max-width: 100px;">Jl. Singosari No. 2, Kelurahan Patihan, Kecamatan Manguharjo, Kota Madiun</td>
+                                    <td class="align-middle text-sm text-center">258741369</td>
+                                    <td class="align-middle text-center ">
+                                        <button type="button" class="btn bg-gradient-warning btn-icon btn-sm ps-3"
+                                            data-id="" data-bs-toggle="modal" data-bs-target="#cek-status"
+                                            id="modalButton">
+                                            <span><i class="fa fa-solid fa-info me-3" style="color: #ffffff;"></i></span>
+                                            Cek Status
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Modal More Info-->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="modal fade" id="more-info" tabindex="-1" role="dialog"
+                aria-labelledby="modal-default" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h6 class="modal-title text-uppercase" id="modal-title-default">Rincian Pesanan</h6>
+                            <button type="button" class="btn-close text-dark" data-bs-dismiss="modal"
+                                aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" style="max-height:350px; overflow-y: auto;">
+                            <ul class="mb-3 text-dark" class="tracking-list" type="disc">
+                                <h5 class="pb-3">54985213687</h5>
+                                <li class="ms-3 mb-0 text-dark" class="tracking-list">
+                                    <h6 class="d-flex mb-0 pb-0">Total Muatan :
+                                        <span class="ms-2">
+                                            <p>70 Bar</p>
+                                        </span>
+                                    </h6>
+                                </li>
+                                <li class="ms-3 mb-0 text-dark" class="tracking-list">
+                                    <h6 class="d-flex mb-0 pb-0">Total Harga :
+                                        <span class="ms-2">
+                                            <p>Rp 10.000.000</p>
+                                        </span>
+                                    </h6>
+                                </li>
+                                <li class="ms-3 mb-3 text-dark" class="tracking-list">
+                                    <h6>Rincian :</h6>
+                                    {{-- @foreach ($transaksis as $transaksi)
+                                        @if ($pengiriman->id_pengiriman == $transaksi->id_pengiriman) --}}
+                                            <ul>
+                                                <li class="mb-2">
+                                                    PT. Sinar Patihan
+                                                    <br><span class="text-secondary text-xs">Jumlah Gas : 70 Bar</span>
+                                                    <br><span class="text-secondary text-xs">Alamat : Jl. Singosari No. 2, Kelurahan Patihan, Kecamatan Manguharjo, Kota Madiun</span>
+                                                    <br><span class="text-secondary text-xs">Bukti Pembayaran:</span>
+                                                    {{-- <br><img src="{{ asset('img/BuktiPembayaran/' .$transaksi->pembayaran->bukti_pembayaran) }}" class="w-50" alt="Bukti Pembayaran"> --}}
+                                                </li>
+                                            </ul>
+                                        {{-- @endif
+                                    @endforeach --}}
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-link ml-auto"
+                                data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

@@ -128,3 +128,157 @@
         </div>
     </nav>
 @endsection
+
+@section('content')
+    <div class="row">
+        {{-- Total Pesanan --}}
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card p-3 pt-2">
+                    <div
+                        class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                        <i class="material-icons opacity-10">receipt_long</i>
+                    </div>
+                    <div class="text-end pt-1">
+                        <p class="text-sm mb-0 text-capitalize">Total Pesanan</p>
+                        <h5 class="mb-0">10 pesanan</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- Total Pesanan Masuk --}}
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card p-3 pt-2">
+                    <div
+                        class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                        <i class="material-icons opacity-10">support_agent</i>
+                    </div>
+                    <div class="text-end pt-1">
+                        <p class="text-sm mb-0 text-capitalize">Pesanan Masuk</p>
+                        <h5 class="mb-0">3 pesanan</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- Total pelanggan --}}
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card p-3 pt-2">
+                    <div
+                        class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                        <i class="material-icons opacity-10">factory</i>
+                    </div>
+                    <div class="text-end pt-1">
+                        <p class="text-sm mb-0 text-capitalize">Total Pelanggan</p>
+                        <h5 class="mb-0">50 pelanggan</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Tabel Laporan --}}
+    <div class="container mt-5">
+        <div class="card bg-white">
+            <div class="card-header pb-0">
+                <div class="row">
+                    <div class="col d-flex">
+                        <h4 class="card-title">Laporan</h4>
+                        <span class="mt-1 ms-3">
+                            <a class="me-2"></a>
+                        </span>
+                    </div>
+                    <div class="col-md-2 col-sm-6 ml-auto">
+                        <div class="input-group mb-3 border rounded-2">
+                            <span class="input-group-text text-body me-2"><i class="fas fa-search"
+                                    aria-hidden="true"></i></span>
+                            <input type="text" class="form-control ms-2" id="searchInput_pesananDiproses"
+                                placeholder="Cari Pesanan ...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card-body px-0 pt-0 pb-2" style="min-height: 50px;">
+                    <div class="table-responsive p-0" style="max-height: 300px; overflow-y: auto;">
+                        <div class="text-center" id="noResultsMessage_pesananDiproses" style="display: none;">
+                            Pesanan tidak ditemukan.
+                        </div>
+                        <table id="table_pesananDiproses" class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Id Pengiriman</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-3">
+                                        Id Pesanan</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Informasi</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Kurir</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Truk</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Status</th>
+                                </tr>
+                            </thead>
+                            <form action="" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <tbody id="pesananDiproses_">
+                                    <tr class="text-dark">
+                                        <td class="align-middle text-sm text-center">54985213687</td>
+                                        <td class="align-middle text-sm text-center pt-4 pe-5   ">
+                                            <ul style="">54985213687</ul>
+                                        </td>
+                                        <td class="align-middle text-sm text-center">
+                                            <a href="#" type="button" data-id="more-info" data-bs-toggle="modal"
+                                                data-bs-target="#more-info">
+                                                <p class="pt-3" style="text-decoration: underline;">Selengkapnya
+                                                </p>
+                                            </a>
+                                        </td>
+                                        <td class="align-middle text-sm text-center">
+                                            <div class="border rounded-2">
+                                                <select class="form-control text-center" id="name_kurir" name="name_kurir">
+                                                    <option value="Belum Memilih">
+                                                        Belum Memilih
+                                                    </option>
+                                                    <option value="kurir">
+                                                        Sigit Rendang
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle text-sm text-center">
+                                            <div class="border rounded-2">
+                                                <select class="form-control text-center">
+                                                    <option value="Belum Memilih">Belum Memilih</option>
+                                                    <option value="truck">Hino Hijau</option>
+                                                </select>
+                                            </div>
+                                        </td>                                        
+                                        <td class="align-middle text-sm text-center pt-4">
+                                            <button type="submit"
+                                                class="btn bg-gradient-success btn-icon btn-sm ps-3 mt-1">
+                                                <span><i class="fa fa-solid fa-paper-plane me-3"
+                                                        style="color: #ffffff;"></i></span>
+                                                Kirim
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </form>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
