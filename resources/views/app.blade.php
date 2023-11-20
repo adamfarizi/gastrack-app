@@ -22,6 +22,7 @@
     <!-- Nepcha Analytics (nepcha.com) -->
     <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
     <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
+    @vite('resources/css/app.css')
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
@@ -142,31 +143,35 @@
     <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/chartjs.min.js') }}"></script>
+    @vite('resources/js/app.js')
     @yield('js')
-    <script>
-        var win = navigator.platform.indexOf('Win') > -1;
-        if (win && document.querySelector('#sidenav-scrollbar')) {
-            var options = {
-                damping: '0.5'
-            }
-            Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
-        }
-    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var dangerToastElement = document.getElementById('dangerToast');
-            function hideDangerToast() {
-                var bsDangerToast = new bootstrap.Toast(dangerToastElement);
-                bsDangerToast.hide();
+            if (dangerToastElement) {
+                function hideDangerToast() {
+                    var bsDangerToast = new bootstrap.Toast(dangerToastElement);
+                    bsDangerToast.hide();
+                }
+                setTimeout(hideDangerToast, 2000);
             }
-            setTimeout(hideDangerToast, 2000);
-    
+
             var successToastElement = document.getElementById('successToast');
-            function hideSuccessToast() {
-                var bsSuccessToast = new bootstrap.Toast(successToastElement);
-                bsSuccessToast.hide();
+            if (successToastElement) {
+                function hideSuccessToast() {
+                    var bsSuccessToast = new bootstrap.Toast(successToastElement);
+                    bsSuccessToast.hide();
+                }
+                setTimeout(hideSuccessToast, 2000);
             }
-            setTimeout(hideSuccessToast, 2000);
+
+            var win = navigator.platform.indexOf('Win') > -1;
+            if (win && document.querySelector('#sidenav-scrollbar')) {
+                var options = {
+                    damping: '0.5'
+                }
+                Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+            }
         });
     </script>
     <!-- Github buttons -->

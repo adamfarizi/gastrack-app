@@ -17,7 +17,7 @@ class CreateTransaksiTable extends Migration
             $table->decimal('total_transaksi', 50, 0);
             $table->string('jadwal_bayar');
             $table->unsignedBigInteger('id_pelanggan');
-            $table->unsignedBigInteger('id_tagihan');
+            $table->unsignedBigInteger('id_tagihan')->nullable();
             $table->unsignedBigInteger('id_pengiriman')->nullable();
             $table->unsignedBigInteger('id_admin');
             $table->timestamps();

@@ -1,6 +1,7 @@
 <?php
 
 use App\Events\HalloEvent;
+use App\Http\Controllers\Api\ApiPelangganController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\LaporanController;
@@ -34,6 +35,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/beranda', [BerandaController::class,'index']);
 
     Route::get('/pembelian', [PembelianController::class,'index']);
+    Route::get('/pembelian/data', [PembelianController::class,'realtimeData']);
 
     Route::get('/pengiriman', [PengirimanController::class,'index']);
 
@@ -57,6 +59,4 @@ Route::middleware(['auth'])->group(function () {
     
 });
 
-Route::get('/send-event', function () {
-    broadcast(new HalloEvent());
-});
+Route::post('/transaksi/create', [ApiPelangganController::class,'create_transaksi']);
