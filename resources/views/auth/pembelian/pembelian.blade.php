@@ -200,7 +200,7 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No. Resi</th>
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tanggal</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Waktu</th>
                                         <th class="ps-5 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pelanggan</th>
                                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Alamat</th>
                                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pesanan</th>
@@ -256,6 +256,7 @@
     </div>
 
     {{-- Modal Rincian --}}
+    @foreach ($transaksis as $transaksi)
         <div class="row">
             <div class="col-md-4">
                 <div class="modal fade" id="rincianModal" tabindex="-1" role="dialog" aria-labelledby="modal-default
@@ -272,83 +273,127 @@
                                     <span aria-hidden="true">×</span>
                                 </button>
                             </div>
-                            <div class="modal-body p-2" id="modal-body-content">
+                            <div class="modal-body p-2" id="modal-body-content" style="max-height: 500px; overflow-y: auto;">
                                 <div class="border border-2 py-3 px-2">
                                     <div class="row">
-                                        <div class="col">
-                                            <img class="ms-2" src="{{ asset('assets/img/local/logo5.png') }}"
-                                                height="30" alt="main_logo">
+                                        <div class="col ms-2">
+                                            <h1>INVOICE</h1>
                                         </div>
                                         <div class="col text-end mt-1 me-2">
-                                            <p>10-10-2023</p>
+                                            <img class="ms-2" src="{{ asset('assets/img/local/logo5.png') }}"
+                                                height="50" alt="main_logo">
                                         </div>
                                     </div>
                                     <hr class="border border-dark" style="width: 100%">
                                     <div class="row">
-                                        <div class="col">
-                                            <p class="pb-0 mb-4">RESI : GT-11112313p>
+                                        <div class="col ms-4">
+                                            <h6 class="mb-0">KEPADA :</h6>
+                                            <p class="text-sm">{{ $transaksi->pelanggan->nama }}<br>
+                                                {{ $transaksi->pelanggan->email }}<br>
+                                                {{ $transaksi->pelanggan->no_hp }}<br>
+                                                {{ $transaksi->pelanggan->alamat }}</p>
                                         </div>
-                                        <div class="col">
-                                            <p class="pb-0 me-2 mb-4 text-end">Belum Dikirim</p>
-                                            {{-- @if ($pesanan->id_pengiriman === null)
-                                                <p class="pb-0 me-2 mb-4 text-end">Belum Dikirim</p>
-                                            @elseif ($pesanan->pengiriman->status_pengiriman == 'Dikirim')
-                                                <p class="pb-0 me-2 mb-4 text-end">Belum Dikirim</p>
-                                            @else
-                                                <p class="pb-0 me-2 mb-4 text-end">Diterima</p>
-                                            @endif --}}
+                                        <div class="col ms-7">
+                                            <div class="row">
+                                                <p class="col-4 text-sm fw-bold text-dark mb-0">Nomor</p>
+                                                <p class="col-1 text-sm fw-bold text-dark mb-0">:</p>
+                                                <p class="col text-sm text-second mb-0">INV-{{ $transaksi->resi_transaksi }}</p>
+                                            </div>
+                                            <div class="row">
+                                                <p class="col-4 text-sm fw-bold text-dark mb-0">Resi</p>
+                                                <p class="col-1 text-sm fw-bold text-dark mb-0">:</p>
+                                                <p class="col text-sm text-second mb-0">GT-{{ $transaksi->resi_transaksi }}</p>
+                                            </div>
+                                            <div class="row">
+                                                <p class="col-4 text-sm fw-bold text-dark mb-0">Tanggal</p>
+                                                <p class="col-1 text-sm fw-bold text-dark mb-0">:</p>
+                                                <p class="col text-sm text-second mb-0">{{ date('d/m/Y') }}</p>
+                                            </div>
+                                            <div class="row">
+                                                <p class="col-4 text-sm fw-bold text-dark mb-0">Jatuh Tempo</p>
+                                                <p class="col-1 text-sm fw-bold text-dark mb-0">:</p>
+                                                <p class="col text-sm text-second mb-0">{{ date('d/m/Y', strtotime($transaksi->tagihan->tanggal_jatuh_tempo)) }}</p>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <p class="col-4 text-sm fw-bold text-dark mb-0">Admin</p>
+                                                <p class="col-1 text-sm fw-bold text-dark mb-0">:</p>
+                                                <p class="col text-sm text-second mb-0">{{ Auth::user()->nama }}</p>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="border border-1 border-dark text-center align-center p-1 w-75">
+                                                    @if ($transaksi->tagihan->status_tagihan == 'Belum Bayar')
+                                                        <h6 class="text-danger m-0"><em>Belum Bayar</em></h6>
+                                                    @else
+                                                        <h6 class="text-success m-0"><em>Lunas</em></h6>
+                                                    @endif
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col">
-                                                <h6>Invoice Number: <span class="text-muted">#123456</span></h6>
-                                                <p>Date: <span class="text-muted">10-10-2023<span></p>
-                                            </div>
-                                            <div class="col text-end">
-                                                <h6>Tagihan untuk:</h6>
-                                                <p>Ahmad Subagyo<br>
-                                                    JL.Singosari 2 No 2, Patihan, Kota Madiun<br>
-                                                    agen1@gmail.com<br>
-                                                    0881123131</p>
-                                            </div>
                                             <div class="text-center ms-2">
-                                                <table class="table table-bordered">
-                                                    <thead class="table-light">
-                                                        <tr>
-                                                            <th class="text-center">Item</th>
-                                                            <th class="text-center">Description</th>
-                                                            <th class="text-center">Quantity</th>
-                                                            <th class="text-center">Unit Price</th>
-                                                            <th class="text-center">Total</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class="text-center">1</td>
-                                                            <td class="text-center">Gas Alam</td>
-                                                            <td class="text-center">10 bar</td>
-                                                            <td class="text-center">Rp. 50.000</td>
-                                                            <td class="text-center">Rp. 500.000</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-center">No</th>
+                                                                <th class="text-center">Produk</th>
+                                                                <th class="text-center">Jumlah</th>
+                                                                <th class="text-center">Harga Satuan</th>
+                                                                <th class="text-center">Total</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="text-dark" style="background-color: #e9ecef">
+                                                            @foreach ($pesanans as $index => $pesanan)
+                                                                @if ($pesanan->id_transaksi == $transaksi->id_transaksi)
+                                                                    <tr>
+                                                                        <td class="text-center">{{ $index + 1 }}</td>
+                                                                        <td class="text-center">Gas Alam </td>
+                                                                        <td class="text-center">{{ $pesanan->jumlah_pesanan }} bar</td>
+                                                                        <td class="text-center">Rp.50.000 </td>
+                                                                        <td class="text-center">Rp.{{ number_format($pesanan->harga_pesanan, 0, ',', '.') }}</td>
+                                                                    </tr>
+                                                                @endif
+                                                            @endforeach
+                                                            <tr style="background-color: #ffffff">
+                                                                <td class="fw-bold text-secondary">Total: </td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td colspan="5" class="fw-bold text-primary">Rp.{{ number_format($transaksi->tagihan->jumlah_tagihan, 0, ',', '.') }}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>                                                
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="text-end mt-3">
-                                            <p><strong>Total: Rp 100.00</strong></p>
+                                            <div class="row">
+                                                <div class="col ms-4 text-dark">
+                                                    <p class="text-sm fw-bold mb-1">Metode Pembayaran :</p>
+                                                    <p class="text-sm mb-0">Bank Jago</p>
+                                                    <p class="text-sm mb-0">Bagus Adam Farizi</p>
+                                                    <p class="text-sm">123-456-789</p>
+                                                </div>
+                                                <div class="col ms-10 text-dark text-center">
+                                                    <p class="text-sm fw-bold mb-4">Hormat Kami</p>
+                                                    <p class="text-sm mb-4">TTD</p>
+                                                    <p class="text-sm fw-bold mb-0">Bagus Adam Farizi</p>
+                                                    <p class="text-sm fw-bold">(Direktur Utama)</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary shadow"
-                                        data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Print Invoice</button>
-                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary shadow"
+                                    data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Print Invoice</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>  
+        </div>
+    @endforeach
 @endsection
 @section('js')
     <script>
@@ -393,14 +438,17 @@
                     else{
                         $.each(data.transaksis, function (index, transaksi) {
                             var statusBadge = getStatusBadge(transaksi);
-                            
+                            var dateTimeString = transaksi.tanggal_transaksi;
+                            var formattedDateTime = formatDateTime(dateTimeString);
+
                             var row = 
                             '<tr class="text-dark">' +
                                 '<td class="text-center">' +
-                                    '<p class="text-xs font-weight-bold mb-0">' + transaksi.resi_transaksi + '</p>' +
+                                    '<p class="text-sm font-weight-bold mb-0">GT-' + transaksi.resi_transaksi + '</p>' +
                                 '</td>' +
                                 '<td class="text-center">' +
-                                    '<p class="text-xs mb-0">' + transaksi.tanggal_transaksi + '</p>' +
+                                    '<p class="text-xs mb-2">tanggal : ' + formattedDateTime.tanggal + '</p>' +
+                                    '<p class="text-xs mb-0">pukul : ' + formattedDateTime.jam + '</p>' +
                                 '</td>' +
                                 '<td>' +
                                     '<div class="ps-4">' +
@@ -435,7 +483,19 @@
                 }
             });
         }
-        
+
+        function formatDateTime(datetimeString) {
+
+            var datetime = new Date(datetimeString);
+            var tanggal = datetime.getDate() + '-' + (datetime.getMonth() + 1) + '-' + datetime.getFullYear();
+            var jam = datetime.getHours() + ':' + datetime.getMinutes() + ':' + datetime.getSeconds();
+
+            return {
+                tanggal: tanggal,
+                jam: jam
+            };
+        }
+
         function getStatusBadge(transaksi) {
             if (transaksi.tagihan.status_tagihan === 'Belum Bayar') {
                 return '<span class="badge badge-sm bg-gradient-danger">Belum Bayar</span>';

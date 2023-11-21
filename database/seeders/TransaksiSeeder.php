@@ -18,7 +18,7 @@ class TransaksiSeeder extends Seeder
 
         $data = [
             [
-                'resi_transaksi' => 'GT-2502351',
+                'resi_transaksi' => '2502351',
                 'tanggal_transaksi' => now(),
                 'id_pelanggan' => 1,
                 'id_tagihan' => 1,
@@ -27,7 +27,7 @@ class TransaksiSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'resi_transaksi' => 'GT-3452112',
+                'resi_transaksi' => '3452112',
                 'tanggal_transaksi' => now(),
                 'id_pelanggan' => 2,
                 'id_tagihan' => 2,
