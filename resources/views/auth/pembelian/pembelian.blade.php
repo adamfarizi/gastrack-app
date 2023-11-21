@@ -160,7 +160,7 @@
                         <div class="d-flex flex-row-reverse">
                             <span class="h5 ms-2 text-dark font-weight-bolder">pesanan</span>
                             <h5 class="mb-0" id="pesanan_masuk"></h5>
-                        </div>                
+                        </div>
                     </div>
                 </div>
             </div>
@@ -178,7 +178,7 @@
                         <div class="d-flex flex-row-reverse">
                             <span class="h5 ms-2 text-dark font-weight-bolder">pelanggan</span>
                             <h5 class="mb-0" id="total_pelanggan"></h5>
-                        </div>                 
+                        </div>
                     </div>
                 </div>
             </div>
@@ -191,20 +191,22 @@
                 <div class="card">
                     <div class="card-header pb-0 d-flex justify-content-between">
                         <h6>Pembelian</h6>
-                        <a type="button" class="btn btn-sm bg-gradient-primary border-end" data-bs-toggle="modal"
-                            data-bs-target="#tambahpelanggan">
+                        <a type="button" class="btn btn-sm bg-gradient-primary border-end" onclick="tambahPembelian()">
                             <i class="fa fa-solid fa-plus me-2" style="color: #ffffff;"></i>
                             Tambah Pembelian
                         </a>
                     </div>
                     <div class="card-body px-3 pt-0 pb-2" style="min-height: 428px;">
-                        <div class="table-responsive p-0" style="max-height: 300px; overflow-y: auto;">
+                        <div class="table-responsive p-0" style="max-height: 450px; overflow-y: auto;">
                             <table class="table align-items-center mb-0" id="table_pembelian">
                                 <thead>
                                     <tr>
-<<<<<<< HEAD
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No.
-                                            Resi</th>
+                                        <th
+                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            No. Resi</th>
+                                        <th
+                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Tanggal</th>
                                         <th
                                             class="ps-5 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Pelanggan</th>
@@ -223,49 +225,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="ps-4">
-                                            <p class="text-xs font-weight-bold mb-0">3542311</p>
-                                        </td>
-                                        <td>
-                                            <div class="ps-4">
-                                                <h6 class="mb-1 text-sm">PT Wijaya Abadi</h6>
-                                                <p class="text-xs text-secondary mb-0">pelanggan1@gmail.com</p>
-                                            </div>
-                                        </td>
-                                        <td class="text-wrap" style="max-width: 200px;">
-                                            <p class="text-xs py-1 mb-0">Jl. Singosari Gg.2 No.2, Kel. Patihan,
-                                                Kec.Manguharjo, Kota Madiun</p>
-                                        </td>
-                                        <td class="text-center">
-                                            <a href="#" class="badge badge-sm bg-gradient-success text-white"
-                                                data-bs-toggle="modal" data-bs-target="#modalPesanan">
-                                                Lihat Pesanan
-                                            </a>
-                                        </td>
-                                        <td class="text-center">
-                                            <span class="badge badge-sm bg-gradient-danger">Belum Bayar</span>
-                                        </td>
-                                        <td class="text-center">
-                                            <a href="#" class="badge badge-sm bg-gradient-primary text-white"
-                                                data-bs-toggle="modal" data-bs-target="#rincianModal">
-                                                Rincian
-                                            </a>
-                                        </td>
-                                    </tr>
-=======
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No. Resi</th>
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tanggal</th>
-                                        <th class="ps-5 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pelanggan</th>
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Alamat</th>
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pesanan</th>
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    
->>>>>>> da7a257cca740b80085230c68ef32d876a5a199f
+
                                 </tbody>
                             </table>
                         </div>
@@ -313,48 +273,11 @@
     </div>
 
     {{-- Modal Rincian --}}
-<<<<<<< HEAD
-    <div class="row">
-        <div class="col-md-4">
-            <div class="modal fade" id="rincianModal" tabindex="-1" role="dialog" aria-labelledby="modal-default"
-                aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <img class="ms-2 position-absolute top-50 start-50 translate-middle d-sm-block"
-                            src="{{ asset('assets/img/local/logo7.png') }}" height="150" alt="main_logo"
-                            style="z-index: 0; opacity: 0.3; display:none;">
-                        <div class="modal-header">
-                            <h6 class="modal-title text-uppercase" id="modal-title-default">Rincian Pesanan</h6>
-                            <button type="button" class="btn-close text-dark" data-bs-dismiss="modal"
-                                aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body p-2" id="modal-body-content">
-                            <div class="border border-2 py-3 px-2">
-                                <div class="row">
-                                    <div class="col">
-                                        <img class="ms-2" src="{{ asset('assets/img/local/logo5.png') }}"
-                                            height="30" alt="main_logo">
-                                    </div>
-                                    <div class="col text-end mt-1 me-2">
-                                        <p>10-11-2023</p>
-                                    </div>
-                                </div>
-                                <hr class="border border-dark" style="width: 100%">
-                                <div class="row">
-                                    <div class="col">
-                                        <p class="pb-0 mb-4">RESI : 0841329124</p>
-                                    </div>
-                                    <div class="col">
-                                        <p class="pb-0 me-2 mb-4 text-end">Dikirim</p>
-                                    </div>
-=======
     @foreach ($transaksis as $transaksi)
         <div class="row">
             <div class="col-md-4">
-                <div class="modal fade" id="rincianModal{{ $transaksi->id_transaksi }}" tabindex="-1" role="dialog" aria-labelledby="modal-default{{ $transaksi->id_transaksi }}"
-                    aria-hidden="true">
+                <div class="modal fade" id="rincianModal{{ $transaksi->id_transaksi }}" tabindex="-1" role="dialog"
+                    aria-labelledby="modal-default{{ $transaksi->id_transaksi }}" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                         <div class="modal-content">
                             <img class="ms-2 position-absolute top-50 start-50 translate-middle d-sm-block"
@@ -369,45 +292,13 @@
                             </div>
                             <div class="modal-body p-2" id="modal-body-content">
                                 <div class="border border-2 py-3 px-2">
->>>>>>> da7a257cca740b80085230c68ef32d876a5a199f
                                     <div class="row">
                                         <div class="col">
                                             <img class="ms-2" src="{{ asset('assets/img/local/logo5.png') }}"
                                                 height="30" alt="main_logo">
                                         </div>
-<<<<<<< HEAD
-                                        <div class="col text-end">
-                                            <h6>Tagihan untuk:</h6>
-                                            <p>PT Selep Nglames<br>
-                                                Jl. Merdeka No. 123, Kelurahan Bahagia, Kecamatan Sentosa, Kota Fiktif A<br>
-                                                agen1@example.com<br>
-                                                088111222</p>
-                                        </div>
-                                        <div class="text-center ms-2">
-                                            <table class="table table-bordered">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th class="text-center">Item</th>
-                                                        <th class="text-center">Description</th>
-                                                        <th class="text-center">Quantity</th>
-                                                        <th class="text-center">Unit Price</th>
-                                                        <th class="text-center">Total</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="text-center">1</td>
-                                                        <td class="text-center">Gas Alam</td>
-                                                        <td class="text-center">20 bar</td>
-                                                        <td class="text-center">Rp 50.00</td>
-                                                        <td class="text-center">Rp 100.00</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-=======
                                         <div class="col text-end mt-1 me-2">
                                             <p>{{ now() }}</p>
->>>>>>> da7a257cca740b80085230c68ef32d876a5a199f
                                         </div>
                                     </div>
                                     <hr class="border border-dark" style="width: 100%">
@@ -427,7 +318,8 @@
                                         <div class="row">
                                             <div class="col">
                                                 <h6>Invoice Number: <span class="text-muted">#123456</span></h6>
-                                                <p>Date: <span class="text-muted">{{ $transaksi->tanggal_transaksi }}</span></p>
+                                                <p>Date: <span
+                                                        class="text-muted">{{ $transaksi->tanggal_transaksi }}</span></p>
                                             </div>
                                             <div class="col text-end">
                                                 <h6>Tagihan untuk:</h6>
@@ -453,9 +345,12 @@
                                                                 <tr>
                                                                     <td class="text-center">{{ $loop->iteration }}</td>
                                                                     <td class="text-center">Gas Alam</td>
-                                                                    <td class="text-center">{{ $transaksihari->jumlah_transaksi }} bar</td>
+                                                                    <td class="text-center">
+                                                                        {{ $transaksihari->jumlah_transaksi }} bar</td>
                                                                     <td class="text-center">Rp. 50.000</td>
-                                                                    <td class="text-center">Rp. {{ number_format($transaksihari->total_transaksi, 2, ',', '.') }}</td>
+                                                                    <td class="text-center">Rp.
+                                                                        {{ number_format($transaksihari->total_transaksi, 2, ',', '.') }}
+                                                                    </td>
                                                                 </tr>
                                                             @endif
                                                         @endforeach
@@ -463,35 +358,22 @@
                                                 </table>
                                             </div>
                                         </div>
-                                        <div class="text-end mt-3">
+                                        <div class="text-end mt-3 ms-1 pe-5">
                                             <p><strong>Total: Rp 100.00</strong></p>
                                         </div>
                                     </div>
                                 </div>
-<<<<<<< HEAD
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary shadow"
-                                    data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Print Invoice</button>
-=======
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary shadow"
                                         data-bs-dismiss="modal">Close</button>
                                     <button type="button" class="btn btn-primary">Print Invoice</button>
                                 </div>
->>>>>>> da7a257cca740b80085230c68ef32d876a5a199f
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-<<<<<<< HEAD
         </div>
-    </div>
-@endsection
-=======
-        </div>  
     @endforeach
 @endsection
 @section('js')
@@ -501,7 +383,7 @@
                 url: '/pembelian/data',
                 method: 'GET',
                 dataType: 'json',
-                success: function (data) {
+                success: function(data) {
                     const totalPesananElement = document.getElementById('total_pesanan');
                     totalPesananElement.textContent = data.total_pesanan;
 
@@ -510,9 +392,9 @@
 
                     const totalPelangganElement = document.getElementById('total_pelanggan');
                     totalPelangganElement.textContent = data.total_pelanggan;
-                    
+
                 },
-                error: function (error) {
+                error: function(error) {
                     console.error(error);
                 }
             });
@@ -527,46 +409,51 @@
                     var table = $('#table_pembelian tbody');
                     table.empty();
                     if (!data.transaksis || data.transaksis.length === 0) {
-                        var row = 
-                        '<tr class="text-dark">' +
+                        var row =
+                            '<tr class="text-dark">' +
                             '<td colspan="7" class="text-center fw-light text-secondary text-sm pt-5">Tidak ada pembelian</td>' +
-                        '</tr>';
+                            '</tr>';
 
                         table.append(row);
-                    }
-                    else{
-                        $.each(data.transaksis, function (index, transaksi) {
+                    } else {
+                        $.each(data.transaksis, function(index, transaksi) {
                             var statusBadge = getStatusBadge(transaksi);
-                            
-                            var row = 
-                            '<tr class="text-dark">' +
+
+                            var row =
+                                '<tr class="text-dark">' +
                                 '<td class="text-center">' +
-                                    '<p class="text-xs font-weight-bold mb-0">' + transaksi.resi_transaksi + '</p>' +
+                                '<p class="text-xs font-weight-bold mb-0">' + transaksi.resi_transaksi +
+                                '</p>' +
                                 '</td>' +
                                 '<td class="text-center">' +
-                                    '<p class="text-xs mb-0">' + transaksi.tanggal_transaksi + '</p>' +
+                                '<p class="text-xs mb-0">' + transaksi.tanggal_transaksi + '</p>' +
                                 '</td>' +
                                 '<td>' +
-                                    '<div class="ps-4">' +
-                                        '<h6 class="mb-1 text-sm">' + transaksi.pelanggan.nama + '</h6>' +
-                                        '<p class="text-xs text-secondary mb-0">' + transaksi.pelanggan.email + '</p>' +
-                                    '</div>' +
+                                '<div class="ps-4">' +
+                                '<h6 class="mb-1 text-sm">' + transaksi.pelanggan.nama + '</h6>' +
+                                '<p class="text-xs text-secondary mb-0">' + transaksi.pelanggan.email +
+                                '</p>' +
+                                '</div>' +
                                 '</td>' +
                                 '<td class="text-wrap" style="max-width: 200px;">' +
-                                    '<p class="text-xs py-1 mb-0">' + transaksi.pelanggan.alamat + '</p>' +
+                                '<p class="text-xs py-1 mb-0">' + transaksi.pelanggan.alamat + '</p>' +
                                 '</td>' +
                                 '<td class="text-center">' +
-                                    '<a href="#" data-id="' + transaksi.id_transaksi + '" class="badge badge-sm bg-gradient-success text-white" data-bs-toggle="modal" data-bs-target="#modalPesanan' + transaksi.id_transaksi + '">Lihat Pesanan</a>' +
+                                '<a href="#" data-id="' + transaksi.id_transaksi +
+                                '" class="badge badge-sm bg-gradient-success text-white" data-bs-toggle="modal" data-bs-target="#modalPesanan' +
+                                transaksi.id_transaksi + '">Lihat Pesanan</a>' +
                                 '</td>' +
                                 '<td class="text-center">' +
-                                    statusBadge +
+                                statusBadge +
                                 '</td>' +
                                 '<td>' +
-                                    '<a href="#" data-id="' + transaksi.id_transaksi + '" class="text-dark" data-bs-toggle="modal" data-bs-target="#rincianModal' + transaksi.id_transaksi + '">' +
-                                        '<p class="pt-3" style="text-decoration:underline;">Rincian</p>' +
-                                    '</a>' +
+                                '<a href="/pembelian/lihat_pesanan" data-id="' + transaksi.id_transaksi +
+                                '" class="text-dark" data-bs-toggle="modal" data-bs-target="#rincianModal' +
+                                transaksi.id_transaksi + '">' +
+                                '<p class="pt-3" style="text-decoration:underline;">Rincian</p>' +
+                                '</a>' +
                                 '</td>' +
-                            '</tr>';
+                                '</tr>';
 
                             table.append(row);
                         });
@@ -579,20 +466,128 @@
                 }
             });
         }
-        
+
         function getStatusBadge(transaksi) {
             if (transaksi.tagihan.status_tagihan === 'Belum Bayar') {
                 return '<span class="badge badge-sm bg-gradient-danger">Belum Bayar</span>';
-            }
-            else{
+            } else {
                 return '<span class="badge badge-sm bg-gradient-success">Sudah Bayar</span>';
             }
         }
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             realtime_Nav();
             realTime_Pembelian();
         });
     </script>
+
+    <script>
+        var nomorResiTerakhir = 1000; //. Ganti dengan nomor resi terakhir yang sesuai
+        function tambahPembelian() {
+            // Increment nomor resi setiap kali transaksi baru ditambahkan
+            nomorResiTerakhir += 1;
+
+            var currentDate = new Date();
+            var formattedDate = currentDate.getDate() + '/' + (currentDate.getMonth() + 1) + '/' + currentDate.getFullYear();
+
+            var transaksiBaru = {
+                resi_transaksi: 'GT' + nomorResiTerakhir,
+                tanggal_transaksi: formattedDate,
+                pelanggan: {
+                    nama: 'PT Aman Sentosa',
+                    email: 'aman@example.com',
+                    alamat: 'Jl. Kerajaan no 110, Kec. Kerang Mas, Kota. Entahlah'
+                },
+                tagihan: {
+                    status_tagihan: 'Belum Bayar'
+                }
+            };
+
+            // Mendapatkan _token_ CSRF dari meta tag
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+            // Kirim data transaksi ke backend menggunakan AJAX
+            $.ajax({
+                url: '/tambah-transaksi', // Sesuaikan dengan endpoint backend Anda
+                type: 'POST',
+                contentType: 'application/json',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken // Menyertakan _token_ CSRF ke header permintaan
+                },
+                data: JSON.stringify(transaksiBaru),
+                success: function (response) {
+                    console.log('Transaksi berhasil ditambahkan:', response);
+
+                    // response.data.id akan berisi ID yang baru dibuat oleh database
+                    var idTransaksiBaru = response.data.id;
+
+                    // Setelah mendapatkan ID baru, tambahkan ID ke objek transaksi
+                    transaksiBaru.id_transaksi = idTransaksiBaru;
+
+                    // Panggil fungsi untuk menambahkan baris ke tabel setelah transaksi berhasil disimpan di server
+                    tambahBarisKeTabel(transaksiBaru);
+                },
+                error: function (error) {
+                    console.error('Terjadi kesalahan:', error);
+                    // Handle error
+                }
+            });
+        }
+
+
+        function tambahBarisKeTabel(transaksi) {
+            var table = $('#table_pembelian tbody');
+
+            // Buat baris HTML baru dengan data transaksi
+            var row =
+                '<tr class="text-dark">' +
+                '<td class="text-center">' +
+                '<p class="text-xs font-weight-bold mb-0">' + transaksi.resi_transaksi + '</p>' +
+                '</td>' +
+                '<td class="text-center">' +
+                '<p class="text-xs mb-0">' + transaksi.tanggal_transaksi + '</p>' +
+                '</td>' +
+                '<td>' +
+                '<div class="ps-4">' +
+                '<h6 class="mb-1 text-sm">' + transaksi.pelanggan.nama + '</h6>' +
+                '<p class="text-xs text-secondary mb-0">' + transaksi.pelanggan.email +
+                '</p>' +
+                '</div>' +
+                '</td>' +
+                '<td class="text-wrap" style="max-width: 200px;">' +
+                '<p class="text-xs py-1 mb-0">' + transaksi.pelanggan.alamat + '</p>' +
+                '</td>' +
+                '<td class="text-center">' +
+                '<a href="#" data-id="' + transaksi.id_transaksi +
+                '" class="badge badge-sm bg-gradient-success text-white" data-bs-toggle="modal" data-bs-target="#modalPesanan' +
+                transaksi.id_transaksi + '">Lihat Pesanan</a>' +
+                '</td>' +
+                '<td class="text-center">' +
+                getStatusBadge(transaksi) +
+                '</td>' +
+                '<td>' +
+                '<a href="#" data-id="' + transaksi.id_transaksi +
+                '" class="text-dark" data-bs-toggle="modal" data-bs-target="#rincianModal' +
+                transaksi.id_transaksi + '">' +
+                '<p class="pt-3" style="text-decoration:underline;">Rincian</p>' +
+                '</a>' +
+                '</td>' +
+                '</tr>';
+
+            table.append(row);
+        }
+
+        function getStatusBadge(transaksi) {
+            if (transaksi.tagihan.status_tagihan === 'Belum Bayar') {
+                return '<span class="badge badge-sm bg-gradient-danger">Belum Bayar</span>';
+            } else {
+                return '<span class="badge badge-sm bg-gradient-success">Sudah Bayar</span>';
+            }
+        }
+
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 @endsection
->>>>>>> da7a257cca740b80085230c68ef32d876a5a199f
