@@ -16,10 +16,16 @@ class Tagihan extends Model
         'status_tagihan',
         'tanggal_pembayaran',
         'bukti_pembayaran',
+        'id_pelanggan',
     ];
     
     public function transaksis()
     {
-        return $this->hasMany(Transaksi::class, 'id_tagihan');
+        return $this->belongsTo(Transaksi::class, 'id_tagihan');
+    }
+
+    public function pelanggan()
+    {
+        return $this->hasOne(Pelanggan::class, 'id_pelanggan');
     }
 }

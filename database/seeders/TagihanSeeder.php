@@ -22,6 +22,7 @@ class TagihanSeeder extends Seeder
                 'status_tagihan' => 'Belum Bayar',
                 'tanggal_pembayaran' => null,
                 'bukti_pembayaran' => null,
+                'id_pelanggan' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],[
@@ -30,6 +31,7 @@ class TagihanSeeder extends Seeder
                 'status_tagihan' => 'Belum Bayar',
                 'tanggal_pembayaran' => null,
                 'bukti_pembayaran' => null,
+                'id_pelanggan' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]

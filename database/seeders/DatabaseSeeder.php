@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             MobilSeeder::class,
             TagihanSeeder::class,
             TransaksiSeeder::class,
+            PesananSeeder::class,
         ]);
     }
 }

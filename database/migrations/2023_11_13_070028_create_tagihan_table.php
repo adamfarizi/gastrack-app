@@ -16,7 +16,11 @@ class CreateTagihanTable extends Migration
             $table->enum('status_tagihan',['Sudah Bayar','Belum Bayar'])->default('Belum Bayar');
             $table->dateTime('tanggal_pembayaran')->nullable();
             $table->string('bukti_pembayaran')->nullable();
+            $table->unsignedBigInteger('id_pelanggan');
             $table->timestamps();
+
+            $table->foreign('id_pelanggan')->references('id_pelanggan')->on('pelanggan');
+            
         });
     }
 

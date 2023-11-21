@@ -273,11 +273,10 @@
     </div>
 
     {{-- Modal Rincian --}}
-    @foreach ($transaksis as $transaksi)
         <div class="row">
             <div class="col-md-4">
-                <div class="modal fade" id="rincianModal{{ $transaksi->id_transaksi }}" tabindex="-1" role="dialog"
-                    aria-labelledby="modal-default{{ $transaksi->id_transaksi }}" aria-hidden="true">
+                <div class="modal fade" id="rincianModal" tabindex="-1" role="dialog" aria-labelledby="modal-default
+                    aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                         <div class="modal-content">
                             <img class="ms-2 position-absolute top-50 start-50 translate-middle d-sm-block"
@@ -298,35 +297,35 @@
                                                 height="30" alt="main_logo">
                                         </div>
                                         <div class="col text-end mt-1 me-2">
-                                            <p>{{ now() }}</p>
+                                            <p>10-10-2023</p>
                                         </div>
                                     </div>
                                     <hr class="border border-dark" style="width: 100%">
                                     <div class="row">
                                         <div class="col">
-                                            <p class="pb-0 mb-4">RESI : {{ $transaksi->resi_transaksi }}</p>
+                                            <p class="pb-0 mb-4">RESI : GT-11112313p>
                                         </div>
                                         <div class="col">
-                                            @if ($transaksi->id_pengiriman === null)
+                                            <p class="pb-0 me-2 mb-4 text-end">Belum Dikirim</p>
+                                            {{-- @if ($pesanan->id_pengiriman === null)
                                                 <p class="pb-0 me-2 mb-4 text-end">Belum Dikirim</p>
-                                            @elseif ($transaksi->pengiriman->status_pengiriman == 'Dikirim')
+                                            @elseif ($pesanan->pengiriman->status_pengiriman == 'Dikirim')
                                                 <p class="pb-0 me-2 mb-4 text-end">Belum Dikirim</p>
                                             @else
                                                 <p class="pb-0 me-2 mb-4 text-end">Diterima</p>
-                                            @endif
+                                            @endif --}}
                                         </div>
                                         <div class="row">
                                             <div class="col">
                                                 <h6>Invoice Number: <span class="text-muted">#123456</span></h6>
-                                                <p>Date: <span
-                                                        class="text-muted">{{ $transaksi->tanggal_transaksi }}</span></p>
+                                                <p>Date: <span class="text-muted">10-10-2023<span></p>
                                             </div>
                                             <div class="col text-end">
                                                 <h6>Tagihan untuk:</h6>
-                                                <p>{{ $transaksi->pelanggan->nama }}<br>
-                                                    {{ $transaksi->pelanggan->alamat }}<br>
-                                                    {{ $transaksi->pelanggan->email }}<br>
-                                                    {{ $transaksi->pelanggan->no_hp }}</p>
+                                                <p>Ahmad Subagyo<br>
+                                                    JL.Singosari 2 No 2, Patihan, Kota Madiun<br>
+                                                    agen1@gmail.com<br>
+                                                    0881123131</p>
                                             </div>
                                             <div class="text-center ms-2">
                                                 <table class="table table-bordered">
@@ -340,20 +339,13 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach ($transaksiPerHari as $transaksihari)
-                                                            @if ($transaksihari->id_pelanggan == $transaksi->id_pelanggan)
-                                                                <tr>
-                                                                    <td class="text-center">{{ $loop->iteration }}</td>
-                                                                    <td class="text-center">Gas Alam</td>
-                                                                    <td class="text-center">
-                                                                        {{ $transaksihari->jumlah_transaksi }} bar</td>
-                                                                    <td class="text-center">Rp. 50.000</td>
-                                                                    <td class="text-center">Rp.
-                                                                        {{ number_format($transaksihari->total_transaksi, 2, ',', '.') }}
-                                                                    </td>
-                                                                </tr>
-                                                            @endif
-                                                        @endforeach
+                                                        <tr>
+                                                            <td class="text-center">1</td>
+                                                            <td class="text-center">Gas Alam</td>
+                                                            <td class="text-center">10 bar</td>
+                                                            <td class="text-center">Rp. 50.000</td>
+                                                            <td class="text-center">Rp. 500.000</td>
+                                                        </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -373,8 +365,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-    @endforeach
+        </div>  
 @endsection
 @section('js')
     <script>
@@ -439,19 +430,15 @@
                                 '<p class="text-xs py-1 mb-0">' + transaksi.pelanggan.alamat + '</p>' +
                                 '</td>' +
                                 '<td class="text-center">' +
-                                '<a href="#" data-id="' + transaksi.id_transaksi +
-                                '" class="badge badge-sm bg-gradient-success text-white" data-bs-toggle="modal" data-bs-target="#modalPesanan' +
-                                transaksi.id_transaksi + '">Lihat Pesanan</a>' +
+                                    '<a href="#" data-id="" class="badge badge-sm bg-gradient-success text-white" data-bs-toggle="modal" data-bs-target="#modalPesanan">Lihat Pesanan</a>' +
                                 '</td>' +
                                 '<td class="text-center">' +
                                 statusBadge +
                                 '</td>' +
                                 '<td>' +
-                                '<a href="/pembelian/lihat_pesanan" data-id="' + transaksi.id_transaksi +
-                                '" class="text-dark" data-bs-toggle="modal" data-bs-target="#rincianModal' +
-                                transaksi.id_transaksi + '">' +
-                                '<p class="pt-3" style="text-decoration:underline;">Rincian</p>' +
-                                '</a>' +
+                                    '<a href="#" data-id="" class="text-dark" data-bs-toggle="modal" data-bs-target="#rincianModal">' +
+                                        '<p class="pt-3" style="text-decoration:underline;">Rincian</p>' +
+                                    '</a>' +
                                 '</td>' +
                                 '</tr>';
 
