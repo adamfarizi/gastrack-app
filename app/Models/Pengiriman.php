@@ -17,9 +17,15 @@ class Pengiriman extends Model
         'kapasitas_gas_keluar',
         'bukti_gas_keluar',
         'sisa_gas',
+        'id_pesanan',
         'id_sopir',
         'id_mobil',
     ];
+
+    public function pesanan()
+    {
+        return $this->hasOne(Pesanan::class, 'id_pesanan');
+    }
 
     public function sopir()
     {

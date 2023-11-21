@@ -15,18 +15,8 @@ class PembelianController extends Controller
 
         $transaksis = Transaksi::all();
 
-        $transaksiPerHari = Transaksi::select(
-            'id_pelanggan',
-            DB::raw('DATE_FORMAT(tanggal_transaksi, "%Y-%m-%d") as tanggal'),
-            DB::raw('SUM(jumlah_transaksi) as total_transaksi')
-        )
-        ->whereNotNull('id_pelanggan')
-        ->groupBy('id_pelanggan', 'tanggal')
-        ->get();
-
         return view('auth.pembelian.pembelian',[
             'transaksis' => $transaksis,
-            'transaksiPerHari' => $transaksiPerHari,
         ], $data);
     }
 

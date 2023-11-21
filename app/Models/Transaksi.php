@@ -14,15 +14,16 @@ class Transaksi extends Model
     protected $fillable = [
         'resi_transaksi',
         'tanggal_transaksi',
-        'jumlah_transaksi',
-        'total_transaksi',
-        'jadwal_bayar',
         'id_pelanggan',
         'id_tagihan',
-        'id_pengiriman',
         'id_admin',
     ];
     
+    public function pesanan()
+    {
+        return $this->hasMany(Pesanan::class, 'id_transaksi');
+    }
+
     public function pelanggan()
     {
         return $this->hasOne(Pelanggan::class, 'id_pelanggan');
@@ -31,11 +32,6 @@ class Transaksi extends Model
     public function tagihan()
     {
         return $this->hasOne(Tagihan::class, 'id_tagihan');
-    }
-
-    public function pengiriman()
-    {
-        return $this->hasOne(Pengiriman::class, 'id_pengiriman');
     }
 
     public function admin()
