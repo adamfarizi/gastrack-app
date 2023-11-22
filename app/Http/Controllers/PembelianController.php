@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pelanggan;
-use App\Models\Tagihan;
+use App\Models\Pesanan;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,9 +14,11 @@ class PembelianController extends Controller
         $data['title'] = 'Pembelian';
 
         $transaksis = Transaksi::all();
+        $pesanans = Pesanan::all();
 
         return view('auth.pembelian.pembelian',[
             'transaksis' => $transaksis,
+            'pesanans' => $pesanans,
         ], $data);
     }
 
