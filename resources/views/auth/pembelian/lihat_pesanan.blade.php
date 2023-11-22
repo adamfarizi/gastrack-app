@@ -106,3 +106,55 @@
         </div>
     </nav>
 @endsection
+@section('content')
+    <div class="mt-3">
+        <div class="row">
+            {{-- Tabel Pembelian --}}
+            <div class="col-12 mb-4">
+                <div class="card">
+                    <div class="card-header pb-0 d-flex justify-content-between">
+                        <h6>Lihat Pesanan</h6>
+                    </div>
+                    <div class="card-body px-3 pt-0 pb-2" style="min-height: 428px;">
+                        <div class="table-responsive p-0" style="max-height: 450px; overflow-y: auto;">
+                            <table class="table align-items-center mb-0" id="table_pembelian">
+                                <thead>
+                                    <tr>
+                                        <th
+                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            No. Resi</th>
+                                        <th
+                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder ps-6 opacity-7">
+                                            Tanggal</th>
+                                        <th
+                                            class="ps-5 text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7">
+                                            Jumlah Transaksi</th>
+                                        <th
+                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Total Bayar</th>
+                                        <th
+                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Jadwal Bayar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($transaksis as $transaksi)
+                                        <tr>
+                                            <td class="text-center">{{ $transaksi->resi_transaksi }}</td>
+                                            <td class="text-center ps-5">
+                                                {{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $transaksi->tanggal_transaksi)->format('Y-m-d H:i') }}
+                                            </td>
+                                            <td class="text-center ps-4">{{ $transaksi->jumlah_transaksi }}</td>
+                                            <td class="text-center">{{ $transaksi->total_transaksi }}</td>
+                                            <td class="text-center">{{ $transaksi->jadwal_bayar }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection

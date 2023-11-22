@@ -1,6 +1,5 @@
 <?php
 
-use App\Events\HalloEvent;
 use App\Http\Controllers\Api\ApiPelangganController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BerandaController;
