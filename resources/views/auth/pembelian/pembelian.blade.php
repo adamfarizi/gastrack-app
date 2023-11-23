@@ -221,48 +221,11 @@
         </div>
     </div>
 
-    {{-- Modal Pesanan --}}
-    <div class="modal fade" id="modalPesanan" tabindex="-1" role="dialog" aria-labelledby="modalPesananLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalPesananLabel">Detail Pesanan</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3 text-end border-bottom pb-0">
-                        <p>Tanggal: 10-11-2023</p>
-                    </div>
-                    <div class="mb-3">
-                        <p class="mb-0"><strong>Pesanan Awal:</strong> <span class="float-end pe-3">10 bar</span></p>
-                    </div>
-                    <ul class="list-group">
-                        <li class="list-group-item fw-light">08:00:10<span class="float-end">25 bar</span></li>
-                        <li class="list-group-item fw-light">16:30:10<span class="float-end">10 bar</span></li>
-                        <li class="list-group-item fw-light">22:00:50<span class="float-end">5 bar</span></li>
-                    </ul>
-                    <div class="mt-3 border-bottom pb-3">
-                        <p class="mb-0"><strong>Pesanan Akhir:</strong> <span class="float-end pe-3">15 bar</span></p>
-                    </div>
-                    <div class="mt-3">
-                        <p class="mb-0"><strong>Total:</strong> <span class="float-end">715 kubik</span></p>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary shadow" data-bs-dismiss="modal">Tutup</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     {{-- Modal Rincian --}}
     @foreach ($transaksis as $transaksi)
         <div class="row">
             <div class="col-md-4">
-                <div class="modal fade" id="rincianModal" tabindex="-1" role="dialog" aria-labelledby="modal-default
+                <div class="modal fade" id="rincianModal{{ $transaksi->id_transaksi }}" tabindex="-1" role="dialog" aria-labelledby="modal-default{{ $transaksi->id_transaksi }}
                     aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                         <div class="modal-content">
@@ -270,7 +233,7 @@
                                 src="{{ asset('assets/img/local/logo7.png') }}" height="150" alt="main_logo"
                                 style="z-index: 0; opacity: 0.3; display:none;">
                             <div class="modal-header">
-                                <h6 class="modal-title text-uppercase" id="modal-title-default">Rincian Pesanan</h6>
+                                <h6 class="modal-title text-uppercase" id="modal-title-default">Invoice {{ $transaksi->resi_transaksi }}</h6>
                                 <button type="button" class="btn-close text-dark" data-bs-dismiss="modal"
                                     aria-label="Close">
                                     <span aria-hidden="true">×</span>
@@ -305,7 +268,7 @@
                                             <div class="row">
                                                 <p class="col-4 text-sm fw-bold text-dark mb-0">Resi</p>
                                                 <p class="col-1 text-sm fw-bold text-dark mb-0">:</p>
-                                                <p class="col text-sm text-second mb-0">GT-{{ $transaksi->resi_transaksi }}</p>
+                                                <p class="col text-sm text-second mb-0">{{ $transaksi->resi_transaksi }}</p>
                                             </div>
                                             <div class="row">
                                                 <p class="col-4 text-sm fw-bold text-dark mb-0">Tanggal</p>
@@ -338,7 +301,7 @@
                                                     <table class="table">
                                                         <thead>
                                                             <tr>
-                                                                <th class="text-center">No</th>
+                                                                <th class="text-center">Waktu</th>
                                                                 <th class="text-center">Produk</th>
                                                                 <th class="text-center">Jumlah</th>
                                                                 <th class="text-center">Harga Satuan</th>
@@ -348,8 +311,11 @@
                                                         <tbody class="text-dark" style="background-color: #e9ecef">
                                                             @foreach ($pesanans as $index => $pesanan)
                                                                 @if ($pesanan->id_transaksi == $transaksi->id_transaksi)
-                                                                    <tr>
-                                                                        <td class="text-center">{{ $index + 1 }}</td>
+                                                                    <tr class="fw-light">
+                                                                        <td class="text-center">
+                                                                            <p class="text-sm mb-0">tanggal : {{ date('d/m/Y', strtotime($pesanan->tanggal_pesanan)) }}</p>
+                                                                            <p class="text-sm mb-0">jam : {{ date('h:i', strtotime($pesanan->tanggal_pesanan)) }}</p>
+                                                                        </td>
                                                                         <td class="text-center">Gas Alam </td>
                                                                         <td class="text-center">{{ $pesanan->jumlah_pesanan }} bar</td>
                                                                         <td class="text-center">Rp.50.000 </td>
@@ -446,31 +412,31 @@
                             var row = 
                             '<tr class="text-dark">' +
                                 '<td class="text-center">' +
-                                    '<p class="text-sm font-weight-bold mb-0">GT-' + transaksi.resi_transaksi + '</p>' +
+                                    '<p class="text-sm font-weight-bold mb-0">' + transaksi.resi_transaksi + '</p>' +
                                 '</td>' +
                                 '<td class="text-center">' +
                                     '<p class="text-xs mb-2">tanggal : ' + formattedDateTime.tanggal + '</p>' +
                                     '<p class="text-xs mb-0">pukul : ' + formattedDateTime.jam + '</p>' +
                                 '</td>' +
                                 '<td>' +
-                                '<div class="ps-4">' +
-                                '<h6 class="mb-1 text-sm">' + transaksi.pelanggan.nama + '</h6>' +
-                                '<p class="text-xs text-secondary mb-0">' + transaksi.pelanggan.email +
-                                '</p>' +
-                                '</div>' +
+                                    '<div class="ps-4">' +
+                                        '<h6 class="mb-1 text-sm">' + transaksi.pelanggan.nama + '</h6>' +
+                                        '<p class="text-xs text-secondary mb-0">' + transaksi.pelanggan.email +
+                                        '</p>' +
+                                    '</div>' +
                                 '</td>' +
                                 '<td class="text-wrap" style="max-width: 200px;">' +
-                                '<p class="text-xs py-1 mb-0">' + transaksi.pelanggan.alamat + '</p>' +
+                                    '<p class="text-xs py-1 mb-0">' + transaksi.pelanggan.alamat + '</p>' +
                                 '</td>' +
                                 '<td class="text-center">' +
-                                    '<a href="#" data-id="" class="badge badge-sm bg-gradient-success text-white" data-bs-toggle="modal" data-bs-target="#modalPesanan">Lihat Pesanan</a>' +
+                                    '<a href="<?php echo url("/pembelian/lihat_pesanan/' + transaksi.id_transaksi + '"); ?>" data-id="" class="badge badge-sm bg-gradient-success text-white">Lihat Pesanan</a>' +
                                 '</td>' +
                                 '<td class="text-center">' +
-                                statusBadge +
+                                    statusBadge +
                                 '</td>' +
                                 '<td>' +
-                                    '<a href="#" data-id="" class="text-dark" data-bs-toggle="modal" data-bs-target="#rincianModal">' +
-                                        '<p class="pt-3" style="text-decoration:underline;">Rincian</p>' +
+                                    '<a href="#" data-id="' + transaksi.id_transaksi + '" class="text-dark" data-bs-toggle="modal" data-bs-target="#rincianModal' + transaksi.id_transaksi + '">' +
+                                        '<p class="pt-3" style="text-decoration:underline;">Invoice</p>' +
                                     '</a>' +
                                 '</td>' +
                                 '</tr>';
@@ -511,112 +477,6 @@
             realtime_Nav();
             realTime_Pembelian();
         });
-    </script>
-
-    <script>
-        var nomorResiTerakhir = 1000; //. Ganti dengan nomor resi terakhir yang sesuai
-        function tambahPembelian() {
-            // Increment nomor resi setiap kali transaksi baru ditambahkan
-            nomorResiTerakhir += 1;
-
-            var currentDate = new Date();
-            var formattedDate = currentDate.getDate() + '/' + (currentDate.getMonth() + 1) + '/' + currentDate.getFullYear();
-
-            var transaksiBaru = {
-                resi_transaksi: 'GT' + nomorResiTerakhir,
-                tanggal_transaksi: formattedDate,
-                pelanggan: {
-                    nama: 'PT Aman Sentosa',
-                    email: 'aman@example.com',
-                    alamat: 'Jl. Kerajaan no 110, Kec. Kerang Mas, Kota. Entahlah'
-                },
-                tagihan: {
-                    status_tagihan: 'Belum Bayar'
-                }
-            };
-
-            // Mendapatkan _token_ CSRF dari meta tag
-            var csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-            // Kirim data transaksi ke backend menggunakan AJAX
-            $.ajax({
-                url: '/tambah-transaksi', // Sesuaikan dengan endpoint backend Anda
-                type: 'POST',
-                contentType: 'application/json',
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken // Menyertakan _token_ CSRF ke header permintaan
-                },
-                data: JSON.stringify(transaksiBaru),
-                success: function (response) {
-                    console.log('Transaksi berhasil ditambahkan:', response);
-
-                    // response.data.id akan berisi ID yang baru dibuat oleh database
-                    var idTransaksiBaru = response.data.id;
-
-                    // Setelah mendapatkan ID baru, tambahkan ID ke objek transaksi
-                    transaksiBaru.id_transaksi = idTransaksiBaru;
-
-                    // Panggil fungsi untuk menambahkan baris ke tabel setelah transaksi berhasil disimpan di server
-                    tambahBarisKeTabel(transaksiBaru);
-                },
-                error: function (error) {
-                    console.error('Terjadi kesalahan:', error);
-                    // Handle error
-                }
-            });
-        }
-
-
-        function tambahBarisKeTabel(transaksi) {
-            var table = $('#table_pembelian tbody');
-
-            // Buat baris HTML baru dengan data transaksi
-            var row =
-                '<tr class="text-dark">' +
-                '<td class="text-center">' +
-                '<p class="text-xs font-weight-bold mb-0">' + transaksi.resi_transaksi + '</p>' +
-                '</td>' +
-                '<td class="text-center">' +
-                '<p class="text-xs mb-0">' + transaksi.tanggal_transaksi + '</p>' +
-                '</td>' +
-                '<td>' +
-                '<div class="ps-4">' +
-                '<h6 class="mb-1 text-sm">' + transaksi.pelanggan.nama + '</h6>' +
-                '<p class="text-xs text-secondary mb-0">' + transaksi.pelanggan.email +
-                '</p>' +
-                '</div>' +
-                '</td>' +
-                '<td class="text-wrap" style="max-width: 200px;">' +
-                '<p class="text-xs py-1 mb-0">' + transaksi.pelanggan.alamat + '</p>' +
-                '</td>' +
-                '<td class="text-center">' +
-                '<a href="#" data-id="' + transaksi.id_transaksi +
-                '" class="badge badge-sm bg-gradient-success text-white" data-bs-toggle="modal" data-bs-target="#modalPesanan' +
-                transaksi.id_transaksi + '">Lihat Pesanan</a>' +
-                '</td>' +
-                '<td class="text-center">' +
-                getStatusBadge(transaksi) +
-                '</td>' +
-                '<td>' +
-                '<a href="#" data-id="' + transaksi.id_transaksi +
-                '" class="text-dark" data-bs-toggle="modal" data-bs-target="#rincianModal' +
-                transaksi.id_transaksi + '">' +
-                '<p class="pt-3" style="text-decoration:underline;">Rincian</p>' +
-                '</a>' +
-                '</td>' +
-                '</tr>';
-
-            table.append(row);
-        }
-
-        function getStatusBadge(transaksi) {
-            if (transaksi.tagihan.status_tagihan === 'Belum Bayar') {
-                return '<span class="badge badge-sm bg-gradient-danger">Belum Bayar</span>';
-            } else {
-                return '<span class="badge badge-sm bg-gradient-success">Sudah Bayar</span>';
-            }
-        }
-
     </script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

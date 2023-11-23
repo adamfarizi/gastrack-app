@@ -18,7 +18,7 @@ class TagihanSeeder extends Seeder
         $data = [
             [
                 'tanggal_jatuh_tempo' => '2023-12-01',
-                'jumlah_tagihan' => 500000, // Replace with your desired value
+                'jumlah_tagihan' => 1300000, // Replace with your desired value
                 'status_tagihan' => 'Belum Bayar',
                 'tanggal_pembayaran' => null,
                 'bukti_pembayaran' => null,
@@ -27,7 +27,7 @@ class TagihanSeeder extends Seeder
                 'updated_at' => now(),
             ],[
                 'tanggal_jatuh_tempo' => '2023-12-01',
-                'jumlah_tagihan' => 300000, // Replace with your desired value
+                'jumlah_tagihan' => 1200000, // Replace with your desired value
                 'status_tagihan' => 'Belum Bayar',
                 'tanggal_pembayaran' => null,
                 'bukti_pembayaran' => null,
