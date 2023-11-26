@@ -24,8 +24,8 @@ class PembelianController extends Controller
 
     public function realtimeData() {
         $total_pesanan = Transaksi::count();
-        $pesanan_masuk = Transaksi::whereHas('tagihan', function ($query) {
-            $query->whereIn('status_tagihan', ['Belum Bayar']);
+        $pesanan_masuk = Pesanan::whereHas('pengiriman', function ($query) {
+            $query->whereIn('status_pengiriman', ['Proses']);
         })->count();
         $total_pelanggan = Pelanggan::count();
         $transaksis = Transaksi::with('pelanggan', 'tagihan')->get();

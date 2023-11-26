@@ -19,7 +19,8 @@ class Sopir extends Model implements Authenticatable
         'email',
         'password',
         'no_hp',
-        'status',
+        'ketersediaan_sopir',
+        'status_sopir',
     ];
     
     public function pengirimans()
