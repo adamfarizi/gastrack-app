@@ -210,7 +210,7 @@
                     <div class="card-body px-3 pt-0 pb-2" style="min-height: 428px;">
                         <div class="table-responsive p-0" style="max-height: 450px; overflow-y: auto;">
                             <table class="table align-items-center mb-0" id="table_pembelian">
-                                <thead>
+                                <thead class="sticky-top bg-white">
                                     <tr>
                                         <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">No. Resi</th>
                                         <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Waktu</th>

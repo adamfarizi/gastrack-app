@@ -20,7 +20,7 @@
                     </div>
                     <label>Jenis Kendaraan <span class="text-danger">*</span></label>
                     <div class="input-group mb-3 input-group-outline">
-                        <select class="form-select px-2" aria-label="Jenis Kendaraan" name="jenis_kendaraan">
+                        <select class="form-control px-2" aria-label="Jenis Kendaraan" name="jenis_kendaraan">
                             <option class="ms-2" value="Truk">Truk</option>
                             <option value="Pick Up">Pick Up</option>
                         </select>

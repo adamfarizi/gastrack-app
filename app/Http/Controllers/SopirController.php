@@ -75,7 +75,7 @@ class SopirController extends Controller
             $sopir->no_hp = $request->input('no_hp');
             $sopir->save();
     
-            return redirect()->back()->with('success', 'Data berhasil diubah !');
+            return redirect()->route('sopir')->with('success', 'Data berhasil diubah !');
         } else {
             $request->validate([
                 'nama' => 'required|string|max:255',
@@ -87,7 +87,7 @@ class SopirController extends Controller
                         $sopir = Sopir::find($id_sopir);
             
                         if (!Hash::check($value, $sopir->password)) {
-                            $fail('Password baru salah !');
+                            $fail('Password lama salah !');
                         }
                     },
                 ],
@@ -105,7 +105,7 @@ class SopirController extends Controller
             $sopir->password = Hash::make($request->new_password);
             $sopir->save();
     
-            return redirect()->back()->with('success', 'Data & Password berhasil diubah !');
+            return redirect()->route('sopir')->with('success', 'Data & Password berhasil diubah !');
         }
     }
 

@@ -175,7 +175,7 @@
                     <div class="card-body px-3 pt-0 pb-2" style="min-height: 370px;">
                         <div class="table-responsive p-0" style="max-height: 350px; overflow-y: auto;">
                             <table class="table align-items-center mb-0">
-                                <thead>
+                                <thead class="sticky-top bg-white">
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Pengguna</th>
@@ -267,7 +267,7 @@
                     <div class="card-body px-3 pt-0 pb-2" style="min-height: 370px;">
                         <div class="table-responsive p-0" style="max-height: 350px; overflow-y: auto;">
                             <table class="table align-items-center mb-0">
-                                <thead>
+                                <thead class="sticky-top bg-white">
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Identitas Kendaraan</th>

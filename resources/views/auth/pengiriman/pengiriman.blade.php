@@ -212,7 +212,7 @@
                             tidak ditemukan.
                         </div>
                         <table id="table__diproses" class="table align-items-center mb-0">
-                            <thead>
+                            <thead class="sticky-top bg-white">
                                 <tr>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
@@ -270,7 +270,7 @@
                             tidak ditemukan.
                         </div>
                         <table id="table__dikirim" class="table align-items-center mb-0">
-                            <thead>
+                            <thead class="sticky-top bg-white">
                                 <tr>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
