@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Api\ApiPelangganController;
+use App\Http\Controllers\Api\ApiPembelianController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -15,8 +17,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/pelanggan/login', [ApiPelangganController::class, 'login_action']);
 
-Route::post('/pelanggan/transaksi/create', [ApiPelangganController::class,'create_transaksi']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/pelanggan/logout', [ApiPelangganController::class, 'logout']);
+    Route::put('/pelanggan/update/{id}', [ApiPelangganController::class, 'edit_action']);
+    Route::post('/pembelian/create', [ApiPembelianController::class, 'create_transaksi']);
+});

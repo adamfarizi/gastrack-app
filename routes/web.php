@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\ApiPelangganController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\LaporanController;
@@ -35,7 +34,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/pembelian', [PembelianController::class,'index']);
     Route::get('/pembelian/data', [PembelianController::class,'realtimeData']);
-    Route::post('/pembelian/tambah_data', [PembelianController::class, 'create']);
     Route::get('/pembelian/lihat_pesanan', [PembelianController::class, 'detail_pesanan']);
 
     Route::get('/pengiriman', [PengirimanController::class,'index']);

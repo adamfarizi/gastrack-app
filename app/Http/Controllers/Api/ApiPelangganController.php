@@ -3,139 +3,181 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Pelanggan;
+use App\Http\Resources\PostResource;
 use App\Models\Tagihan;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
-use Illuminate\Validation\Validator; // Pastikan ini sudah diimpor
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
+
 
 class ApiPelangganController extends Controller
 {
-    public function create_transaksi(Request $request)
+    public function index($id){
+        $pelanggan = Pelanggan::find($id);
+    
+        if($pelanggan){
+            return new PostResource(true, 'Get Berhasil', $pelanggan);
+        } else {
+            return response()->json(["message" => "Not Found 404"], 404);
+        }
+    }
+
+    public function login_action(Request $request)
     {
-        
         $request->validate([
-            'id_pelanggan' => 'required|integer|min:1',
-            'jumlah_transaksi' => 'required|integer|min:1',
+            'email' => 'required',
+            'password' => 'required',
         ]);
 
-        $id_pelanggan = $request->input('id_pelanggan');
-        $tanggal_transaksi = now();
-        $tanggal_transaksi_carbon = Carbon::parse($tanggal_transaksi);
+        $pelanggan = Pelanggan::where('email', $request->email)->first();
 
-        $batas_pembayaran = $tanggal_transaksi_carbon->addDays(14);
+        if (!$pelanggan) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Akun tidak terdaftar!',
+            ], 404);
+        }
 
-        // Penghitungan total transaksi
-        $jumlah_transaksi = intval($request->input('jumlah_transaksi'));
-        $harga = 50000;
-        $total_transaksi = $jumlah_transaksi * (float) $harga;
+        // Verifikasi password
+        if (password_verify($request->password, $pelanggan->password)) {
+            $token = $pelanggan->createToken('myappToken')->plainTextToken;
 
-        $cek_tagihan = Transaksi::where('id_pelanggan', $id_pelanggan)
-            ->whereHas('tagihan', function ($query) {
-                $query->where('status_tagihan', 'Belum Bayar');
-            })
-            ->first();
+            return response()->json([
+                'success' => true,
+                'token' => $token,
+                'datauser' => $pelanggan,
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kombinasi email dan password tidak valid!',
+            ], 422);
+        }
+    }
 
-        if ($cek_tagihan == null) {
+    public function logout(Request $request)
+    {
+        $user = $request->user();
 
-            $id_pembayaran_new = Tagihan::create([
-                'tanggal_jatuh_tempo' => $batas_pembayaran,
-                'jumlah_tagihan' => null,
-                'status_tagihan' => 'Belum Bayar',
-                'tanggal_pembayaran' => null,
-                'bukti_pembayaran' => null,
-                'id_pelanggan' => $id_pelanggan
-            ])->id_pembayaran;
+        if ($user) {
+            // Revoke the user's access tokens
+            $user->tokens()->delete();
 
-            $transaksi_new = Transaksi::create([
-                'jumlah_transaksi' => $jumlah_transaksi,
-                'tanggal_transaksi' => $tanggal_transaksi,
-                'total_transaksi' => $total_transaksi,
-                'id_pembayaran' => $id_pembayaran_new,
-                'id_pelanggan' => $id_pelanggan,
-                'jenis_transaksi' => 'awal'
+            return response()->json([
+                'success' => true,
+                'message' => 'Logout berhasil.',
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal logout. Pengguna tidak ditemukan.',
+            ], 401);
+        }
+    }
+
+    public function edit_index(string $id){
+        $pelanggan = Pelanggan::where('id_pelanggan', $id)->first();
+    
+        if (empty($pelanggan)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan!',
+            ], 422);
+        }
+        else{
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil ditemukan',
+                'datauser' => $pelanggan,
+            ], 200);
+        }
+    }
+    
+    public function edit_action(string $id, Request $request){
+        try {
+            $request->validate([
+                'nama' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'alamat' => 'required|string|max:255',
+                'no_hp' => 'required|string|max:15',
             ]);
-
-            $total_pembayaran = Transaksi::where('id_pembayaran', $id_pembayaran_new)
-                ->sum('total_transaksi');
-
-            $pembayaran = Tagihan::find($id_pembayaran_new);
-            if (empty($pembayaran)) {
+    
+            $pelanggan = Pelanggan::find($id);
+            if (empty($pelanggan)) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Data tidak ditemukan!',
                 ], 422);
-            } else {
-                $pembayaran->total_pembayaran = $total_pembayaran;
-                $pembayaran->save();
             }
-
-        } else {
-            if ($tanggal_transaksi > $cek_tagihan['batas_pembayaran']) {
-                return response()->json([
-                    'message' => 'Anda belum melunasi tagihan sebelumnya',
-                ], 200);
-            } else {
-                $cek_transaksi = Transaksi::where('id_pelanggan', 'tanggal_transaksi', $tanggal_transaksi)
-                    ->first();
-
-                if ($cek_transaksi != null) {
-
-                    $transaksi_new = Transaksi::create([
-                        'jumlah_transaksi' => $jumlah_transaksi,
-                        'tanggal_transaksi' => $tanggal_transaksi,
-                        'total_transaksi' => $total_transaksi,
-                        'id_pembayaran' => $cek_tagihan['id_pembayaran'],
-                        'id_pelanggan' => $id_pelanggan,
-                        'jenis_transaksi' => 'akhir'
-                    ]);
-
-                    $total_pembayaran = Transaksi::where('id_pembayaran', $cek_tagihan['id_pembayaran'])
-                        ->sum('total_transaksi');
-
-                    $pembayaran = Tagihan::find($cek_tagihan['id_pembayaran']);
-                    if (empty($pembayaran)) {
-                        return response()->json([
-                            'success' => false,
-                            'message' => 'Data tidak ditemukan!',
-                        ], 422);
-                    } else {
-                        $pembayaran->total_pembayaran = $total_pembayaran;
-                        $pembayaran->save();
-                    }
-
-                } else {
-                    $transaksi_new = Transaksi::create([
-                        'jumlah_transaksi' => $jumlah_transaksi,
-                        'tanggal_transaksi' => $tanggal_transaksi,
-                        'total_transaksi' => $total_transaksi,
-                        'id_pembayaran' => $cek_tagihan['id_pembayaran'],
-                        'id_pelanggan' => $id_pelanggan,
-                        'jenis_transaksi' => 'awal'
-                    ]);
-
-                    $total_pembayaran = Transaksi::where('id_pembayaran', $cek_tagihan['id_pembayaran'])
-                        ->sum('total_transaksi');
-
-                    $pembayaran = Tagihan::find($cek_tagihan['id_pembayaran']);
-                    if (empty($pembayaran)) {
-                        return response()->json([
-                            'success' => false,
-                            'message' => 'Data tidak ditemukan!',
-                        ], 422);
-                    } else {
-                        $pembayaran->total_pembayaran = $total_pembayaran;
-                        $pembayaran->save();
-                    }
-
-                }
-            }
+    
+            $pelanggan->nama = $request->input('nama');
+            $pelanggan->email = $request->input('email');
+            $pelanggan->no_hp = $request->input('no_hp');        
+            $pelanggan->alamat = $request->input('alamat');
+            $pelanggan->save();
+    
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil diubah',
+                'datauser' => $pelanggan,
+            ], 200);    
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $e->validator->errors()->all(),
+            ], 422);
+        }
+    }
+    
+    public function edit_password(string $id, Request $request){
+        try {
+            $request->validate([
+                'old_password' => 'required',
+                'new_password' => 'required',        
+                'new_password_confirmation' => 'required',        
+            ]);
+        
+            // Lanjutkan dengan operasi lain jika validasi berhasil
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $e->validator->errors()->all(),
+            ], 422);
         }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Data berhasil ditambah',
-            'data' => $transaksi_new,
-        ], 200);
+        $old_password = $request->input('old_password');
+        $passwordInDatabase = Pelanggan::where('id_pelanggan', $id)->pluck('password')->first();
+
+        if (Hash::check($old_password, $passwordInDatabase)) {
+            $new_password = $request->input('new_password');
+            $new_password_confirmation = $request->input('new_password_confirmation');
+
+            if ($new_password == $new_password_confirmation) {
+                $pelanggan = Pelanggan::find($id);
+                $pelanggan->password = Hash::make($new_password); // Menghash password baru
+                $pelanggan->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Password berhasil diubah!',
+                    'datauser' => $pelanggan,
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Konfirmasi password tidak cocok!',
+                ], 422);
+            }
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Password lama tidak cocok!',
+            ], 422);
+        }
+        
     }
 }

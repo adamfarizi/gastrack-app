@@ -6,6 +6,9 @@ use App\Models\Pelanggan;
 use App\Models\Pesanan;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use App\Events\newTranEvent;
 use Illuminate\Support\Facades\DB;
 
 class PembelianController extends Controller
@@ -22,36 +25,51 @@ class PembelianController extends Controller
         ], $data);
     }
 
-    // public function create(Request $request)
+    // public function create_pembelian(Request $request)
     // {
-    //     // Validasi data jika diperlukan
-    //     $request->validate([
+    //     // Validasi permintaan
+    //     $validator = Validator::make($request->all(), [
     //         'resi_transaksi' => 'required',
     //         'tanggal_transaksi' => 'required',
     //         'nama_pelanggan' => 'required',
     //         'email_pelanggan' => 'required|email',
     //         'alamat_pelanggan' => 'required',
-    //         // Sesuaikan dengan field yang diperlukan untuk transaksi
+    //         'status_tagihan' => 'required',
     //     ]);
 
-    //     // Cari atau buat pelanggan baru berdasarkan email
-    //     $pelanggan = Pelanggan::firstOrCreate(
-    //         ['email' => $request->input('email_pelanggan')],
-    //         [
-    //             'nama' => $request->input('nama_pelanggan'),
-    //             'alamat' => $request->input('alamat_pelanggan'),
-    //         ]
-    //     );
+    //     if ($validator->fails()) {
+    //         return response()->json(['errors' => $validator->errors()], 400);
+    //     }
 
-    //     // Simpan data transaksi
-    //     $transaksi = Transaksi::create([
-    //         'resi_transaksi' => $request->input('resi_transaksi'),
-    //         'tanggal_transaksi' => $request->input('tanggal_transaksi'),
-    //         'pelanggan_id' => $pelanggan->id,
-    //         // Sesuaikan dengan field yang diperlukan untuk transaksi
+    //     // Pembuatan resi dengan UUID
+    //     $resi_transaksi = 'GTK-' . now()->format('YmdHis') . Str::random(2);
+
+    //     // Penghitungan total transaksi
+    //     $jumlah_transaksi = intval($request->input('jumlah_transaksi'));
+
+    //     // Tambahkan data ke tabel transaksi
+    //     $transaksi_new = Transaksi::create([
+    //         'tanggal_transaksi' => now(),
+    //         'resi_transaksi' => $resi_transaksi,
+    //         'jumlah_transaksi' => $jumlah_transaksi,
+    //         'total_transaksi' => $jumlah_transaksi,
+    //         'jadwal_bayar' => $request->input('jadwal_bayar'),
+    //         'id_pelanggan' => $request->input('id_pelanggan'),
+    //         'id_tagihan' => $request->input('id_tagihan'),
+    //         'id_pengiriman' => null,
+    //         'id_admin' => 1,
     //     ]);
 
-    //     return response()->json(['message' => 'Transaksi berhasil ditambahkan', 'data' => $transaksi], 201);
+    //     // Ambil nama agen
+    //     $pembeli_new = Pelanggan::where('id_pelanggan', $transaksi_new->id_pelanggan)->value('name');
+    //     broadcast(new newTranEvent($pembeli_new));
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Data berhasil ditambah',
+    //         'datauser' => $transaksi_new,
+    //         'databroadcast' => $pembeli_new,
+    //     ], 200);
     // }
 
     public function detail_pesanan()

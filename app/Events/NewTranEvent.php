@@ -10,18 +10,20 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class HalloEvent implements ShouldBroadcast
+class NewTranEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    public $pembeli_new;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($pembeli_new)
     {
-        //
+        $this->pembeli_new = $pembeli_new;
     }
 
     /**
@@ -31,6 +33,6 @@ class HalloEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('gastrack');
+        return new Channel('newTran-channel');
     }
 }
