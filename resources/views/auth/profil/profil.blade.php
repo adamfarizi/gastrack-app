@@ -163,33 +163,14 @@
                         <div class="col-md-8 d-flex align-items-center">
                             <h5 class="font-weight-bolder text-primary text-gradient">Edit Profil</h5>
                         </div>
-                        @if (session('success'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <span class="alert-text text-white"><strong>Success!</strong>
-                                    {{ session('success') }}</span>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        @endif
-                        @if ($errors->any())
-                            @foreach ($errors->all() as $err)
-                                <div class="alert alert-danger alert-dismissible fade-show" role="alert">
-                                    <span class="alert-text text-white"><strong>Alert!</strong> {{ $err }}</span>
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endforeach
-                        @endif
                     </div>
                     <div class="card-body p-3">
-                        <form role="form text-left" action="" method="POST">
+                        <form role="form text-left" action="{{ url('/profil/edit/'.Auth::user()->id_admin) }}" method="POST">
                             @csrf
                             <label>Nama</label>
                             <div class="input-group mb-3 input-group-outline">
-                                <input name="name" type="text" class="form-control" placeholder="Masukkan nama anda"
-                                    aria-label="name" value="{{ $admin->nama }}">
+                                <input name="nama" type="text" class="form-control" placeholder="Masukkan nama anda"
+                                    aria-label="nama" value="{{ $admin->nama }}">
                             </div>
                             <label>Email</label>
                             <div class="input-group mb-3 input-group-outline">
@@ -209,6 +190,8 @@
                 </div>
             </div>
         </div>
+
+        {{-- Modal ganti password --}}
         <div class="col-md-4">
             <div class="modal fade" id="exampleModalMessage" tabindex="-1" role="dialog"
                 aria-labelledby="exampleModalMessageTitle" aria-hidden="true">
@@ -222,31 +205,33 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="" method="post" role="form text-left">
+                            <form action="{{ url('/profil/edit/password/'.Auth::user()->id_admin) }}" method="post" role="form text-left">
                                 @csrf
-                                <label>Password Lama <span class="text-danger">*</label>
-                                <div class="input-group mb-3 input-group-outline">
-                                    <input type="password" class="form-control" name="old_password"
-                                        value="{{ old('password') }}">
+                                <label>Password</label>
+                                <div class="input-group input-group-outline mb-3">
+                                    <input name="old_password" type="password" class="form-control"
+                                        aria-label="old_password" value="" placeholder="Password Lama">
                                 </div>
-
-                                <label>Password Baru <span class="text-danger">*</label>
-                                <div class="input-group mb-3 input-group-outline">
-                                    <input type="password" class="form-control" name="new_password"
-                                        value="{{ old('password') }}">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Password Baru</label>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <input name="new_password" type="password" class="form-control"
+                                            aria-label="new_password" value="" placeholder="Password Baru">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Konfirmasi Password Baru</label>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <input name="new_password_confirmation" type="password" class="form-control"
+                                                aria-label="new_password_confirmation" value="" placeholder="Konfirmasi Password Baru">
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <label>Konfirmasi Password Baru <span class="text-danger">*</label>
-                                <div class="input-group mb-3 input-group-outline">
-                                    <input type="password" class="form-control" name="new_password_confirmation"
-                                        value="{{ old('password') }}">
-                                </div>
-
                                 <div class="text-center">
                                     <button type="submit" name="submit"
                                         class="btn bg-gradient-success w-100 mt-4 mb-0">Ganti Password</button>
                                 </div>
-
                                 <div class="text-center">
                                     <a type="button" name="modal" data-bs-dismiss="modal"
                                         class="btn bg-gradient-primary w-100 mt-4 mb-0">Batal</a>

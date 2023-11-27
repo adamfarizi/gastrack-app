@@ -65,6 +65,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/pengguna/admin/delete/{id}', [PenggunaController::class,'hapus_admin_action']);
 
     Route::get('/profil/{id}', [ProfilController::class,'index'])->name('profil');
+    Route::post('/profil/edit/{id}', [ProfilController::class,'edit_profil_action']);
+    Route::post('/profil/edit/password/{id}', [ProfilController::class,'edit_password_action']);
     
 });
 
