@@ -67,7 +67,7 @@
                     </h6>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white active bg-gradient-primary " href="{{ url('/profil') }}">
+                    <a class="nav-link text-white active bg-gradient-primary " href="{{ url('/profil/'.Auth::user()->id_admin) }}">
                         <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">person</i>
                         </div>
@@ -145,10 +145,10 @@
                 <div class="col-auto my-auto">
                     <div class="h-100">
                         <h5 class="mb-1">
-                            Super Admin
+                            {{ Auth::user()->nama }}
                         </h5>
                         <p class="mb-0 font-weight-normal text-sm">
-                            admin@gmail.com
+                            {{ Auth::user()->email }}
                         </p>
                     </div>
                 </div>
@@ -184,19 +184,17 @@
                         @endif
                     </div>
                     <div class="card-body p-3">
-                        <form role="form text-left" action=""
-                            method="POST">
+                        <form role="form text-left" action="" method="POST">
                             @csrf
-                            @method('PUT')
                             <label>Nama</label>
                             <div class="input-group mb-3 input-group-outline">
                                 <input name="name" type="text" class="form-control" placeholder="Masukkan nama anda"
-                                    aria-label="name" value="">
+                                    aria-label="name" value="{{ $admin->nama }}">
                             </div>
                             <label>Email</label>
                             <div class="input-group mb-3 input-group-outline">
                                 <input name="email" type="email" class="form-control" placeholder="Masukkan email anda"
-                                    aria-label="email" value="">
+                                    aria-label="email" value="{{ $admin->email }}">
                             </div>
                             <div class="text-center ">
                                 <button type="submit" name="submit" class="btn bg-gradient-success w-100 mt-4 mb-0"

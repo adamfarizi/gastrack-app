@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProfilController extends Controller
 {
-    public function index() {
+    public function index($id_admin) {
         $data['title'] = 'Profil';
 
-        return view('auth.profil.profil', $data);
+        $admin = User::find($id_admin);
+
+        return view('auth.profil.profil', [
+            'admin' => $admin,
+        ], $data);
     }
 }

@@ -67,7 +67,7 @@
                     </h6>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark " href="{{ url('/profil') }}">
+                    <a class="nav-link text-dark" href="{{ url('/profil/'.Auth::user()->id_admin) }}">
                         <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">person</i>
                         </div>
@@ -128,7 +128,6 @@
         </div>
     </nav>
 @endsection
-
 @section('content')
     <div class="row">
         {{-- Total Pesanan --}}
@@ -177,7 +176,6 @@
             </div>
         </div>
     </div>
-
     {{-- Tabel Laporan --}}
     <div class="container mt-5">
         <div class="card bg-white">
