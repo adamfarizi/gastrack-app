@@ -28,18 +28,23 @@ class PembelianController extends Controller
             $query->whereIn('status_pengiriman', ['Proses']);
         })->count();
         $total_pelanggan = Pelanggan::count();
-        $transaksis = Transaksi::with('pelanggan', 'tagihan')->get();
+        $transaksis = Transaksi::with('pelanggan', 'tagihan')->whereHas('tagihan', function ($query) {
+            $query->whereIn('status_tagihan', ['Belum Bayar']);
+        })->get();
+        $riwayat_transaksis = Transaksi::with('pelanggan', 'tagihan')->whereHas('tagihan', function ($query) {
+            $query->whereIn('status_tagihan', ['Sudah Bayar']);
+        })->get();
 
         return response()->json([
-            'transaksis' => $transaksis,
             'total_pesanan' => $total_pesanan,
             'pesanan_masuk' => $pesanan_masuk,
             'total_pelanggan' => $total_pelanggan,
+            'transaksis' => $transaksis,
+            'riwayat_transaksis' => $riwayat_transaksis,
         ]);
     }
     
-    public function detail_pesanan($id_transaksi)
-    {
+    public function detail_pesanan($id_transaksi) {
         $data['title'] = 'Pembelian';
         $transaksis = Transaksi::where('id_transaksi', $id_transaksi)->get();
         $pesananAwal = Pesanan::where('id_transaksi', $id_transaksi)->orderBy('tanggal_pesanan', 'asc')->first();

@@ -229,6 +229,50 @@
                     </div>
                 </div>
             </div>
+
+            {{-- Tabel Riwayat --}}
+            <div class="col-12 mb-4">
+                <div class="card">
+                    <div class="card-header pb-0">
+                        <div class="row">
+                            <div class="col d-flex">
+                                <h4 class="card-title"> Riwayat Pembelian</h4>
+                                <span class="mt-1 ms-3">
+                                    <a class="me-2"></a>
+                                </span>
+                            </div>
+                            <div class="col-md-2 col-sm-6 ml-auto">
+                                <div class="input-group mb-3 border rounded-2">
+                                    <span class="input-group-text text-body me-2"><i class="fas fa-search"
+                                            aria-hidden="true"></i></span>
+                                    <input type="text" class="form-control ms-2" id="searchInput_Diproses"
+                                        placeholder="Cari  ...">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body px-3 pt-0 pb-2" style="min-height: 428px;">
+                        <div class="table-responsive p-0" style="max-height: 450px; overflow-y: auto;">
+                            <table class="table align-items-center mb-0" id="table_riwayat_pembelian">
+                                <thead class="sticky-top bg-white">
+                                    <tr>
+                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">No. Resi</th>
+                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Waktu</th>
+                                        <th class="ps-5 text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Pelanggan</th>
+                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Alamat</th>
+                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Pesanan</th>
+                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Status</th>
+                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -456,6 +500,72 @@
             });
         }
 
+        function realTime_Riwayat_Pembelian() { 
+            $.ajax({
+                url: '/pembelian/data',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var table = $('#table_riwayat_pembelian tbody');
+                    table.empty();
+                    console.log(data.riwayat_transaksis);
+                    if (!data.riwayat_transaksis || data.riwayat_transaksis.length === 0) {
+                        var row =
+                            '<tr class="text-dark">' +
+                            '<td colspan="7" class="text-center fw-light text-secondary text-sm pt-5">Tidak ada pembelian</td>' +
+                            '</tr>';
+
+                        table.append(row);
+                    } else {
+                        $.each(data.riwayat_transaksis, function(index, transaksi) {
+                            var statusBadge = getStatusBadge(transaksi);
+                            var dateTimeString = transaksi.tanggal_transaksi;
+                            var formattedDateTime = formatDateTime(dateTimeString);
+
+                            var row = 
+                            '<tr class="text-dark">' +
+                                '<td class="text-center">' +
+                                    '<p class="text-sm font-weight-bold mb-0">' + transaksi.resi_transaksi + '</p>' +
+                                '</td>' +
+                                '<td class="text-center">' +
+                                    '<p class="text-sm mb-1">tanggal : ' + formattedDateTime.tanggal + '</p>' +
+                                    '<p class="text-sm mb-0">pukul : ' + formattedDateTime.jam + '</p>' +
+                                '</td>' +
+                                '<td>' +
+                                    '<div class="ps-4">' +
+                                        '<h6 class="mb-1 text-sm">' + transaksi.pelanggan.nama + '</h6>' +
+                                        '<p class="text-sm text-secondary mb-0">' + transaksi.pelanggan.email +
+                                        '</p>' +
+                                    '</div>' +
+                                '</td>' +
+                                '<td class="text-wrap" style="max-width: 200px;">' +
+                                    '<p class="text-sm py-1 mb-0">' + transaksi.pelanggan.alamat + '</p>' +
+                                '</td>' +
+                                '<td class="text-center">' +
+                                    '<a href="<?php echo url("/pembelian/lihat_pesanan/' + transaksi.id_transaksi + '"); ?>" data-id="" class="badge badge-sm bg-gradient-success text-white">Lihat Pesanan</a>' +
+                                '</td>' +
+                                '<td class="text-center">' +
+                                    statusBadge +
+                                '</td>' +
+                                '<td>' +
+                                    '<a href="#" data-id="' + transaksi.id_transaksi + '" class="text-dark" data-bs-toggle="modal" data-bs-target="#rincianModal' + transaksi.id_transaksi + '">' +
+                                        '<p class="pt-3" style="text-decoration:underline;">Invoice</p>' +
+                                    '</a>' +
+                                '</td>' +
+                                '</tr>';
+
+                            table.append(row);
+                        });
+                    }
+                    table.show();
+
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+
         function formatDateTime(datetimeString) {
 
             var datetime = new Date(datetimeString);
@@ -479,6 +589,7 @@
         $(document).ready(function() {
             realtime_Nav();
             realTime_Pembelian();
+            realTime_Riwayat_Pembelian();
         });
     </script>
 
