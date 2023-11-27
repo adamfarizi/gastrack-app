@@ -30,17 +30,20 @@ Route::middleware(['guest'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('logout', [AuthController::class, 'logout']);
 
-    Route::get('/beranda', [BerandaController::class,'index']);
+    Route::get('/beranda', [BerandaController::class,'index'])->name('beranda');
 
-    Route::get('/pembelian', [PembelianController::class,'index']);
+    Route::get('/pembelian', [PembelianController::class,'index'])->name('pembelian');
     Route::get('/pembelian/data', [PembelianController::class,'realtimeData']);
-    Route::get('/pembelian/lihat_pesanan', [PembelianController::class, 'detail_pesanan']);
+    Route::post('/pembelian/tambah_data', [PembelianController::class, 'create']);
+    Route::get('/pembelian/lihat_pesanan/{id}', [PembelianController::class, 'detail_pesanan']);
+    
+    Route::get('/pengiriman', [PengirimanController::class,'index'])->name('pengiriman');
+    Route::get('/pengiriman/data', [PengirimanController::class,'realtimeData']);
+    Route::post('/pengiriman/update_kirim/{id}', [PengirimanController::class,'updateKirim']);
 
-    Route::get('/pengiriman', [PengirimanController::class,'index']);
+    Route::get('/laporan', [LaporanController::class,'index'])->name('laporan');
 
-    Route::get('/laporan', [LaporanController::class,'index']);
-
-    Route::get('/sopir&kendaraan', [SopirController::class,'index']);
+    Route::get('/sopir&kendaraan', [SopirController::class,'index'])->name('sopir');
     Route::post('/sopir/create', [SopirController::class,'tambah_sopir_action']);
     Route::get('/sopir/edit/{id}', [SopirController::class,'edit_sopir']);
     Route::post('/sopir/edit/{id}', [SopirController::class,'edit_sopir_action']);
@@ -50,11 +53,19 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/kendaraan/edit/{id}', [SopirController::class,'edit_kendaraan_action']);
     Route::delete('/kendaraan/delete/{id}', [SopirController::class,'hapus_kendaraan_action']);
 
-    Route::get('/pengguna', [PenggunaController::class,'index']);
-    Route::get('/pengguna/edit_pengguna', [PenggunaController::class,'edit_pengguna']);
-    Route::get('/pengguna/edit_admin', [PenggunaController::class,'edit_admin']);
+    Route::get('/pengguna', [PenggunaController::class,'index'])->name('pengguna');
+    Route::post('/pengguna/pelanggan/create', [PenggunaController::class,'tambah_pelanggan_action']);
+    Route::get('/pengguna/pelanggan/edit/{id}', [PenggunaController::class,'edit_pelanggan']);
+    Route::post('/pengguna/pelanggan/edit/{id}', [PenggunaController::class,'edit_pelanggan_action']);
+    Route::delete('/pengguna/pelanggan/delete/{id}', [PenggunaController::class,'hapus_pelanggan_action']);
+    Route::post('/pengguna/admin/create', [PenggunaController::class,'tambah_admin_action']);
+    Route::get('/pengguna/admin/edit/{id}', [PenggunaController::class,'edit_admin']);
+    Route::post('/pengguna/admin/edit/{id}', [PenggunaController::class,'edit_admin_action']);
+    Route::delete('/pengguna/admin/delete/{id}', [PenggunaController::class,'hapus_admin_action']);
 
-    Route::get('/profil', [ProfilController::class,'index']);
+    Route::get('/profil/{id}', [ProfilController::class,'index'])->name('profil');
+    Route::post('/profil/edit/{id}', [ProfilController::class,'edit_profil_action']);
+    Route::post('/profil/edit/password/{id}', [ProfilController::class,'edit_password_action']);
     
 });
 

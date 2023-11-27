@@ -67,7 +67,7 @@
                     </h6>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark " href="{{ url('/profil') }}">
+                    <a class="nav-link text-dark" href="{{ url('/profil/'.Auth::user()->id_admin) }}">
                         <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">person</i>
                         </div>
@@ -90,10 +90,32 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
                     <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
-                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Pembelian</li>
+                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark">Pembelian</a></li>
+                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Detail Pesanan</li>
                 </ol>
-                <h6 class="font-weight-bolder mb-0">Lihat Pesanan</h6>
+                <h6 class="font-weight-bolder mb-0">Detail Pesanan</h6>
             </nav>
+            <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+                <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+                    <ul class="navbar-nav justify-content-end me-5">
+                        <div class="d-flex py-1">
+                            <div class="my-auto">
+                                <img src="{{ asset('../assets/img/local/profil.png') }}"
+                                    class="border-radius-lg avatar-sm me-3 mt-1">
+                            </div>
+                            <div class="d-flex flex-column justify-content-center">
+                                <h6 class="text-sm font-weight-normal mb-1">
+                                    <span class="font-weight-bold"> {{ Auth::user()->nama }} </span>
+                                </h6>
+                                <p class="text-xs text-secondary mb-0 ">
+                                    <i class="fa fa-solid fa-circle" style="color: #82d616;"></i>
+                                    Online
+                                </p>
+                            </div>
+                        </div>
+                    </ul>
+                </div>
+            </div>
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
                 <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
                     <div class="sidenav-toggler-inner">
@@ -107,54 +129,254 @@
     </nav>
 @endsection
 @section('content')
-    <div class="mt-3">
+    @foreach ($transaksis as $transaksi)
         <div class="row">
-            {{-- Tabel Pembelian --}}
             <div class="col-12 mb-4">
-                <div class="card">
-                    <div class="card-header pb-0 d-flex justify-content-between">
-                        <h6>Lihat Pesanan</h6>
+                <div class="card pb-4">
+                    <div class="card-header pb-0">
+                        <h4 class="text-primary">Detail Pesanan</h4>
+                        <hr>
                     </div>
-                    <div class="card-body px-3 pt-0 pb-2" style="min-height: 428px;">
-                        <div class="table-responsive p-0" style="max-height: 450px; overflow-y: auto;">
-                            <table class="table align-items-center mb-0" id="table_pembelian">
-                                <thead>
-                                    <tr>
-                                        <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            No. Resi</th>
-                                        <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder ps-6 opacity-7">
-                                            Tanggal</th>
-                                        <th
-                                            class="ps-5 text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7">
-                                            Jumlah Transaksi</th>
-                                        <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Total Bayar</th>
-                                        <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Jadwal Bayar</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($transaksis as $transaksi)
+                    <div class="card-body px-3 pt-0 pb-2" style="min-height: 450px">
+                        <div class="row mx-2">
+                            <div class="mb-3 col-6">
+                                <div class="row">
+                                    <p class="col-3 fw-bold text-dark mb-0">Resi</p>
+                                    <p class="col fw-bold text-dark mb-0">: <span
+                                            class="ms-1 col fw-light text-second">{{ $transaksi->resi_transaksi }}</span>
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <p class="col-3 fw-bold text-dark mb-0">Tanggal</p>
+                                    <p class="col fw-bold text-dark mb-0">: <span
+                                            class="ms-1 col fw-light text-second">{{ date('d/m/Y') }}</< /span>
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <p class="col-3 fw-bold text-dark mb-0">Jatuh Tempo</p>
+                                    <p class="col fw-bold text-dark mb-0">: <span
+                                            class="ms-1 col fw-light text-second">{{ date('d/m/Y', strtotime($transaksi->tagihan->tanggal_jatuh_tempo)) }}</span>
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <p class="col-3 fw-bold text-dark mb-0">Waktu Mundur</p>
+                                    <p class="col fw-bold text-dark mb-0">: <span class="ms-1 col fw-light text-second"
+                                            id="countdown"></span></p>
+                                </div>
+                            </div>
+                            <div class="mb-3 col-5">
+                                <div class="row">
+                                    <p class="col-3 fw-bold text-dark mb-0">Pelanggan</p>
+                                    <p class="col fw-bold text-dark mb-0">: <span
+                                            class="ms-1 col fw-light text-second">{{ $transaksi->pelanggan->nama }}</span>
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <p class="col-3 fw-bold text-dark mb-0">Email</p>
+                                    <p class="col fw-bold text-dark mb-0">: <span
+                                            class="ms-1 col fw-light text-second">{{ $transaksi->pelanggan->email }}</< /span>
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <p class="col-3 fw-bold text-dark mb-0">No Hp</p>
+                                    <p class="col fw-bold text-dark mb-0">: <span
+                                            class="ms-1 col fw-light text-second">{{ $transaksi->pelanggan->no_hp }}</span>
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <p class="col-3 fw-bold text-dark mb-0">Alamat</p>
+                                    <p class="col fw-bold text-dark mb-0">: <span
+                                        class="ms-1 col fw-light text-second">{{ $transaksi->pelanggan->alamat }}</span>
+                                    </p>                                
+                                </div>
+                            </div>
+                        </div>
+                        {{-- Pesanan Awal --}}
+                        <div class="row mx-2 mb-3">
+                            <p class="col-3 fw-bold text-dark mb-0">Pesanan Awal</p>
+                            <div class="table-responsive border rounded p-0" style="max-height: 450px; overflow-y: auto;">
+                                <table class="table align-items-center mb-0" id="table_pembelian">
+                                    <thead>
                                         <tr>
-                                            <td class="text-center">{{ $transaksi->resi_transaksi }}</td>
-                                            <td class="text-center ps-5">
-                                                {{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $transaksi->tanggal_transaksi)->format('Y-m-d H:i') }}
-                                            </td>
-                                            <td class="text-center ps-4">{{ $transaksi->jumlah_transaksi }}</td>
-                                            <td class="text-center">{{ $transaksi->total_transaksi }}</td>
-                                            <td class="text-center">{{ $transaksi->jadwal_bayar }}</td>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Waktu</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Jumlah Transaksi</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Total Bayar</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Status Pengiriman</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="fw-light">
+                                            <td class="text-center">
+                                                <p class="text-sm mb-0">tanggal :
+                                                    {{ date('d/m/Y', strtotime($pesananAwal->tanggal_pesanan)) }}</p>
+                                                <p class="text-sm mb-0">jam :
+                                                    {{ date('h:i', strtotime($pesananAwal->tanggal_pesanan)) }}</p>
+                                            </td>
+                                            <td class="text-center">{{ $pesananAwal->jumlah_pesanan }} bar</td>
+                                            <td class="text-center">
+                                                Rp. {{ number_format($pesananAwal->harga_pesanan, 0, ',', '.') }}
+                                            </td>
+                                            <td class="text-center">
+                                                @if ($pesananAwal->pengiriman->status_pengiriman == 'Proses')
+                                                    <span class="badge badge-sm bg-gradient-danger">Belum Dikirim</span>
+                                                @elseif ($pesananAwal->pengiriman->status_pengiriman == 'Dikirim')
+                                                    <span class="badge badge-sm bg-gradient-info">Dikirim</span>
+                                                @else
+                                                    <span class="badge badge-sm bg-gradient-success">Diterima</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {{-- Pesanan Akhir --}}
+                        <div class="row mx-2 mb-3">
+                            <p class="col-3 fw-bold text-dark mb-0">Pesanan Akhir</p>
+                            <div class="table-responsive border rounded p-0" style="max-height: 450px; overflow-y: auto;">
+                                <table class="table align-items-center mb-0" id="table_pembelian">
+                                    <thead>
+                                        <tr>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Waktu</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Jumlah Transaksi</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Total Bayar</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Status Pengiriman</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="fw-light">
+                                            <td class="text-center">
+                                                <p class="text-sm mb-0">tanggal :
+                                                    {{ date('d/m/Y', strtotime($pesananAkhir->tanggal_pesanan)) }}</p>
+                                                <p class="text-sm mb-0">jam :
+                                                    {{ date('h:i', strtotime($pesananAkhir->tanggal_pesanan)) }}</p>
+                                            </td>
+                                            <td class="text-center">{{ $pesananAkhir->jumlah_pesanan }} bar</td>
+                                            <td class="text-center">
+                                                Rp. {{ number_format($pesananAkhir->harga_pesanan, 0, ',', '.') }}
+                                            </td>
+                                            <td class="text-center">
+                                                @if ($pesananAwal->pengiriman->status_pengiriman == 'Proses')
+                                                    <span class="badge badge-sm bg-gradient-danger">Belum Dikirim</span>
+                                                @elseif ($pesananAkhir->pengiriman->status_pengiriman == 'Dikirim')
+                                                    <span class="badge badge-sm bg-gradient-info">Dikirim</span>
+                                                @else
+                                                    <span class="badge badge-sm bg-gradient-success">Diterima</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {{-- Semua Pesanan --}}
+                        <div class="row mx-2 mb-3">
+                            <p class="col-3 fw-bold text-dark mb-0">Semua Pesanan</p>
+                            <div class="table-responsive border rounded p-0" style="max-height: 450px; overflow-y: auto;">
+                                <table class="table align-items-center mb-0" id="table_pembelian">
+                                    <thead>
+                                        <tr>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Nomor</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Waktu</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Jumlah Transaksi</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Total Bayar</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Status Pengiriman</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($pesanans as $pesanan)
+                                            <tr class="fw-light">
+                                                <td class="text-center">{{ $loop->iteration }} </td>
+                                                <td class="text-center">
+                                                    <p class="text-sm mb-0">tanggal :
+                                                        {{ date('d/m/Y', strtotime($pesanan->tanggal_pesanan)) }}</p>
+                                                    <p class="text-sm mb-0">jam :
+                                                        {{ date('h:i', strtotime($pesanan->tanggal_pesanan)) }}</p>
+                                                </td>
+                                                <td class="text-center">{{ $pesanan->jumlah_pesanan }} bar</td>
+                                                <td class="text-center">
+                                                    Rp. {{ number_format($pesanan->harga_pesanan, 0, ',', '.') }}
+                                                </td>
+                                                <td class="text-center">
+                                                    @if ($pesananAwal->pengiriman->status_pengiriman == 'Proses')
+                                                        <span class="badge badge-sm bg-gradient-danger">Belum Dikirim</span>
+                                                    @elseif ($pesanan->pengiriman->status_pengiriman == 'Dikirim')
+                                                        <span class="badge badge-sm bg-gradient-info">Dikirim</span>
+                                                    @else
+                                                        <span class="badge badge-sm bg-gradient-success">Diterima</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        <tr class="text-center" style="background-color: #e9ecef">
+                                            <td class="fw-bold text-secondary">Total: </td>
+                                            <td></td>
+                                            <td colspan="3" class="fw-bold text-primary">Rp. {{ number_format($transaksi->tagihan->jumlah_tagihan, 0, ',', '.') }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endforeach
+@endsection
+@section('js')
+    <script>
+        // Tanggal jatuh tempo dari PHP
+        var tanggalJatuhTempo = new Date('{{ $transaksi->tagihan->tanggal_jatuh_tempo }}').getTime();
+
+        // Update countdown setiap detik
+        var x = setInterval(function() {
+            // Tanggal sekarang
+            var sekarang = new Date().getTime();
+
+            // Hitung selisih waktu
+            var selisih = tanggalJatuhTempo - sekarang;
+
+            // Hitung hari, jam, menit, dan detik
+            var hari = Math.floor(selisih / (1000 * 60 * 60 * 24));
+            var jam = Math.floor((selisih % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var menit = Math.floor((selisih % (1000 * 60 * 60)) / (1000 * 60));
+            var detik = Math.floor((selisih % (1000 * 60)) / 1000);
+
+            // Tampilkan hasil countdown
+            document.getElementById('countdown').innerHTML = hari + 'd ' + jam + 'h ' + menit + 'm ' + detik + 's ';
+
+            // Jika waktu habis, tampilkan pesan atau lakukan aksi lainnya
+            if (selisih < 0) {
+                clearInterval(x);
+                document.getElementById('countdown').innerHTML =
+                    '<p class="mx-0 text-danger">Pembayaran Sudah Jatuh Tempo !</p>';
+            }
+        }, 1000);
+    </script>
 @endsection

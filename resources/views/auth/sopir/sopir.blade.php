@@ -67,7 +67,7 @@
                     </h6>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark " href="{{ url('/profil') }}">
+                    <a class="nav-link text-dark" href="{{ url('/profil/'.Auth::user()->id_admin) }}">
                         <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">person</i>
                         </div>
@@ -175,7 +175,7 @@
                     <div class="card-body px-3 pt-0 pb-2" style="min-height: 370px;">
                         <div class="table-responsive p-0" style="max-height: 350px; overflow-y: auto;">
                             <table class="table align-items-center mb-0">
-                                <thead>
+                                <thead class="sticky-top bg-white">
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Pengguna</th>
@@ -267,7 +267,7 @@
                     <div class="card-body px-3 pt-0 pb-2" style="min-height: 370px;">
                         <div class="table-responsive p-0" style="max-height: 350px; overflow-y: auto;">
                             <table class="table align-items-center mb-0">
-                                <thead>
+                                <thead class="sticky-top bg-white">
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Identitas Kendaraan</th>

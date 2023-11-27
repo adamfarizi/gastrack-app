@@ -67,7 +67,7 @@
                     </h6>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark " href="{{ url('/profil') }}">
+                    <a class="nav-link text-dark" href="{{ url('/profil/'.Auth::user()->id_admin) }}">
                         <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">person</i>
                         </div>
@@ -127,10 +127,9 @@
         </div>
     </nav>
 @endsection
-
 @section('content')
     <div class="row">
-        {{-- Total Pesanan --}}
+        {{-- Total  --}}
         <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card p-3 pt-2">
@@ -140,22 +139,28 @@
                     </div>
                     <div class="text-end pt-1">
                         <p class="text-sm mb-0 text-capitalize">Total Pesanan</p>
-                        <h5 class="mb-0">10 pesanan</h5>
+                        <div class="d-flex flex-row-reverse">
+                            <span class="h5 ms-2 text-dark font-weight-bolder">Pesanan</span>
+                            <h5 class="mb-0" id="total_pesanan"></h5>
+                        </div>                    
                     </div>
                 </div>
             </div>
         </div>
-        {{-- Total Pesanan Masuk --}}
+        {{-- Total  Masuk --}}
         <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card p-3 pt-2">
                     <div
                         class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                        <i class="material-symbols-outlined opacity-10">order_approve</i>
+                        <i class="material-symbols-outlined opacity-10">deployed_code_history</i>                    
                     </div>
                     <div class="text-end pt-1">
-                        <p class="text-sm mb-0 text-capitalize">Pesanan Masuk</p>
-                        <h5 class="mb-0">3 pesanan</h5>
+                        <p class="text-sm mb-0 text-capitalize">Pesanan Diproses</p>
+                        <div class="d-flex flex-row-reverse">
+                            <span class="h5 ms-2 text-dark font-weight-bolder">Pesanan</span>
+                            <h5 class="mb-0" id="pesanan_diproses"></h5>
+                        </div>                    
                     </div>
                 </div>
             </div>
@@ -166,17 +171,20 @@
                 <div class="card p-3 pt-2">
                     <div
                         class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                        <i class="material-icons opacity-10">factory</i>
+                        <i class="material-icons opacity-10">local_shipping</i>
                     </div>
                     <div class="text-end pt-1">
-                        <p class="text-sm mb-0 text-capitalize">Total Pelanggan</p>
-                        <h5 class="mb-0">50 pelanggan</h5>
+                        <p class="text-sm mb-0 text-capitalize">Pesanan Dikirim</p>
+                        <div class="d-flex flex-row-reverse">
+                            <span class="h5 ms-2 text-dark font-weight-bolder">Pesanan</span>
+                            <h5 class="mb-0" id="pesanan_dikirim"></h5>
+                        </div>                    
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    {{-- Tabel proses pesanan --}}
+    {{-- Tabel proses  --}}
     <div class="container mt-5">
         <div class="card bg-white">
             <div class="card-header pb-0">
@@ -191,7 +199,7 @@
                         <div class="input-group mb-3 border rounded-2">
                             <span class="input-group-text text-body me-2"><i class="fas fa-search"
                                     aria-hidden="true"></i></span>
-                            <input type="text" class="form-control ms-2" id="searchInput_pesananDiproses"
+                            <input type="text" class="form-control ms-2" id="searchInput_Diproses"
                                 placeholder="Cari Pesanan ...">
                         </div>
                     </div>
@@ -200,18 +208,18 @@
             <div class="card-body">
                 <div class="card-body px-0 pt-0 pb-2" style="min-height: 50px;">
                     <div class="table-responsive p-0" style="max-height: 300px; overflow-y: auto;">
-                        <div class="text-center" id="noResultsMessage_pesananDiproses" style="display: none;">
-                            Pesanan tidak ditemukan.
+                        <div class="text-center" id="noResultsMessage_Diproses" style="display: none;">
+                            tidak ditemukan.
                         </div>
-                        <table id="table_pesananDiproses" class="table align-items-center mb-0">
-                            <thead>
+                        <table id="table__diproses" class="table align-items-center mb-0">
+                            <thead class="sticky-top bg-white">
                                 <tr>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                         Id Pengiriman</th>
                                     <th
-                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-3">
-                                        Id Pesanan</th>
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Pelanggan</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                         Informasi</th>
@@ -226,53 +234,8 @@
                                         Status</th>
                                 </tr>
                             </thead>
-                            <form action="" method="POST">
-                                @csrf
-                                @method('PUT')
-                                <tbody id="pesananDiproses_">
-                                    <tr class="text-dark">
-                                        <td class="align-middle text-sm text-center">54985213687</td>
-                                        <td class="align-middle text-sm text-center pt-4 pe-5   ">
-                                            <ul style="">54985213687</ul>
-                                        </td>
-                                        <td class="align-middle text-sm text-center">
-                                            <a href="#" type="button" data-id="more-info" data-bs-toggle="modal"
-                                                data-bs-target="#more-info">
-                                                <p class="pt-3" style="text-decoration: underline;">Selengkapnya
-                                                </p>
-                                            </a>
-                                        </td>
-                                        <td class="align-middle text-sm text-center">
-                                            <div class="border rounded-2">
-                                                <select class="form-control text-center" id="name_kurir" name="name_kurir">
-                                                    <option value="Belum Memilih">
-                                                        Belum Memilih
-                                                    </option>
-                                                    <option value="kurir">
-                                                        Sigit Rendang
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle text-sm text-center">
-                                            <div class="border rounded-2">
-                                                <select class="form-control text-center">
-                                                    <option value="Belum Memilih">Belum Memilih</option>
-                                                    <option value="truck">Hino Hijau</option>
-                                                </select>
-                                            </div>
-                                        </td>                                        
-                                        <td class="align-middle text-sm text-center pt-4">
-                                            <button type="submit"
-                                                class="btn bg-gradient-success btn-icon btn-sm ps-3 mt-1">
-                                                <span><i class="fa fa-solid fa-paper-plane me-3"
-                                                        style="color: #ffffff;"></i></span>
-                                                Kirim
-                                            </button>
-                                        </td>
-                                    </tr>
+                                <tbody>
                                 </tbody>
-                            </form>
                         </table>
                     </div>
                 </div>
@@ -294,7 +257,7 @@
                         <div class="input-group mb-3 border rounded-2">
                             <span class="input-group-text text-body me-2"><i class="fas fa-search"
                                     aria-hidden="true"></i></span>
-                            <input type="text" class="form-control ms-2" id="searchInput_pesananDikirim"
+                            <input type="text" class="form-control ms-2" id="searchInput_Dikirim"
                                 placeholder="Cari Pesanan ...">
                         </div>
                     </div>
@@ -303,53 +266,36 @@
             <div class="card-body">
                 <div class="card-body px-0 pt-0 pb-2" style="min-height: 50px;">
                     <div class="table-responsive p-0" style="max-height: 300px; overflow-y: auto;">
-                        <div class="text-center" id="noResultsMessage_pesananDikirim" style="display: none;">
-                            Pesanan tidak ditemukan.
+                        <div class="text-center" id="noResultsMessage_Dikirim" style="display: none;">
+                            tidak ditemukan.
                         </div>
-                        <table id="table_pesananDikirim" class="table align-items-center mb-0">
-                            <thead>
+                        <table id="table__dikirim" class="table align-items-center mb-0">
+                            <thead class="sticky-top bg-white">
                                 <tr>
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                        Id Pesanan</th>
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                        Tgl. Pesanan</th>
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                        Pemesanan</th>
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                        Jumlah Gas</th>
-                                    <th
-                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                        Alamat Pesanan</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                         Id Pengiriman</th>
                                     <th
                                         class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                        Cek Pesanan</th>
+                                        Pelanggan</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Sopir</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Gas Masuk</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Gas Keluar</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Sisa Gas</th>
+                                    <th
+                                        class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                                        Status</th>
                                 </tr>
                             </thead>
-                            <tbody id="pesananDikirim_">
-                                <tr class="text-dark">
-                                    <td class="align-middle text-sm text-center">123654789</td>
-                                    <td class="align-middle text-sm text-center">12-11-2023</td>
-                                    <td class="align-middle text-sm text-center">PT Sinar Patihan</td>
-                                    <td class="align-middle text-sm text-center">70 Bar</td>
-                                    <td class="align-middle text-sm text-center"
-                                        style="white-space: pre-wrap; word-wrap: break-word; max-width: 100px;">Jl. Singosari No. 2, Kelurahan Patihan, Kecamatan Manguharjo, Kota Madiun</td>
-                                    <td class="align-middle text-sm text-center">258741369</td>
-                                    <td class="align-middle text-center ">
-                                        <button type="button" class="btn bg-gradient-warning btn-icon btn-sm ps-3"
-                                            data-id="" data-bs-toggle="modal" data-bs-target="#cek-status"
-                                            id="modalButton">
-                                            <span><i class="fa fa-solid fa-info me-3" style="color: #ffffff;"></i></span>
-                                            Cek Status
-                                        </button>
-                                    </td>
-                                </tr>
+                            <tbody>
                             </tbody>
                         </table>
                     </div>
@@ -358,62 +304,384 @@
         </div>
     </div>
 
-    <!--Modal More Info-->
-    <div class="row">
-        <div class="col-md-4">
-            <div class="modal fade" id="more-info" tabindex="-1" role="dialog"
-                aria-labelledby="modal-default" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h6 class="modal-title text-uppercase" id="modal-title-default">Rincian Pesanan</h6>
-                            <button type="button" class="btn-close text-dark" data-bs-dismiss="modal"
-                                aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body" style="max-height:350px; overflow-y: auto;">
-                            <ul class="mb-3 text-dark" class="tracking-list" type="disc">
-                                <h5 class="pb-3">54985213687</h5>
-                                <li class="ms-3 mb-0 text-dark" class="tracking-list">
-                                    <h6 class="d-flex mb-0 pb-0">Total Muatan :
-                                        <span class="ms-2">
-                                            <p>70 Bar</p>
-                                        </span>
-                                    </h6>
+    {{-- Modal Proses --}}
+    @foreach ($pesanans as $pesanan)
+        <div class="modal fade" id="more-info-proses-{{ $pesanan->id_pesanan }}" tabindex="-1" role="dialog"
+            aria-labelledby="modal-default{{ $pesanan->id_pesanan }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modal-title-default">Rincian Pesanan</h4>
+                    </div>
+                    <div class="modal-body text-dark" style="max-height:350px; overflow-y: auto;">
+                        <div class="d-flex flex-column px-3 mb-1 col">
+                            @foreach ($transaksis as $transaksi)
+                                @if ($pesanan->id_transaksi == $transaksi->id_transaksi)
+                                    <h6 class="mb-0">Resi : {{ $transaksi->resi_transaksi }}</h6>
+                                @endif
+                            @endforeach
+                            <ul>
+                                <li>
+                                    <div class="row">
+                                        <p class="col-4 text-sm fw-bold text-dark mb-0">Tanggal Pesanan</p>
+                                        <p class="col text-sm fw-bold text-dark mb-0">: <span class="fw-light">{{ date('d/m/Y', strtotime($pesanan->tanggal_pesanan)) }}</span></p>
+                                    </div>
                                 </li>
-                                <li class="ms-3 mb-0 text-dark" class="tracking-list">
-                                    <h6 class="d-flex mb-0 pb-0">Total Harga :
-                                        <span class="ms-2">
-                                            <p>Rp 10.000.000</p>
-                                        </span>
-                                    </h6>
+                                <li>
+                                    <div class="row">
+                                        <p class="col-4 text-sm fw-bold text-dark mb-0">Jumlah Pesanan</p>
+                                        <p class="col text-sm fw-bold text-dark mb-0">: <span class="fw-light">{{ $pesanan->jumlah_pesanan }} bar</span></p>
+                                    </div>
                                 </li>
-                                <li class="ms-3 mb-3 text-dark" class="tracking-list">
-                                    <h6>Rincian :</h6>
-                                    {{-- @foreach ($transaksis as $transaksi)
-                                        @if ($pengiriman->id_pengiriman == $transaksi->id_pengiriman) --}}
-                                            <ul>
-                                                <li class="mb-2">
-                                                    PT. Sinar Patihan
-                                                    <br><span class="text-secondary text-xs">Jumlah Gas : 70 Bar</span>
-                                                    <br><span class="text-secondary text-xs">Alamat : Jl. Singosari No. 2, Kelurahan Patihan, Kecamatan Manguharjo, Kota Madiun</span>
-                                                    <br><span class="text-secondary text-xs">Bukti Pembayaran:</span>
-                                                    {{-- <br><img src="{{ asset('img/BuktiPembayaran/' .$transaksi->pembayaran->bukti_pembayaran) }}" class="w-50" alt="Bukti Pembayaran"> --}}
-                                                </li>
-                                            </ul>
-                                        {{-- @endif
-                                    @endforeach --}}
+                                <li>
+                                    <div class="row">
+                                        <p class="col-4 text-sm fw-bold text-dark mb-0">Harga Pesanan</p>
+                                        <p class="col text-sm fw-bold text-dark mb-0">: <span class="fw-light">Rp.{{ number_format($pesanan->harga_pesanan, 0, ',', '.') }}</</span></p>
+                                    </div>
                                 </li>
                             </ul>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-link ml-auto"
-                                data-bs-dismiss="modal">Close</button>
+                        <div class="d-flex flex-column px-3 mb-1 col">
+                            @foreach ($transaksis as $transaksi)
+                                @if ($pesanan->id_transaksi == $transaksi->id_transaksi)
+                                    <h6 class="mb-0">Pelanggan : {{ $transaksi->pelanggan->nama }}</h6>
+                                    <ul>
+                                        <li>
+                                            <div class="row">
+                                                <p class="col-4 text-sm fw-bold text-dark mb-0">Nomor Hp</p>
+                                                <p class="col text-sm fw-bold text-dark mb-0">: <span class="fw-light">{{ $transaksi->pelanggan->no_hp }}</span></p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="row">
+                                                <p class="col-4 text-sm fw-bold text-dark mb-0">Alamat</p>
+                                                <p class="col text-sm fw-bold text-dark mb-0">: <span class="fw-light">{{ $transaksi->pelanggan->alamat }}</span></p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                @endif
+                            @endforeach
                         </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary shadow"
+                        data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endforeach
+    
+    {{-- Modal Gas Masuk --}}
+    @foreach ($pengirimans as $pengiriman)
+        <div class="modal fade" id="more-gas-masuk-{{ $pengiriman->id_pengiriman }}" tabindex="-1" role="dialog"
+            aria-labelledby="modal-default{{ $pengiriman->id_pengiriman }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modal-title-default">Bukti Gas Masuk</h4>
+                    </div>
+                    <div class="modal-body text-dark text-center" style="max-height:450px; overflow-y: auto;">
+                        @if ($pengiriman->bukti_gas_masuk == null)
+                            <div class="w-100 rounded" style="background-color: #dee2e6;">
+                                <p class="text-white py-9">Belum ada bukti</p>
+                            </div>
+                        @else
+                            <img src="{{ asset('assets/img/illustrations/illustration-signin.jpg') }}" class="w-100 rounded" alt="">
+                        @endif
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary shadow"
+                        data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
+    {{-- Modal Gas Keluar --}}
+    @foreach ($pengirimans as $pengiriman)
+        <div class="modal fade" id="more-gas-keluar-{{ $pengiriman->id_pengiriman }}" tabindex="-1" role="dialog"
+            aria-labelledby="modal-default{{ $pengiriman->id_pengiriman }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modal-title-default">Bukti Gas Keluar</h4>
+                    </div>
+                    <div class="modal-body text-dark text-center" style="max-height:450px; overflow-y: auto;">
+                        @if ($pengiriman->bukti_gas_keluar == null)
+                            <div class="w-100 rounded" style="background-color: #dee2e6;">
+                                <p class="text-white py-9">Belum ada bukti</p>
+                            </div>
+                        @else
+                            <img src="{{ asset('assets/img/illustrations/illustration-reset.jpg') }}" class="w-100 rounded" alt="">
+                        @endif
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary shadow"
+                        data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+@endsection
+@section('js')
+    <script>
+        function realtime_Nav() {
+            $.ajax({
+                url: '/pengiriman/data',
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    const totalPesananElement = document.getElementById('total_pesanan');
+                    totalPesananElement.textContent = data.total_pesanan;
+
+                    const pesananDiprosesElement = document.getElementById('pesanan_diproses');
+                    pesananDiprosesElement.textContent = data.pesanan_diproses;
+
+                    const pesananDikirimElement = document.getElementById('pesanan_dikirim');
+                    pesananDikirimElement.textContent = data.pesanan_dikirim;
+
+                },
+                error: function(error) {
+                    console.log(data);
+                    console.error(error);
+                }
+            });
+        }
+
+        function realTime_Proses() {
+            $.ajax({
+                url: '/pengiriman/data',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var table = $('#table__diproses tbody');
+                    table.empty();
+
+                    if (!data.prosess || data.prosess.length === 0) {
+                        var row =
+                            '<tr class="text-dark">' +
+                                '<td colspan="7" class="text-center fw-light text-secondary text-sm pt-5">Tidak ada pengiriman</td>' +
+                            '</tr>';
+
+                        table.append(row);
+                    } else {
+                        $.each(data.prosess, function(index, pengiriman) {
+                            var namaPelanggan = '';
+                            $.each(data.transaksis, function(index, transaksi) {
+                                if (pengiriman.pesanan.id_transaksi === transaksi.id_transaksi) {
+                                    namaPelanggan = transaksi.pelanggan.nama;
+                                }
+                            });
+
+                            var row =
+                                '<tr class="text-dark">' +
+                                    '<td class="align-middle font-weight-bold text-sm text-center">' + pengiriman.kode_pengiriman + '</td>' +
+                                    '<td>' +
+                                        '<div class="text-center">';
+                                        if (namaPelanggan !== '') {
+                                            row += '<h6 class="mb-1 text-sm">' + namaPelanggan + '</h6>';
+                                        }
+                                        row += '<p class="text-xs text-secondary mb-0">Jumlah  : ' + pengiriman.pesanan.jumlah_pesanan + ' bar' +
+                                        '</p>' +
+                                    '</div>' +
+                                    '</td>' +
+                                    '<td class="align-middle text-sm text-center">' +
+                                        '<a href="#" type="button" data-id="' + pengiriman.pesanan.id_pesanan + '" data-bs-toggle="modal" data-bs-target="#more-info-proses-' + pengiriman.pesanan.id_pesanan + '">' +
+                                            '<p class="text-sm pt-3" style="text-decoration: underline;">Selengkapnya</p>' +
+                                        '</a>' +
+                                    '</td>' +
+                                    '<td class="align-middle text-sm text-center">' +
+                                        '<div class="border rounded-2">' +
+                                            '<select class="form-control text-center" id="id_kurir_' + pengiriman.id_pengiriman + '" name="nama_kurir" required>' +
+                                                '<option value="Belum Memilih"> Belum Memilih </option>';
+                                                $.each(data.sopirs, function(index, sopir) {
+                                                    row += '<option value="' + sopir.id_sopir + '">' + sopir.nama + '</option>';
+                                                });
+                                            row += '</select>' +
+                                        '</div>' +
+                                    '</td>' +
+                                    '<td class="align-middle text-sm text-center">' +
+                                        '<div class="border rounded-2">' +
+                                            '<select class="form-control text-center" id="id_mobil_' + pengiriman.id_pengiriman + '" name="nopol_mobil" required>' +
+                                                '<option value="Belum Memilih"> Belum Memilih </option>';
+                                                $.each(data.mobils, function(index, mobil) {
+                                                    row += '<option value="' + mobil.id_mobil + '">' + mobil.nopol_mobil + '</option>';
+                                                });
+                                            row += '</select>' +
+                                        '</div>' +
+                                    '</td>' +
+                                    '<td class="align-middle text-sm text-center pt-4">' +
+                                        '<button id="btn_kirim_' + pengiriman.id_pengiriman + '" value="' + pengiriman.id_pengiriman + '" type="submit" class="btn bg-gradient-success btn-icon btn-sm ps-3 mt-1">' +
+                                            '<span>' +
+                                                '<i class="fa fa-solid fa-paper-plane me-3" style="color: #ffffff;"></i>' +
+                                            '</span>Kirim' +
+                                        '</button>' +
+                                    '</td>' +
+                                '</tr>';
+
+                            table.append(row);
+
+                            $('#btn_kirim_' + pengiriman.id_pengiriman).click(function(event) {
+                                event.preventDefault();
+
+                                var id_kurir = $('#id_kurir_' + pengiriman.id_pengiriman).val();
+                                var id_mobil = $('#id_mobil_' + pengiriman.id_pengiriman).val();
+                                var pengirimanId = $(this).val();
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/pengiriman/update_kirim/' + pengirimanId,
+                                    data: {
+                                        _token: '{{ csrf_token() }}',
+                                        id_pengiriman: pengirimanId,
+                                        id_kurir: id_kurir,
+                                        id_mobil: id_mobil
+                                    },
+                                    success: function(response) {
+                                        location.reload();
+                                        if (response.success) {
+                                            var successToast = $('#successToast');
+                                            successToast.find('.toast-body').text()
+                                            successToast.toast('show');
+                                        }else if (response.error) {
+                                            var dangerToast = $('#dangerToast');
+                                            dangerToast.find('.toast-body').text();
+                                            dangerToast.toast('show');
+                                        }
+                                    },
+                                    error: function(error) {
+                                        console.log(error);
+                                    }
+                                });
+                            });
+                        });
+                    }
+                    table.show();
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+
+        function realTime_Dikirim() {
+            $.ajax({
+                url: '/pengiriman/data',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var table = $('#table__dikirim tbody');
+                    table.empty();
+
+                    if (!data.pengirimans || data.pengirimans.length === 0) {
+                        var row =
+                            '<tr class="text-dark">' +
+                                '<td colspan="7" class="text-center fw-light text-secondary text-sm pt-5">Tidak ada pengiriman</td>' +
+                            '</tr>';
+
+                        table.append(row);
+                    } else {
+                        $.each(data.pengirimans, function(index, pengiriman) {
+                            var namaPelanggan = '';
+                            $.each(data.transaksis, function(index, transaksi) {
+                                if (pengiriman.pesanan.id_transaksi === transaksi.id_transaksi) {
+                                    namaPelanggan = transaksi.pelanggan.nama;
+                                }
+                            });
+                            var namaSopir = '';
+                            $.each(data.nama_sopir, function(index, sopir) {
+                                if (pengiriman.id_sopir === sopir.id_sopir) {
+                                    namaSopir = sopir.nama;
+                                }
+                            });
+                            var namaMobil = '';
+                            $.each(data.nama_mobil, function(index, mobil) {
+                                if (pengiriman.id_mobil === mobil.id_mobil) {
+                                    namaMobil = mobil.identitas_mobil;
+                                }
+                            });
+                            var statusBadge = getStatusBadge(pengiriman);
+                            var row =
+                                '<tr class="text-dark">' +
+                                    '<td class="align-middle font-weight-bold text-sm text-center">' + pengiriman.kode_pengiriman + '</td>' +
+                                    '<td>' +
+                                        '<div class="text-center">';
+                                        if (namaPelanggan !== '') {
+                                            row += '<h6 class="mb-1 text-sm">' + namaPelanggan + '</h6>';
+                                        }
+                                        row += '<p class="text-xs text-secondary mb-0">Jumlah  : ' + pengiriman.pesanan.jumlah_pesanan + ' bar' +
+                                        '</p>' +
+                                    '</div>' +
+                                    '<td>' +
+                                        '<div class="text-center">';
+                                        if (namaSopir !== '') {
+                                            row += '<h6 class="mb-1 text-sm">' + namaSopir + '</h6>';
+                                        }
+                                        if (namaMobil !== '') {
+                                            row += '<p class="text-xs text-secondary mb-0">Jumlah  : ' + namaMobil + '</p>';
+                                        }
+                                        row += '</div>' +
+                                    '</td>' +
+                                    '<td class="text-center pt-4">' ;
+                                        if (pengiriman.kapasitas_gas_masuk == null) {
+                                            row += '<p class="text-sm mb-0">Gas Masuk : kosong </p>';
+                                        }
+                                        else{
+                                            row += '<p class="text-sm mb-0">Gas Masuk : ' + pengiriman.kapasitas_gas_masuk + ' bar' +'</p>';
+                                        }
+                                        row += '<a href="#" type="button" data-id="' + pengiriman.id_pengiriman + '" data-bs-toggle="modal" data-bs-target="#more-gas-masuk-' + pengiriman.id_pengiriman + '">' +
+                                            '<p class="text-sm" style="text-decoration: underline;">Bukti</p>' +
+                                        '</a>' +
+                                    '</td>' +
+                                    '<td class="text-center pt-4">' ;
+                                        if (pengiriman.kapasitas_gas_keluar == null) {
+                                            row += '<p class="text-sm mb-0">Gas Keluar : kosong </p>';
+                                        }
+                                        else{
+                                            row += '<p class="text-sm mb-0">Gas Keluar : ' + pengiriman.kapasitas_gas_keluar + ' bar' +'</p>';
+                                        }
+                                        row += '<a href="#" type="button" data-id="' + pengiriman.id_pengiriman + '" data-bs-toggle="modal" data-bs-target="#more-gas-keluar-' + pengiriman.id_pengiriman + '">' +
+                                            '<p class="text-sm" style="text-decoration: underline;">Bukti</p>' +
+                                        '</a>' +
+                                    '</td>' +
+                                    '<td class="text-center">' ;
+                                        if (pengiriman.sisa_gas == null) {
+                                            row += '<p class="text-sm mb-0">tidak tersisa </p>';
+                                        }
+                                        else{
+                                            row += '<p class="text-sm mb-0">Gas Keluar : ' + pengiriman.kapasitas_gas_keluar + ' bar' +'</p>';
+                                        }
+                                    row+= '</td>' +                                    
+                                    '<td class="align-middle text-center">' +
+                                        statusBadge +
+                                    '</td>' +
+                                '</tr>';
+
+                            table.append(row);
+                        });
+                    }
+                    table.show();
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+
+        function getStatusBadge(pengiriman) {
+            if (pengiriman.status_pengiriman === 'Dikirim') {
+                return '<span class="badge badge-sm bg-gradient-info">Dikirim</span>';
+            } else {
+                return '<span class="badge badge-sm bg-gradient-success">Diterima</span>';
+            }
+        }
+
+        $(document).ready(function() {
+            realtime_Nav();
+            realTime_Proses();
+            realTime_Dikirim();
+        });
+    </script>
 @endsection

@@ -13,8 +13,9 @@ class Mobil extends Model
     protected $fillable = [
         'identitas_mobil',
         'nopol_mobil',
-        'status_mobil',
         'jenis_mobil',
+        'ketersediaan_mobil',
+        'status_mobil',    
     ];
     
     public function pengirimans()

@@ -14,7 +14,9 @@
     <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
     <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.2/css/all.css">
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -45,6 +47,20 @@
                         <div class="toast-body">
                             {{ session('success') }}
                         </div>
+                    </div>
+                </div>
+            @endif
+            @if (session('error'))
+                <div class="toast fade show p-2 mt-2 bg-white position-fixed top-2 end-1 z-index-3" role="alert" aria-live="assertive" id="dangerToast" aria-atomic="true">
+                    <div class="toast-header border-0">
+                        <i class="material-icons text-danger me-2">campaign</i>
+                        <span class="me-auto text-gradient text-danger font-weight-bold">Peringatan !</span>
+                        <small class="text-body">sekarang</small>
+                        <i class="fas fa-times text-md ms-3 cursor-pointer" data-bs-dismiss="toast" aria-label="Close"></i>
+                    </div>
+                    <hr class="horizontal dark m-0">
+                    <div class="toast-body">
+                        {{ session('error') }}
                     </div>
                 </div>
             @endif
