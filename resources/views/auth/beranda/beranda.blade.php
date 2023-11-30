@@ -365,21 +365,31 @@
                 </div>
                 <div class="card-body p-3">
                     <div class="timeline timeline-one-side">
-                        @foreach ($pesanan_sekarang as $pesanan)
-                            @foreach ($transaksis as $transaksi)
-                                @if ( $pesanan->id_transaksi == $transaksi->id_transaksi)
-                                <div class="timeline-block mb-3">
-                                    <span class="timeline-step">
-                                        <i class="material-icons text-info text-gradient">notifications</i>
-                                    </span>
-                                    <div class="timeline-content">
-                                        <h6 class="text-dark text-sm font-weight-bold mb-0">Pesanan dari {{ $transaksi->pelanggan->nama }}, {{ $pesanan->jumlah_pesanan }} bar</h6>
-                                        <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">- {{ date('d M h:s', strtotime($pesanan->tanggal_pesanan)) }}</p>
-                                    </div>
-                                </div>
-                                @endif
+                        @if ($pesanan_sekarang->isEmpty())
+                            <div class="text-center">
+                                <p class="py-9 fw-light" style="color: #ced4da;">Belum ada pesanan</p>
+                            </div>
+                        @else
+                            @foreach ($pesanan_sekarang as $pesanan)
+                                @foreach ($transaksis as $transaksi)
+                                    @if ($pesanan->id_transaksi == $transaksi->id_transaksi)
+                                        <div class="timeline-block mb-3">
+                                            <span class="timeline-step">
+                                                <i class="material-icons text-info text-gradient">notifications</i>
+                                            </span>
+                                            <div class="timeline-content">
+                                                <h6 class="text-dark text-sm font-weight-bold mb-0">
+                                                    Pesanan dari {{ $transaksi->pelanggan->nama }}, {{ $pesanan->jumlah_pesanan }} bar
+                                                </h6>
+                                                <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
+                                                    - {{ date('d M h:s', strtotime($pesanan->tanggal_pesanan)) }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
                             @endforeach
-                        @endforeach
+                        @endif
                     </div>
                 </div>
             </div>

@@ -51,10 +51,10 @@ class BerandaController extends Controller
             $peningkatan_pemasukan = (($total_pemasukan_sekarang - $total_pemasukan_sebelumnya) / $total_pemasukan_sebelumnya) * 100;
         }
 
-        $pesanan_sekarang = Pesanan::orderBy('created_at', 'ASC')
-            ->with('transaksi')
-            ->take(6)
-            ->get();
+        $pesanan_sekarang = Pesanan::whereDate('tanggal_pesanan', $tanggal_sekarang)
+        ->orderBy('tanggal_pesanan', 'ASC')
+        ->take(6)
+        ->get();
 
         return view('auth.beranda.beranda',[
             'transaksis' => $transaksis,
