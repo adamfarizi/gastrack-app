@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ApiPelangganController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\LaporanController;
@@ -31,6 +32,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('logout', [AuthController::class, 'logout']);
 
     Route::get('/beranda', [BerandaController::class,'index'])->name('beranda');
+    Route::get('/beranda/data', [BerandaController::class,'realtimeData']);
 
     Route::get('/pembelian', [PembelianController::class,'index'])->name('pembelian');
     Route::get('/pembelian/data', [PembelianController::class,'realtimeData']);
