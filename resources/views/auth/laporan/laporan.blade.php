@@ -129,55 +129,11 @@
     </nav>
 @endsection
 @section('content')
-    <div class="row">
-        {{-- Total Pesanan --}}
-        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-                <div class="card p-3 pt-2">
-                    <div
-                        class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                        <i class="material-icons opacity-10">receipt_long</i>
-                    </div>
-                    <div class="text-end pt-1">
-                        <p class="text-sm mb-0 text-capitalize">Total Pesanan</p>
-                        <h5 class="mb-0">10 pesanan</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {{-- Total Pesanan Masuk --}}
-        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-                <div class="card p-3 pt-2">
-                    <div
-                        class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                        <i class="material-icons opacity-10">support_agent</i>
-                    </div>
-                    <div class="text-end pt-1">
-                        <p class="text-sm mb-0 text-capitalize">Pesanan Masuk</p>
-                        <h5 class="mb-0">3 pesanan</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {{-- Total pelanggan --}}
-        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-                <div class="card p-3 pt-2">
-                    <div
-                        class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                        <i class="material-icons opacity-10">factory</i>
-                    </div>
-                    <div class="text-end pt-1">
-                        <p class="text-sm mb-0 text-capitalize">Total Pelanggan</p>
-                        <h5 class="mb-0">50 pelanggan</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="container text-center align-center">
+        <h3 class="py-10 my-5" style="color: #ced4da;">HALAMAN BELUM TERSEDIA</h3>
     </div>
     {{-- Tabel Laporan --}}
-    <div class="container mt-5">
+    {{-- <div class="container">
         <div class="card bg-white">
             <div class="card-header pb-0">
                 <div class="row">
@@ -278,5 +234,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection
