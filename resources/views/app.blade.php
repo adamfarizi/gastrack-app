@@ -34,8 +34,9 @@
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         @yield('navbar')
         <div class="container-fluid py-4 pe-3">
-            @if (session('success'))
-                <div class="position-fixed top-2 end-1 z-index-3">
+            {{-- Notifikasi --}}
+            <div class="position-fixed top-2 end-1 d-flex flex-column" style="z-index: 100;">
+                @if (session('success'))
                     <div class="toast fade show p-2 bg-white" role="alert" aria-live="assertive" id="successToast" aria-atomic="true">
                         <div class="toast-header border-0">
                             <i class="material-icons text-success me-2">check</i>
@@ -48,25 +49,9 @@
                             {{ session('success') }}
                         </div>
                     </div>
-                </div>
-            @endif
-            @if (session('error'))
-                <div class="toast fade show p-2 mt-2 bg-white position-fixed top-2 end-1 z-index-3" role="alert" aria-live="assertive" id="dangerToast" aria-atomic="true">
-                    <div class="toast-header border-0">
-                        <i class="material-icons text-danger me-2">campaign</i>
-                        <span class="me-auto text-gradient text-danger font-weight-bold">Peringatan !</span>
-                        <small class="text-body">sekarang</small>
-                        <i class="fas fa-times text-md ms-3 cursor-pointer" data-bs-dismiss="toast" aria-label="Close"></i>
-                    </div>
-                    <hr class="horizontal dark m-0">
-                    <div class="toast-body">
-                        {{ session('error') }}
-                    </div>
-                </div>
-            @endif
-            @if ($errors->any())
-                @foreach ($errors->all() as $err)
-                    <div class="toast fade show p-2 mt-2 bg-white position-fixed top-2 end-1 z-index-3" role="alert" aria-live="assertive" id="dangerToast" aria-atomic="true">
+                @endif
+                @if (session('error'))
+                    <div class="toast fade show p-2 bg-white" role="alert" aria-live="assertive" id="dangerToast" aria-atomic="true">
                         <div class="toast-header border-0">
                             <i class="material-icons text-danger me-2">campaign</i>
                             <span class="me-auto text-gradient text-danger font-weight-bold">Peringatan !</span>
@@ -75,11 +60,27 @@
                         </div>
                         <hr class="horizontal dark m-0">
                         <div class="toast-body">
-                            {{$err}}
+                            {{ session('error') }}
                         </div>
                     </div>
-                @endforeach
-            @endif
+                @endif
+                @if ($errors->any())
+                    @foreach ($errors->all() as $err)
+                        <div class="toast fade show p-2 bg-white" role="alert" aria-live="assertive" id="dangerToast" aria-atomic="true">
+                            <div class="toast-header border-0">
+                                <i class="material-icons text-danger me-2">campaign</i>
+                                <span class="me-auto text-gradient text-danger font-weight-bold">Peringatan !</span>
+                                <small class="text-body">sekarang</small>
+                                <i class="fas fa-times text-md ms-3 cursor-pointer" data-bs-dismiss="toast" aria-label="Close"></i>
+                            </div>
+                            <hr class="horizontal dark m-0">
+                            <div class="toast-body">
+                                {{$err}}
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
+            </div>
             @yield('content')
             <footer class="footer py-4  ">
                 <div class="container-fluid">

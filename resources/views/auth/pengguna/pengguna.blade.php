@@ -189,7 +189,7 @@
                     <div class="card-body px-3 pt-0 pb-2" style="min-height: 370px;">
                         <div class="table-responsive p-0" style="max-height: 350px; overflow-y: auto;">
                             <table class="table align-items-center mb-0">
-                                <thead class="sticky-top bg-white">
+                                <thead class="sticky-top bg-white z-index-1">
                                     <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pengguna</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No Hp</th>
@@ -203,65 +203,67 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($pelanggans as $pelanggan)
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex px-2 py-1">
-                                                    <div class="avatar avatar-sm me-3 bg-dark">
-                                                        <i class="material-icons opacity-10">factory</i>
-                                                    </div>
-                                                    <div class="d-flex flex-column justify-content-center">
-                                                        <h6 class="mb-0 text-sm">{{ $pelanggan->nama }}</h6>
-                                                        <p class="text-xs text-secondary mb-0">{{ $pelanggan->email }}</p>
-                                                    </div>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="avatar avatar-sm me-3 bg-dark">
+                                                    <i class="material-icons opacity-10">factory</i>
                                                 </div>
-                                            </td>
-                                            <td class="text-center">
-                                                <p class="text-xs font-weight-bold mb-0">{{ $pelanggan->no_hp }}</p>
-                                            </td>
-                                            <td class="text-center">
-                                                @foreach ($tagihans as $tagihan)
-                                                    @if ($tagihan->id_pelanggan === $pelanggan->id_pelanggan)
-                                                        @if ($tagihans->count() > 0)
-                                                            <p class="text-xs font-weight-bold mb-0">Rp.{{ number_format($tagihan->jumlah_tagihan, 0, ',', '.') }}</p>
-                                                        @else
-                                                            <p class="text-xs font-weight-bold mb-0">Tidak ada tagihan</p>
-                                                        @endif
-                                                    @endif
-                                                @endforeach
-                                            </td>
-                                            <td class="text-center">
-                                                @if ($pelanggan->jenis_pembayaran == null)
-                                                    <p class="text-xs font-weight-bold mb-0">Belum memilih</p>
-                                                @else
-                                                    <p class="text-xs font-weight-bold mb-0">{{ $pelanggan->jenis_pembayaran }}</p>
-                                                @endif
-                                            </td>
-                                            <td class="text-wrap" style="width: 200px;">
-                                                <p class="text-xs pt-3 mb-0">{{ $pelanggan->alamat }}<p>
-                                            </td>
-                                            <td class="text-center">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">{{ $pelanggan->nama }}</h6>
+                                                    <p class="text-xs text-secondary mb-0">{{ $pelanggan->email }}</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <p class="text-xs font-weight-bold mb-0">{{ $pelanggan->no_hp }}</p>
+                                        </td>
+                                        <td class="text-center">
+                                            @php
+                                                $tagihanPelanggan = $tagihans->where('id_pelanggan', $pelanggan->id_pelanggan)->first();
+                                            @endphp
+                                            @if ($tagihanPelanggan)
+                                                <p class="text-xs font-weight-bold mb-0">Rp.{{ number_format($tagihanPelanggan->jumlah_tagihan, 0, ',', '.') }}</p>
+                                            @else
+                                                <p class="text-xs font-weight-bold mb-0">Tidak ada tagihan</p>
+                                            @endif
+                                        </td>
+                                        <td class="text-center">
+                                            @if ($pelanggan->jenis_pembayaran == null)
+                                                <p class="text-xs font-weight-bold mb-0">Belum memilih</p>
+                                            @else
+                                                <p class="text-xs font-weight-bold mb-0">{{ $pelanggan->jenis_pembayaran }}</p>
+                                            @endif
+                                        </td>
+                                        <td class="text-wrap" style="width: 200px;">
+                                            <p class="text-xs pt-3 mb-0">{{ $pelanggan->alamat }}<p>
+                                        </td>
+                                        <td class="text-center">
+                                            <form action="{{ url('/pengguna/pelanggan/status/'.$pelanggan->id_pelanggan) }}" method="POST">
+                                                @csrf
                                                 @if ($pelanggan->status == 'aktif')
-                                                    <span class="badge badge-sm bg-gradient-success">Aktif</span>
+                                                    <button type="submit" href class="badge badge-sm bg-gradient-success border-0">Aktif</button>
                                                 @else
-                                                    <span class="badge badge-sm bg-gradient-danger">Tidak Aktif</span>
+                                                    <button type="submit" class="badge badge-sm bg-gradient-danger border-0">Tidak Aktif</button>
                                                 @endif
-                                            </td>
-                                            <td class="text-center">
-                                                <a href="{{ url('/pengguna/pelanggan/edit/'.$pelanggan->id_pelanggan) }}" class="text-dark font-weight-bold" data-toggle="tooltip" data-original-title="Edit user">
-                                                    <i class="fa fa-solid fa-pen" style="color: #252f40;"></i>
-                                                </a>
-                                            </td>
-                                            <td class="text-center">
-                                                <form action="{{ url('/pengguna/pelanggan/delete/'.$pelanggan->id_pelanggan) }}" method="POST">
+                                            </form>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="{{ url('/pengguna/pelanggan/edit/'.$pelanggan->id_pelanggan) }}" class="text-dark font-weight-bold" data-toggle="tooltip" data-original-title="Edit user">
+                                                <i class="fa fa-solid fa-pen" style="color: #252f40;"></i>
+                                            </a>
+                                        </td>
+                                        <td class="text-center">
+                                            <form action="{{ url('/pengguna/pelanggan/delete/'.$pelanggan->id_pelanggan) }}" method="POST">
                                                 @csrf
                                                 @method('delete')
-                                                    <button type="submit" name="Delete" class="text-dark font-weight-bold border-0 bg-transparent">
-                                                        <i class="fa fa-solid fa-trash" style="color: #ea0606;"></i>
-                                                    </button>                                        
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                                <button type="submit" name="Delete" class="text-dark font-weight-bold border-0 bg-transparent">
+                                                    <i class="fa fa-solid fa-trash" style="color: #ea0606;"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach                                
                                 </tbody>
                             </table>
                         </div>
@@ -285,7 +287,7 @@
                         <div class="card-body px-3 pt-0 pb-2" style="min-height: 370px;">
                             <div class="table-responsive p-0" style="max-height: 350px; overflow-y: auto;">
                                 <table class="table align-items-center mb-0">
-                                <thead>
+                                <thead class="sticky-top bg-white z-index-1">
                                     <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pengguna</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Role</th>

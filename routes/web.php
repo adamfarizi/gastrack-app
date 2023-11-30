@@ -49,16 +49,19 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/sopir/create', [SopirController::class,'tambah_sopir_action']);
     Route::get('/sopir/edit/{id}', [SopirController::class,'edit_sopir']);
     Route::post('/sopir/edit/{id}', [SopirController::class,'edit_sopir_action']);
+    Route::post('/sopir/status/{id}', [SopirController::class,'edit_sopir_status']);
     Route::delete('/sopir/delete/{id}', [SopirController::class,'hapus_sopir_action']);
     Route::post('/kendaraan/create', [SopirController::class,'tambah_kendaraan_action']);
     Route::get('/kendaraan/edit/{id}', [SopirController::class,'edit_kendaraan']);
     Route::post('/kendaraan/edit/{id}', [SopirController::class,'edit_kendaraan_action']);
+    Route::post('/kendaraan/status/{id}', [SopirController::class,'edit_kendaraan_status']);
     Route::delete('/kendaraan/delete/{id}', [SopirController::class,'hapus_kendaraan_action']);
 
     Route::get('/pengguna', [PenggunaController::class,'index'])->name('pengguna');
     Route::post('/pengguna/pelanggan/create', [PenggunaController::class,'tambah_pelanggan_action']);
     Route::get('/pengguna/pelanggan/edit/{id}', [PenggunaController::class,'edit_pelanggan']);
     Route::post('/pengguna/pelanggan/edit/{id}', [PenggunaController::class,'edit_pelanggan_action']);
+    Route::post('/pengguna/pelanggan/status/{id}', [PenggunaController::class,'edit_pelanggan_status']);
     Route::delete('/pengguna/pelanggan/delete/{id}', [PenggunaController::class,'hapus_pelanggan_action']);
     Route::post('/pengguna/admin/create', [PenggunaController::class,'tambah_admin_action']);
     Route::get('/pengguna/admin/edit/{id}', [PenggunaController::class,'edit_admin']);

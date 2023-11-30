@@ -18,8 +18,10 @@ class PenggunaController extends Controller
         $total_pengguna = $total_pelanggan + $total_admin;
 
         $pelanggans = Pelanggan::all();
-        $tagihans = Tagihan::where('status_tagihan', 'Belum Bayar')->get();
-
+        $tagihans = Tagihan::where('status_tagihan', 'Belum Bayar')
+        ->with('pelanggan')
+        ->get();
+    
         $admins = User::where('role', 'Admin')->get();
 
         return view('auth.pengguna.pengguna', [
@@ -121,6 +123,22 @@ class PenggunaController extends Controller
             $pelanggan->save();
     
             return redirect()->route('pengguna')->with('success', 'Data berhasil diubah !');
+        }
+    }
+
+    public function edit_pelanggan_status($id_pelanggan){
+
+        $pelanggan = Pelanggan::find($id_pelanggan);
+
+        if ($pelanggan->status === 'aktif') {
+            $pelanggan->status = 'tidak aktif';
+            $pelanggan->save();
+            return redirect()->back()->with('error', 'Status pelanggan tidak aktif !');
+        }
+        else{
+            $pelanggan->status = 'aktif';
+            $pelanggan->save();
+            return redirect()->back()->with('success', 'Status pelanggan aktif !');
         }
     }
 

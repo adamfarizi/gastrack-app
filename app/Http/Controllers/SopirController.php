@@ -109,6 +109,22 @@ class SopirController extends Controller
         }
     }
 
+    public function edit_sopir_status($id_sopir){
+
+        $sopir = Sopir::find($id_sopir);
+
+        if ($sopir->status_sopir === 'aktif') {
+            $sopir->status_sopir = 'tidak aktif';
+            $sopir->save();
+            return redirect()->back()->with('error', 'Status sopir tidak aktif !');
+        }
+        else{
+            $sopir->status_sopir = 'aktif';
+            $sopir->save();
+            return redirect()->back()->with('success', 'Status sopir aktif !');
+        }
+    }
+
     public function hapus_sopir_action($id_sopir){
 
         $sopir = Sopir::find($id_sopir);
@@ -161,6 +177,22 @@ class SopirController extends Controller
         $kendaraan->save();
 
         return redirect()->back()->with('success', 'Data berhasil diubah !');
+    }
+
+    public function edit_kendaraan_status($id_kendaraan){
+
+        $kendaraan = Mobil::find($id_kendaraan);
+
+        if ($kendaraan->status_mobil === 'aktif') {
+            $kendaraan->status_mobil = 'tidak aktif';
+            $kendaraan->save();
+            return redirect()->back()->with('error', 'Status mobil tidak aktif !');
+        }
+        else{
+            $kendaraan->status_mobil = 'aktif';
+            $kendaraan->save();
+            return redirect()->back()->with('success', 'Status mobil aktif !');
+        }
     }
 
     public function hapus_kendaraan_action($id_mobil){

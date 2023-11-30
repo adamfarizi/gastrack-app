@@ -175,7 +175,7 @@
                     <div class="card-body px-3 pt-0 pb-2" style="min-height: 370px;">
                         <div class="table-responsive p-0" style="max-height: 350px; overflow-y: auto;">
                             <table class="table align-items-center mb-0">
-                                <thead class="sticky-top bg-white">
+                                <thead class="sticky-top bg-white z-index-1">
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Pengguna</th>
@@ -216,11 +216,14 @@
                                                 @endif
                                             </td>
                                             <td class="text-center">
-                                                @if ($sopir->status_sopir === 'aktif')
-                                                    <span class="badge badge-sm bg-gradient-success">Aktif</span>
-                                                @else
-                                                    <span class="badge badge-sm bg-gradient-danger">Tdk Aktif</span>
-                                                @endif
+                                                <form action="{{ url('/sopir/status/'.$sopir->id_sopir) }}" method="POST">
+                                                    @csrf
+                                                    @if ($sopir->status_sopir == 'aktif')
+                                                        <button type="submit" href class="badge badge-sm bg-gradient-success border-0">Aktif</button>
+                                                    @else
+                                                        <button type="submit" class="badge badge-sm bg-gradient-danger border-0">Tidak Aktif</button>
+                                                    @endif
+                                                </form>
                                             </td>
                                             <td class="text-center">
                                                 <a class="cursor-pointer" id="dropdownTable" data-bs-toggle="dropdown" aria-expanded="false">
@@ -267,7 +270,7 @@
                     <div class="card-body px-3 pt-0 pb-2" style="min-height: 370px;">
                         <div class="table-responsive p-0" style="max-height: 350px; overflow-y: auto;">
                             <table class="table align-items-center mb-0">
-                                <thead class="sticky-top bg-white">
+                                <thead class="sticky-top bg-white z-index-1">
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Identitas Kendaraan</th>
@@ -309,11 +312,14 @@
                                                 @endif
                                             </td>
                                             <td class="text-center">
-                                                @if ($kendaraan->status_mobil === 'aktif')
-                                                    <span class="badge badge-sm bg-gradient-success">Aktif</span>
-                                                @else
-                                                    <span class="badge badge-sm bg-gradient-danger">Tdk Aktif</span>
-                                                @endif
+                                                <form action="{{ url('/kendaraan/status/'.$kendaraan->id_mobil) }}" method="POST">
+                                                    @csrf
+                                                    @if ($kendaraan->status_mobil == 'aktif')
+                                                        <button type="submit" href class="badge badge-sm bg-gradient-success border-0">Aktif</button>
+                                                    @else
+                                                        <button type="submit" class="badge badge-sm bg-gradient-danger border-0">Tidak Aktif</button>
+                                                    @endif
+                                                </form>
                                             </td>
                                             <td class="text-center">
                                                 <a class="cursor-pointer" id="dropdownTable" data-bs-toggle="dropdown" aria-expanded="false">
