@@ -364,12 +364,12 @@
                     </div>
                 </div>
                 <div class="card-body p-3">
-                    <div class="timeline timeline-one-side">
-                        @if ($pesanan_sekarang->isEmpty())
-                            <div class="text-center">
-                                <p class="py-9 fw-light" style="color: #ced4da;">Belum ada pesanan</p>
-                            </div>
-                        @else
+                    @if ($pesanan_sekarang->isEmpty())
+                        <div class="text-center">
+                            <p class="py-9 fw-light" style="color: #ced4da;">Belum ada pesanan</p>
+                        </div>
+                    @else
+                        <div class="timeline timeline-one-side">
                             @foreach ($pesanan_sekarang as $pesanan)
                                 @foreach ($transaksis as $transaksi)
                                     @if ($pesanan->id_transaksi == $transaksi->id_transaksi)
@@ -389,8 +389,8 @@
                                     @endif
                                 @endforeach
                             @endforeach
-                        @endif
-                    </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
