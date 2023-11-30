@@ -53,7 +53,7 @@ class BerandaController extends Controller
 
         $pesanan_sekarang = Pesanan::orderBy('created_at', 'ASC')
             ->with('transaksi')
-            ->take(10)
+            ->take(6)
             ->get();
 
         return view('auth.beranda.beranda',[
