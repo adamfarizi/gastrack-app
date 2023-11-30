@@ -31,12 +31,16 @@ class PengirimanController extends Controller
         $pesanan_dikirim = Pengiriman::where('status_pengiriman', 'Dikirim')->count();
         
         $prosess = Pengiriman::where('status_pengiriman', 'Proses')
-        ->with('pesanan')->orderBy('created_at', 'desc')->get();
-        $sopirs = Sopir::where('ketersediaan_sopir', 'tersedia')->get();
-        $mobils = Mobil::where('ketersediaan_mobil', 'tersedia')->get();
+            ->with('pesanan')->orderBy('created_at', 'desc')->get();
+        $sopirs = Sopir::where('ketersediaan_sopir', 'tersedia')
+            ->where('status_sopir', 'aktif')
+            ->get();
+        $mobils = Mobil::where('ketersediaan_mobil', 'tersedia')
+            ->where('status_mobil', 'aktif')
+            ->get();
         
         $pengirimans = Pengiriman::where('status_pengiriman', 'Dikirim')
-        ->with('pesanan')->orderBy('created_at', 'desc')->get();
+            ->with('pesanan')->orderBy('created_at', 'desc')->get();
         $nama_sopir = Sopir::all();
         $nama_mobil = Mobil::all();
 
