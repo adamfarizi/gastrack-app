@@ -379,7 +379,7 @@
                                             </span>
                                             <div class="timeline-content">
                                                 <h6 class="text-dark text-sm font-weight-bold mb-0">
-                                                    Pesanan dari {{ $transaksi->pelanggan->nama }}, {{ $pesanan->jumlah_pesanan }} bar
+                                                    Pesanan dari {{ $transaksi->pelanggan->nama_perusahaan }}, {{ $pesanan->jumlah_pesanan }} bar
                                                 </h6>
                                                 <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
                                                     - {{ date('d M h:s', strtotime($pesanan->tanggal_pesanan)) }}
@@ -475,7 +475,7 @@
                                 '</td>' +
                                 '<td>' +
                                     '<div class="ps-4">' +
-                                        '<h6 class="mb-1 text-sm">' + transaksi.pelanggan.nama + '</h6>' +
+                                        '<h6 class="mb-1 text-sm">' + transaksi.pelanggan.nama_perusahaan + '</h6>' +
                                         '<p class="text-sm text-secondary mb-0">' + transaksi.pelanggan.email +
                                         '</p>' +
                                     '</div>' +

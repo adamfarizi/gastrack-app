@@ -168,7 +168,7 @@
                                 <div class="row">
                                     <p class="col-3 fw-bold text-dark mb-0">Pelanggan</p>
                                     <p class="col fw-bold text-dark mb-0">: <span
-                                            class="ms-1 col fw-light text-second">{{ $transaksi->pelanggan->nama }}</span>
+                                            class="ms-1 col fw-light text-second">{{ $transaksi->pelanggan->nama_perusahaan }}</span>
                                     </p>
                                 </div>
                                 <div class="row">
@@ -375,7 +375,7 @@
             if (selisih < 0) {
                 clearInterval(x);
                 document.getElementById('countdown').innerHTML =
-                    '<p class="mx-0 text-danger">Pembayaran Sudah Jatuh Tempo !</p>';
+                    'Tagihan Sudah Jatuh Tempo!';
             }
         }, 1000);
     </script>

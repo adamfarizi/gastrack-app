@@ -16,10 +16,12 @@ class CreatePelangganTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('alamat')->nullable();
+            $table->string('koordinat')->nullable();
             $table->string('no_hp')->nullable();
-            $table->string('jenis_pembayaran')->nullable();
+            $table->enum('jenis_pembayaran',['2 minggu', '3 minggu', '1 bulan'])->nullable();
             $table->enum('status',['aktif', 'tidak aktif'])->default('aktif');
             $table->timestamps();
+
         });
     }
 

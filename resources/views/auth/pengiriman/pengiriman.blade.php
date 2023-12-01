@@ -344,7 +344,7 @@
                         <div class="d-flex flex-column px-3 mb-1 col">
                             @foreach ($transaksis as $transaksi)
                                 @if ($pesanan->id_transaksi == $transaksi->id_transaksi)
-                                    <h6 class="mb-0">Pelanggan : {{ $transaksi->pelanggan->nama }}</h6>
+                                    <h6 class="mb-0">Pelanggan : {{ $transaksi->pelanggan->nama_perusahaan }}</h6>
                                     <ul>
                                         <li>
                                             <div class="row">
@@ -472,7 +472,7 @@
                             var namaPelanggan = '';
                             $.each(data.transaksis, function(index, transaksi) {
                                 if (pengiriman.pesanan.id_transaksi === transaksi.id_transaksi) {
-                                    namaPelanggan = transaksi.pelanggan.nama;
+                                    namaPelanggan = transaksi.pelanggan.nama_perusahaan;
                                 }
                             });
 
@@ -587,7 +587,7 @@
                             var namaPelanggan = '';
                             $.each(data.transaksis, function(index, transaksi) {
                                 if (pengiriman.pesanan.id_transaksi === transaksi.id_transaksi) {
-                                    namaPelanggan = transaksi.pelanggan.nama;
+                                    namaPelanggan = transaksi.pelanggan.nama_perusahaan;
                                 }
                             });
                             var namaSopir = '';

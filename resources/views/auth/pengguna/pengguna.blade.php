@@ -192,7 +192,7 @@
                                 <thead class="sticky-top bg-white z-index-1">
                                     <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pengguna</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No Hp</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pemilik</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tagihan</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jadwal Bayar</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Alamat</th>
@@ -210,13 +210,16 @@
                                                     <i class="material-icons opacity-10">factory</i>
                                                 </div>
                                                 <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">{{ $pelanggan->nama }}</h6>
+                                                    <h6 class="mb-0 text-sm">{{ $pelanggan->nama_perusahaan }}</h6>
                                                     <p class="text-xs text-secondary mb-0">{{ $pelanggan->email }}</p>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="text-center">
-                                            <p class="text-xs font-weight-bold mb-0">{{ $pelanggan->no_hp }}</p>
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="mb-0 text-sm">{{ $pelanggan->nama_pemilik }}</h6>
+                                                <p class="text-xs text-secondary mb-0">{{ $pelanggan->no_hp }}</p>
+                                            </div>                                        
                                         </td>
                                         <td class="text-center">
                                             @php
