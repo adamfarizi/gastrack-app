@@ -19,7 +19,7 @@ class TagihanSeeder extends Seeder
             [
                 'tanggal_jatuh_tempo' => '2023-11-25',
                 'jumlah_tagihan' => 1300000, // Replace with your desired value
-                'status_tagihan' => 'Sudah Bayar',
+                'status_tagihan' => 'Belum Bayar',
                 'tanggal_pembayaran' => null,
                 'bukti_pembayaran' => null,
                 'id_pelanggan' => 1,

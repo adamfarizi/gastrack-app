@@ -43,7 +43,7 @@ class ApiPembelianController extends Controller
         $validator = Validator::make($request->all(), [
             'id_pelanggan' => 'required|exists:pelanggan,id_pelanggan',
             'jumlah_pesanan' => 'required|integer|min:1',
-            'durasi_jatuh_tempo' => 'required|in:2,3,4', // Menambahkan validasi durasi
+            // 'durasi_jatuh_tempo' => 'required|in:2,3,4', // Menambahkan validasi durasi
         ]);
 
         // Cek jika validasi gagal
@@ -60,7 +60,8 @@ class ApiPembelianController extends Controller
 
         try {
             // Periksa apakah masih dalam batas waktu dua minggu dari pembelian sebelumnya
-            $batas_waktu = now()->subWeeks(2);
+            $pelanggan = Pelanggan::find($request->input('id_pelanggan'));
+            $batas_waktu = now()->subWeeks($pelanggan->jenis_pembayaran);
             $transaksi_terakhir = Transaksi::where('id_pelanggan', $request->input('id_pelanggan'))
                 ->orderBy('tanggal_transaksi', 'desc')
                 ->first();
@@ -107,11 +108,8 @@ class ApiPembelianController extends Controller
             $last_tagihan_id = Tagihan::max('id_tagihan');
             $new_tagihan_id = $last_tagihan_id + 1;
 
-            // Tentukan durasi berdasarkan input
-            $durasi_jatuh_tempo = $request->input('durasi_jatuh_tempo');
-
             // Tetapkan tanggal_jatuh_tempo, otomatis ditambahkan sesuai durasi
-            $tanggal_jatuh_tempo = now()->addWeeks($durasi_jatuh_tempo);
+            $tanggal_jatuh_tempo = now()->addWeeks($pelanggan->jenis_pembayaran);
 
             // Tambahkan data ke tabel tagihan
             $status_tagihan = 'Belum Bayar';
@@ -157,11 +155,11 @@ class ApiPembelianController extends Controller
 
     public function transaksi_belum_bayar($id_pelanggan = null)
     {
-        $query = Transaksi::whereHas('pembayaran', function ($query) {
-            $query->where('status_pembayaran', 'Belum Bayar');
+        $query = Transaksi::whereHas('tagihan', function ($query) {
+            $query->where('status_tagihan', 'Belum Bayar');
         })
             ->join('pelanggan', 'transaksi.id_pelanggan', '=', 'pelanggan.id_pelanggan')
-            ->join('pembayaran', 'transaksi.id_pembayaran', '=', 'pembayaran.id_pembayaran');
+            ->join('tagihan', 'transaksi.id_tagihan', '=', 'tagihan.id_tagihan');
 
         // Menambahkan kondisi berdasarkan id_pelanggan jika disediakan
         if ($id_pelanggan !== null) {
@@ -169,20 +167,17 @@ class ApiPembelianController extends Controller
         }
 
         $belum_bayar = $query
-            ->select([
-                'transaksi.id_transaksi',
-                'agen.name AS nama_agen',
-                'transaksi.tanggal_transaksi',
-                'transaksi.status_pengiriman',
-                'transaksi.resi_transaksi',
-                'gas.name_gas AS nama_gas',
-                'gas.jenis_gas',
-                'pembayaran.status_pembayaran',
-                'transaksi.jumlah_transaksi',
-                'transaksi.total_transaksi'
-            ])
-            ->orderBy('transaksi.tanggal_transaksi', 'desc')
-            ->get();
+        ->select([
+            'transaksi.id_transaksi',
+            'pelanggan.nama_perusahaan',
+            'pelanggan.nama_pemilik',
+            'transaksi.tanggal_transaksi',
+            'transaksi.resi_transaksi',
+            'tagihan.status_tagihan',
+            'tagihan.jumlah_tagihan',
+        ])
+        ->orderBy('transaksi.tanggal_transaksi', 'desc')
+        ->get();
 
         if ($belum_bayar->isEmpty()) {
             return response()->json([
@@ -196,6 +191,81 @@ class ApiPembelianController extends Controller
                 'datauser' => $belum_bayar,
             ], 200);
         }
+    }
+
+    public function transaksi_sudah_bayar($id_pelanggan = null)
+    {
+        $query = Transaksi::whereHas('tagihan', function ($query) {
+            $query->where('status_tagihan', 'Sudah Bayar');
+        })
+            ->join('pelanggan', 'transaksi.id_pelanggan', '=', 'pelanggan.id_pelanggan')
+            ->join('tagihan', 'transaksi.id_tagihan', '=', 'tagihan.id_tagihan');
+
+        // Menambahkan kondisi berdasarkan id_pelanggan jika disediakan
+        if ($id_pelanggan !== null) {
+            $query->where('pelanggan.id_pelanggan', $id_pelanggan);
+        }
+
+        $belum_bayar = $query
+        ->select([
+            'transaksi.id_transaksi',
+            'pelanggan.nama_perusahaan',
+            'pelanggan.nama_pemilik',
+            'transaksi.tanggal_transaksi',
+            'transaksi.resi_transaksi',
+            'tagihan.status_tagihan',
+            'tagihan.jumlah_tagihan',
+        ])
+        ->orderBy('transaksi.tanggal_transaksi', 'desc')
+        ->get();
+
+        if ($belum_bayar->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan',
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data ditemukan',
+                'datauser' => $belum_bayar,
+            ], 200);
+        }
+    }
+
+    public function update_pembayaran($id, Request $request)
+    {
+        $request->validate([
+            'bukti_pembayaran' => 'required|image|mimes:jpeg,jpg,png|max:2048',
+        ]);
+
+        $dikirim = Tagihan::where('id_tagihan', $id)->first();
+
+        if (!$dikirim) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan!',
+            ], 422);
+        }
+
+
+        if ($request->hasFile('bukti_pembayaran')) {
+            $file = $request->file('bukti_pembayaran');
+            $fileName = $file->getClientOriginalName();
+            $file->move(public_path('img/BuktiPembayaran'), $fileName);
+
+            // Menyimpan informasi bukti pembayaran dalam basis data
+            $dikirim->update([
+                'tanggal_pembayaran' => now(),
+                'bukti_pembayaran' => $fileName,
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data berhasil diubah',
+            'datauser' => $dikirim,
+        ], 200);
     }
 
 }

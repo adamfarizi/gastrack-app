@@ -174,7 +174,7 @@
                                 </div>
                                 <div class="row">
                                     <p class="col-4 fw-bold text-dark mb-0">Tanggal Pembayaran</p>
-                                    @if ($transaksi->tagihan->status_pembayaran === 'Sudah Bayar')
+                                    @if ($transaksi->tagihan->status_tagihan === 'Sudah Bayar')
                                         <p class="col fw-bold text-dark mb-0">: <span class="ms-1 col fw-light text-second">{{ date('d/M/Y', strtotime($transaksi->tagihan->tanggal_pembayaran)) }}</span>
                                     @else
                                         <p class="col fw-bold text-dark mb-0">: <span class="ms-1 col fw-light text-danger">Belum Bayar</span>
