@@ -141,27 +141,30 @@
                         <div class="row mx-2">
                             <div class="mb-3 col-6">
                                 <div class="row">
-                                    <p class="col-3 fw-bold text-dark mb-0">Resi</p>
+                                    <p class="col-4 fw-bold text-dark mb-0">Resi Transaksi</p>
                                     <p class="col fw-bold text-dark mb-0">: <span
                                             class="ms-1 col fw-light text-second">{{ $transaksi->resi_transaksi }}</span>
                                     </p>
                                 </div>
                                 <div class="row">
-                                    <p class="col-3 fw-bold text-dark mb-0">Tanggal</p>
+                                    <p class="col-4 fw-bold text-dark mb-0">Jatuh Tempo</p>
                                     <p class="col fw-bold text-dark mb-0">: <span
-                                            class="ms-1 col fw-light text-second">{{ date('d/m/Y') }}</< /span>
+                                            class="ms-1 col fw-light text-second">{{ date('d/M/Y', strtotime($transaksi->tagihan->tanggal_jatuh_tempo)) }}</span>
                                     </p>
                                 </div>
                                 <div class="row">
-                                    <p class="col-3 fw-bold text-dark mb-0">Jatuh Tempo</p>
-                                    <p class="col fw-bold text-dark mb-0">: <span
-                                            class="ms-1 col fw-light text-second">{{ date('d/m/Y', strtotime($transaksi->tagihan->tanggal_jatuh_tempo)) }}</span>
-                                    </p>
-                                </div>
-                                <div class="row">
-                                    <p class="col-3 fw-bold text-dark mb-0">Waktu Mundur</p>
+                                    <p class="col-4 fw-bold text-dark mb-0">Waktu Mundur</p>
                                     <p class="col fw-bold text-dark mb-0">: <span class="ms-1 col fw-light text-second"
                                             id="countdown"></span></p>
+                                </div>
+                                <div class="row">
+                                    <p class="col-4 fw-bold text-dark mb-0">Tanggal Pembayaran</p>
+                                    @if ($transaksi->tagihan->status_pembayaran === 'Sudah Bayar')
+                                        <p class="col fw-bold text-dark mb-0">: <span class="ms-1 col fw-light text-second">{{ date('d/M/Y', strtotime($transaksi->tagihan->tanggal_pembayaran)) }}</span>
+                                    @else
+                                        <p class="col fw-bold text-dark mb-0">: <span class="ms-1 col fw-light text-danger">Belum Bayar</span>
+                                    @endif
+                                    </p>
                                 </div>
                             </div>
                             <div class="mb-3 col-5">
@@ -351,32 +354,27 @@
 @endsection
 @section('js')
     <script>
-        // Tanggal jatuh tempo dari PHP
-        var tanggalJatuhTempo = new Date('{{ $transaksi->tagihan->tanggal_jatuh_tempo }}').getTime();
-
-        // Update countdown setiap detik
-        var x = setInterval(function() {
-            // Tanggal sekarang
-            var sekarang = new Date().getTime();
-
-            // Hitung selisih waktu
-            var selisih = tanggalJatuhTempo - sekarang;
-
-            // Hitung hari, jam, menit, dan detik
-            var hari = Math.floor(selisih / (1000 * 60 * 60 * 24));
-            var jam = Math.floor((selisih % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var menit = Math.floor((selisih % (1000 * 60 * 60)) / (1000 * 60));
-            var detik = Math.floor((selisih % (1000 * 60)) / 1000);
-
-            // Tampilkan hasil countdown
-            document.getElementById('countdown').innerHTML = hari + 'd ' + jam + 'h ' + menit + 'm ' + detik + 's ';
-
-            // Jika waktu habis, tampilkan pesan atau lakukan aksi lainnya
-            if (selisih < 0) {
-                clearInterval(x);
-                document.getElementById('countdown').innerHTML =
-                    'Tagihan Sudah Jatuh Tempo!';
-            }
-        }, 1000);
+        if ('{{ $transaksi->tagihan->status_tagihan === "Sudah Bayar" }}') {
+            clearInterval(x);
+            document.getElementById('countdown').innerHTML =
+                'Tagihan Sudah Dibayar !';
+        }
+        else{
+            var tanggalJatuhTempo = new Date('{{ $transaksi->tagihan->tanggal_jatuh_tempo }}').getTime();
+            var x = setInterval(function() {
+                var sekarang = new Date().getTime();
+                var selisih = tanggalJatuhTempo - sekarang;
+                var hari = Math.floor(selisih / (1000 * 60 * 60 * 24));
+                var jam = Math.floor((selisih % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var menit = Math.floor((selisih % (1000 * 60 * 60)) / (1000 * 60));
+                var detik = Math.floor((selisih % (1000 * 60)) / 1000);
+                document.getElementById('countdown').innerHTML = hari + 'd ' + jam + 'h ' + menit + 'm ' + detik + 's ';
+                if (selisih < 0) {
+                    clearInterval(x);
+                    document.getElementById('countdown').innerHTML =
+                        'Tagihan Sudah Jatuh Tempo!';
+                }
+            }, 1000);
+        }
     </script>
 @endsection

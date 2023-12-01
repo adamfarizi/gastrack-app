@@ -18,7 +18,7 @@ class PelangganSeeder extends Seeder
                 'password' => bcrypt('pelanggan123'),
                 'alamat' => 'Jl. Merdeka No. 123, Kelurahan Bahagia, Kecamatan Sentosa, Kota Fiktif A',
                 'no_hp' => '088111222321',
-                'jenis_pembayaran' => '2 minggu',
+                'jenis_pembayaran' => '2',
             ],[
                 'nama_perusahaan' => 'PT. Sinar Patihan',
                 'nama_pemilik' => 'Dam Adam',
@@ -26,7 +26,7 @@ class PelangganSeeder extends Seeder
                 'password' => bcrypt('pelanggan123'),
                 'alamat' => 'Jl. Singosari No. 2, Kelurahan Patihan, Kecamatan Manguharjo, Kota Madiun',
                 'no_hp' => '088112232321',
-                'jenis_pembayaran' => '3 minggu',
+                'jenis_pembayaran' => '3',
             ],    
         ];
 

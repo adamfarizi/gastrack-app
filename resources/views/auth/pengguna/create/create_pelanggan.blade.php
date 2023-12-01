@@ -43,9 +43,9 @@
                             <label>Jadwal Bayar <span class="text-danger">*</span></label>
                             <div class="input-group mb-3 input-group-outline">
                                 <select class="form-control px-2" aria-label="Jadwal Bayar" name="jadwal_bayar">
-                                    <option value="2 Minggu">2 Minggu</option>
-                                    <option value="3 Minggu">3 Minggu</option>
-                                    <option value="4 Minggu">4 Minggu</option>
+                                    <option value="2">2 Minggu</option>
+                                    <option value="3">3 Minggu</option>
+                                    <option value="4">4 Minggu</option>
                                 </select>
                             </div>
                         </div>

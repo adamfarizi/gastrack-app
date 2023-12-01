@@ -79,7 +79,7 @@ class PenggunaController extends Controller
                 'nama_pemilik' => 'required|string|max:255',
                 'email' => 'required|email|max:255',
                 'no_hp' => 'required|string|max:15',
-                'jadwal_bayar' => 'required|string',
+                'jadwal_bayar' => 'required',
                 'alamat' => 'required|string',
             ]);
     
@@ -99,7 +99,7 @@ class PenggunaController extends Controller
                 'nama_pemilik' => 'required|string|max:255',
                 'email' => 'required|email|max:255',
                 'no_hp' => 'required|string|max:15',
-                'jadwal_bayar' => 'required|string',
+                'jadwal_bayar' => 'required',
                 'alamat' => 'required|string',
                 'old_password' => [
                     'required',
