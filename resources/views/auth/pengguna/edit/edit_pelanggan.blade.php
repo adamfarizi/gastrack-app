@@ -176,9 +176,9 @@
                                     <label>Jadwal Bayar <span class="text-danger">*</span></label>
                                     <div class="input-group mb-3 input-group-outline">
                                         <select class="form-control px-2" aria-label="Jadwal Bayar" name="jadwal_bayar">
-                                            <option value="2 Minggu" {{ $pelanggan->jenis_pembayaran === '2 Minggu' ? 'selected' : '' }}>2 Minggu</option>
-                                            <option value="3 Minggu" {{ $pelanggan->jenis_pembayaran === '3 Minggu' ? 'selected' : '' }}>3 Minggu</option>
-                                            <option value="4 Minggu" {{ $pelanggan->jenis_pembayaran === '4 Minggu' ? 'selected' : '' }}>4 Minggu</option>
+                                            <option value="2" {{ $pelanggan->jenis_pembayaran === '2' ? 'selected' : '' }}>2 Minggu</option>
+                                            <option value="3" {{ $pelanggan->jenis_pembayaran === '3' ? 'selected' : '' }}>3 Minggu</option>
+                                            <option value="4" {{ $pelanggan->jenis_pembayaran === '4' ? 'selected' : '' }}>4 Minggu</option>
                                         </select>
                                     </div>
                                 </div>

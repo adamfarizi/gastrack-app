@@ -235,7 +235,7 @@
                                             @if ($pelanggan->jenis_pembayaran == null)
                                                 <p class="text-xs font-weight-bold mb-0">Belum memilih</p>
                                             @else
-                                                <p class="text-xs font-weight-bold mb-0">{{ $pelanggan->jenis_pembayaran }}</p>
+                                                <p class="text-xs font-weight-bold mb-0">{{ $pelanggan->jenis_pembayaran }} Minggu</p>
                                             @endif
                                         </td>
                                         <td class="text-wrap" style="width: 200px;">
