@@ -475,7 +475,7 @@
                                     '<p class="text-sm py-1 mb-0">' + transaksi.pelanggan.alamat + '</p>' +
                                 '</td>' +
                                 '<td class="text-center">' +
-                                    '<a href="<?php echo url("/pembelian/lihat_pesanan/' + transaksi.id_transaksi + '"); ?>" data-id="" class="badge badge-sm bg-gradient-success text-white">Lihat Pesanan</a>' +
+                                    '<a href="<?php echo url("/pembelian/more/pesanan/' + transaksi.id_transaksi + '"); ?>" data-id="" class="badge badge-sm bg-gradient-success text-white">Lihat Pesanan</a>' +
                                 '</td>' +
                                 '<td class="text-center">' +
                                     statusBadge +
@@ -541,7 +541,7 @@
                                     '<p class="text-sm py-1 mb-0">' + transaksi.pelanggan.alamat + '</p>' +
                                 '</td>' +
                                 '<td class="text-center">' +
-                                    '<a href="<?php echo url("/pembelian/lihat_pesanan/' + transaksi.id_transaksi + '"); ?>" data-id="" class="badge badge-sm bg-gradient-success text-white">Lihat Pesanan</a>' +
+                                    '<a href="<?php echo url("/pembelian/more/pesanan/' + transaksi.id_transaksi + '"); ?>" data-id="" class="badge badge-sm bg-gradient-success text-white">Lihat Pesanan</a>' +
                                 '</td>' +
                                 '<td class="text-center">' +
                                     statusBadge +
@@ -579,9 +579,9 @@
 
         function getStatusBadge(transaksi) {
             if (transaksi.tagihan.status_tagihan === 'Belum Bayar') {
-                return '<span class="badge badge-sm bg-gradient-danger">Belum Bayar</span>';
+                return '<a href="<?php echo url("/pembelian/more/tagihan/' + transaksi.id_transaksi + '"); ?>" class="badge badge-sm bg-gradient-danger text-white">Belum Bayar</a>';
             } else {
-                return '<span class="badge badge-sm bg-gradient-success">Sudah Bayar</span>';
+                return '<a href="<?php echo url("/pembelian/more/tagihan/' + transaksi.id_transaksi + '"); ?>"  class="badge badge-sm bg-gradient-success text-white">Sudah Bayar</a>';
             }
         }
 

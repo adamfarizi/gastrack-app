@@ -37,7 +37,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pembelian', [PembelianController::class,'index'])->name('pembelian');
     Route::get('/pembelian/data', [PembelianController::class,'realtimeData']);
     Route::post('/pembelian/tambah_data', [PembelianController::class, 'create']);
-    Route::get('/pembelian/lihat_pesanan/{id}', [PembelianController::class, 'detail_pesanan']);
+    Route::get('/pembelian/more/pesanan/{id}', [PembelianController::class, 'detail_pesanan']);
+    Route::get('/pembelian/more/tagihan/{id}', [PembelianController::class, 'detail_tagihan']);
+    Route::post('/pembelian/more/tagihan/{id}', [PembelianController::class, 'konfirmasi_pembayaran']);
     
     Route::get('/pengiriman', [PengirimanController::class,'index'])->name('pengiriman');
     Route::get('/pengiriman/data', [PengirimanController::class,'realtimeData']);

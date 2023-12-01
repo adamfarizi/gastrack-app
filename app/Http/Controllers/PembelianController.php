@@ -54,11 +54,42 @@ class PembelianController extends Controller
         $pesanans = Pesanan::where('id_transaksi', $id_transaksi)->get();
         $pesananAkhir = Pesanan::where('id_transaksi', $id_transaksi)->orderBy('tanggal_pesanan', 'desc')->first();
 
-        return view('auth.pembelian.lihat_pesanan',[
+        return view('auth.pembelian.more.pesanan',[
             'transaksis' => $transaksis,
             'pesananAwal' => $pesananAwal,
             'pesanans' => $pesanans,
             'pesananAkhir' => $pesananAkhir,
         ], $data);
     }
+
+    public function detail_tagihan($id_transaksi) {
+        $data['title'] = 'Pembelian';
+        
+        $transaksis = Transaksi::where('id_transaksi', $id_transaksi)->get();
+        $pesanans = Pesanan::where('id_transaksi', $id_transaksi)->get();
+
+        return view('auth.pembelian.more.tagihan',[
+            'transaksis' => $transaksis,
+            'pesanans' => $pesanans,
+        ], $data);
+    }
+
+    public function konfirmasi_pembayaran($id_transaksi) {
+        $transaksi = Transaksi::find($id_transaksi);
+    
+        if (!$transaksi) {
+            return redirect()->back()->with('error', 'Transaksi tidak ditemukan !');
+        }
+        else{
+            if ($transaksi->tagihan->bukti_pembayaran == null) {
+                return redirect()->back()->with('error', 'Tidak ada bukti pembayaran !');
+            }
+            else{
+                $transaksi->tagihan->status_tagihan = "Sudah Bayar";
+                $transaksi->tagihan->save();
+            
+                return redirect()->route('pembelian')->with('success', 'Pembayaran berhasil dikonfirmasi !');
+            }
+        }
+    }    
 }
