@@ -19,6 +19,7 @@ class Pelanggan extends Model implements Authenticatable
         'email',
         'password',
         'alamat',
+        'koordinat',
         'no_hp',
         'jenis_pembayaran',
         'status',
