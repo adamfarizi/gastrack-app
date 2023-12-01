@@ -15,10 +15,12 @@ class Pelanggan extends Model implements Authenticatable
     protected $primaryKey = 'id_pelanggan';
     
     protected $fillable = [
-        'nama',
+        'nama_perusahaan',
+        'nama_pemilik',
         'email',
         'password',
         'alamat',
+        'koordinat',
         'no_hp',
         'jenis_pembayaran',
         'status',

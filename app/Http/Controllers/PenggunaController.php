@@ -36,7 +36,8 @@ class PenggunaController extends Controller
 
     public function tambah_pelanggan_action(Request $request){
         $request->validate([
-            'nama' => 'required',
+            'nama_perusahaan' => 'required',
+            'nama_pemilik' => 'required',
             'email' => 'required|unique:pelanggan',
             'no_hp' => 'required', 
             'jadwal_bayar' => 'required', 
@@ -46,7 +47,8 @@ class PenggunaController extends Controller
         ]);
 
         $pelanggan = new Pelanggan([
-            'nama' => $request->nama,
+            'nama_perusahaan' => $request->nama_perusahaan,
+            'nama_pemilik' => $request->nama_pemilik,
             'email' => $request->email,
             'no_hp' => $request->no_hp, 
             'jenis_pembayaran' => $request->jadwal_bayar, 
@@ -73,7 +75,8 @@ class PenggunaController extends Controller
         
         if ($request->old_password == null) {
             $request->validate([
-                'nama' => 'required|string|max:255',
+                'nama_perusahaan' => 'required|string|max:255',
+                'nama_pemilik' => 'required|string|max:255',
                 'email' => 'required|email|max:255',
                 'no_hp' => 'required|string|max:15',
                 'jadwal_bayar' => 'required|string',
@@ -81,7 +84,8 @@ class PenggunaController extends Controller
             ]);
     
             $pelanggan = Pelanggan::find($id_pelanggan);
-            $pelanggan->nama = $request->input('nama');
+            $pelanggan->nama_perusahaan = $request->input('nama_perusahaan');
+            $pelanggan->nama_pemilik = $request->input('nama_pemilik');
             $pelanggan->email = $request->input('email');
             $pelanggan->no_hp = $request->input('no_hp');
             $pelanggan->jenis_pembayaran = $request->input('jadwal_bayar');
@@ -91,7 +95,8 @@ class PenggunaController extends Controller
             return redirect()->route('pengguna')->with('success', 'Data berhasil diubah !');
         } else {
             $request->validate([
-                'nama' => 'required|string|max:255',
+                'nama_perusahaan' => 'required|string|max:255',
+                'nama_pemilik' => 'required|string|max:255',
                 'email' => 'required|email|max:255',
                 'no_hp' => 'required|string|max:15',
                 'jadwal_bayar' => 'required|string',
@@ -114,7 +119,8 @@ class PenggunaController extends Controller
             ]);
     
             $pelanggan = Pelanggan::find($id_pelanggan);
-            $pelanggan->nama = $request->input('nama');
+            $pelanggan->nama_perusahaan = $request->input('nama_perusahaan');
+            $pelanggan->nama_pemilik = $request->input('nama_pemilik');
             $pelanggan->email = $request->input('email');
             $pelanggan->no_hp = $request->input('no_hp');
             $pelanggan->jenis_pembayaran = $request->input('jadwal_bayar');

@@ -143,10 +143,21 @@
                         <form role="form text-left border" action="{{ url('/pengguna/pelanggan/edit/' . $pelanggan->id_pelanggan) }}"
                             method="POST">
                             @csrf
-                            <label>Nama</label>
-                            <div class="input-group input-group-outline mb-3 bg-white">
-                                <input name="nama" type="text" class="form-control" aria-label="nama"
-                                    value="{{ $pelanggan->nama }}">
+                            <div class="row">
+                                <div class="col">
+                                    <label>Nama Perusahaan</label>
+                                    <div class="input-group input-group-outline mb-3 bg-white">
+                                        <input name="nama_perusahaan" type="text" class="form-control" aria-label="nama"
+                                            value="{{ $pelanggan->nama_perusahaan }}">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <label>Nama Pemilik</label>
+                                    <div class="input-group input-group-outline mb-3 bg-white">
+                                        <input name="nama_pemilik" type="text" class="form-control" aria-label="nama"
+                                            value="{{ $pelanggan->nama_pemilik }}">
+                                    </div>
+                                </div>
                             </div>
                             <label>Email</label>
                             <div class="input-group input-group-outline mb-3 bg-white">

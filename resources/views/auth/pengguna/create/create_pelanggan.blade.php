@@ -2,7 +2,7 @@
     @csrf
     <div class="modal fade" id="tambahpelanggan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title font-weight-bold">Tambah Pelanggan Baru</h4>
@@ -10,10 +10,17 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col">
-                            <label>Nama <span class="text-danger">*</span></label>
+                            <label>Nama Perusahaan <span class="text-danger">*</span></label>
                             <div class="input-group mb-3 input-group-outline">
-                                <input name="nama" type="text" class="form-control" placeholder="Masukkan nama pelanggan"
-                                    aria-label="nama" value="{{ old('nama') }}">
+                                <input name="nama_perusahaan" type="text" class="form-control" placeholder="Masukkan nama perusahaan"
+                                    aria-label="nama" value="{{ old('nama_perusahaan') }}">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <label>Nama Pemilik <span class="text-danger">*</span></label>
+                            <div class="input-group mb-3 input-group-outline">
+                                <input name="nama_pemilik" type="text" class="form-control" placeholder="Masukkan nama pemilik"
+                                    aria-label="nama" value="{{ old('nama_pemilik') }}">
                             </div>
                         </div>
                         <div class="col">

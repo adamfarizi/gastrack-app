@@ -109,16 +109,16 @@ class BerandaController extends Controller
         $label_chart3 = $data_pengiriman->pluck('nama'); 
 
         // Chart 4
-        $data_pelanggan = Pelanggan::selectRaw('COUNT(pesanan.id_pesanan) as jumlah_pesanan, pelanggan.nama')
+        $data_pelanggan = Pelanggan::selectRaw('COUNT(pesanan.id_pesanan) as jumlah_pesanan, pelanggan.nama_perusahaan')
             ->join('transaksi', 'pelanggan.id_pelanggan', '=', 'transaksi.id_pelanggan')
             ->join('pesanan', 'transaksi.id_transaksi', '=', 'pesanan.id_transaksi')
             ->whereMonth('pesanan.tanggal_pesanan', '=', now()->month)
-            ->groupBy('pelanggan.id_pelanggan', 'pelanggan.nama')
+            ->groupBy('pelanggan.id_pelanggan', 'pelanggan.nama_perusahaan')
             ->orderByDesc('jumlah_pesanan')
             ->take(10)
             ->get();
         $data_chart4 = $data_pelanggan->pluck('jumlah_pesanan');
-        $label_chart4 = $data_pelanggan->pluck('nama');
+        $label_chart4 = $data_pelanggan->pluck('nama_perusahaan');
 
         // Tabel Pembelian
         $transaksis = Transaksi::with('pelanggan', 'tagihan')

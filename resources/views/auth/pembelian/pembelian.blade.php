@@ -302,7 +302,7 @@
                             <div class="row">
                                 <div class="col ms-4">
                                     <h6 class="mb-0">KEPADA :</h6>
-                                    <p class="text-sm">{{ $transaksi->pelanggan->nama }}<br>
+                                    <p class="text-sm">{{ $transaksi->pelanggan->nama_perusahaan }}<br>
                                         {{ $transaksi->pelanggan->email }}<br>
                                         {{ $transaksi->pelanggan->no_hp }}<br>
                                         {{ $transaksi->pelanggan->alamat }}</p>
@@ -466,7 +466,7 @@
                                 '</td>' +
                                 '<td>' +
                                     '<div class="ps-4">' +
-                                        '<h6 class="mb-1 text-sm">' + transaksi.pelanggan.nama + '</h6>' +
+                                        '<h6 class="mb-1 text-sm">' + transaksi.pelanggan.nama_perusahaan + '</h6>' +
                                         '<p class="text-sm text-secondary mb-0">' + transaksi.pelanggan.email +
                                         '</p>' +
                                     '</div>' +
@@ -532,7 +532,7 @@
                                 '</td>' +
                                 '<td>' +
                                     '<div class="ps-4">' +
-                                        '<h6 class="mb-1 text-sm">' + transaksi.pelanggan.nama + '</h6>' +
+                                        '<h6 class="mb-1 text-sm">' + transaksi.pelanggan.nama_perusahaan + '</h6>' +
                                         '<p class="text-sm text-secondary mb-0">' + transaksi.pelanggan.email +
                                         '</p>' +
                                     '</div>' +
