@@ -11,7 +11,8 @@ class CreatePelangganTable extends Migration
     {
         Schema::create('pelanggan', function (Blueprint $table) {
             $table->id('id_pelanggan');
-            $table->string('nama');
+            $table->string('nama_perusahaan');
+            $table->string('nama_pemilik');
             $table->string('email')->unique();
             $table->string('password');
             $table->string('alamat')->nullable();

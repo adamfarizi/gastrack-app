@@ -22,5 +22,6 @@ Route::post('/pelanggan/login', [ApiPelangganController::class, 'login_action'])
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/pelanggan/logout', [ApiPelangganController::class, 'logout']);
     Route::put('/pelanggan/update/{id}', [ApiPelangganController::class, 'edit_action']);
+    Route::get('/pelanggan/index/{id}', [ApiPembelianController::class, 'index_transaksi']);
     Route::post('/pembelian/create', [ApiPembelianController::class, 'create_transaksi']);
 });
