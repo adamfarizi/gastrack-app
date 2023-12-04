@@ -15,6 +15,7 @@ class CreatePelangganTable extends Migration
             $table->string('nama_pemilik');
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('role');
             $table->string('alamat')->nullable();
             $table->string('koordinat')->nullable();
             $table->string('no_hp')->nullable();

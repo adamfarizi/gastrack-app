@@ -40,11 +40,21 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-
+    
         'api' => [
             'driver' => 'sanctum',
             'provider' => 'users',
             'hash' => false,
+        ],
+    
+        'pelanggan' => [
+            'driver' => 'eloquent',
+            'provider' => 'pelanggans', // Sesuaikan dengan nama provider yang digunakan
+        ],
+    
+        'sopir' => [
+            'driver' => 'eloquent',
+            'provider' => 'sopirs', // Sesuaikan dengan nama provider yang digunakan
         ],
     ],
 
@@ -70,11 +80,16 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+    
+        'pelanggans' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Pelanggan::class,
+        ],
+    
+        'sopirs' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Sopir::class,
+        ],
     ],
 
     /*

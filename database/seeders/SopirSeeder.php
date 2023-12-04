@@ -15,11 +15,13 @@ class SopirSeeder extends Seeder
             'nama' => 'Asep Kuncen',
             'email' => 'sopir1@example.com',
             'password' => bcrypt('sopir123'),
+            'role' => ('sopir'),
             'no_hp' => '088111222',
         ],[
             'nama' => 'Sigit Rendang',
             'email' => 'sopir2@example.com',
             'password' => bcrypt('sopir123'),
+            'role' => ('sopir'),
             'no_hp' => '088112232',
         ],
         ];
