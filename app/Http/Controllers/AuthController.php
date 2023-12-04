@@ -9,8 +9,9 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    
-    public function login(){
+
+    public function login()
+    {
         $data['title'] = 'Masuk';
         return view('guest.login', $data);
     }
@@ -22,28 +23,30 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
         $infologin = [
-            'email'=>$request->email,
-            'password'=>$request->password,
+            'email' => $request->email,
+            'password' => $request->password,
         ];
 
         if (Auth::attempt($infologin)) {
-            if(Auth::user() && (Auth::user()->role == 'Super Admin' || Auth::user()->role == 'Admin')) {
+            if (Auth::user() && (Auth::user()->role == 'Super Admin' || Auth::user()->role == 'Admin')) {
                 $request->session()->regenerate();
                 return redirect('beranda');
-            }else {
+            } else {
                 return redirect('/')->withErrors('Anda bukan admin!');
             }
-        }else{
+        } else {
             return redirect('/')->withErrors('Email dan Password anda salah!')->withInput();
         }
     }
 
-    public function signup(){
+    public function signup()
+    {
         $data['title'] = 'Register';
         return view('guest.signup', $data);
     }
 
-    public function signup_action(Request $request){
+    public function signup_action(Request $request)
+    {
         $request->validate([
             'nama' => 'required',
             'email' => 'required|unique:admin',
@@ -54,13 +57,14 @@ class AuthController extends Controller
             'nama' => $request->nama,
             'email' => $request->email,
             'role' => $request->role ?? 'Admin',
-            'password' => Hash::make($request->password), 
+            'password' => Hash::make($request->password),
         ]);
         $admin->save();
         return redirect('/')->with('success', 'Akun berhasil didaftarkan, silahkan login!');
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

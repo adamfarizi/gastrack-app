@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Hash;
 
 class ProfilController extends Controller
 {
-    public function index($id_admin) {
+    public function index($id_admin)
+    {
         $data['title'] = 'Profil';
 
         $admin = User::find($id_admin);
@@ -19,7 +20,8 @@ class ProfilController extends Controller
         ], $data);
     }
 
-    public function edit_profil_action($id_admin, Request $request) {
+    public function edit_profil_action($id_admin, Request $request)
+    {
         $request->validate([
             'nama' => 'required|string|max:255',
             'email' => 'required|email|max:255',
@@ -33,13 +35,14 @@ class ProfilController extends Controller
         return redirect()->back()->with('success', 'Data berhasil diubah !');
     }
 
-    public function edit_password_action($id_admin, Request $request) {
+    public function edit_password_action($id_admin, Request $request)
+    {
         $request->validate([
             'old_password' => [
                 'required',
                 function ($attribute, $value, $fail) use ($id_admin) {
                     $admin = User::find($id_admin);
-        
+
                     if (!Hash::check($value, $admin->password)) {
                         $fail('Password lama salah !');
                     }

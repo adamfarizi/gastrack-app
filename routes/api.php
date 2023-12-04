@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/pelanggan/login', [ApiPelangganController::class, 'login_action']);
+Route::get('/pembelian/{id}', [ApiPembelianController::class, 'cekData']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/pelanggan/logout', [ApiPelangganController::class, 'logout']);
@@ -25,6 +26,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/pelanggan/index/{id}', [ApiPembelianController::class, 'index_transaksi']);
     Route::get('/pembelian/belum_bayar', [ApiPembelianController::class, 'transaksi_belum_bayar']);
     Route::get('/pembelian/sudah_bayar', [ApiPembelianController::class, 'transaksi_sudah_bayar']);
-    Route::post('/pembelian/update_pembayaran/{id}', [ApiPembelianController::class, 'update_pembayaran']);
     Route::post('/pembelian/create', [ApiPembelianController::class, 'create_transaksi']);
+    Route::post('/pembelian/update_pembayaran/{id}', [ApiPembelianController::class, 'update_pembayaran']);
 });
