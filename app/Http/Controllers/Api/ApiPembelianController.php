@@ -345,7 +345,6 @@ class ApiPembelianController extends Controller
             $fileName = $file->getClientOriginalName();
             $file->move(public_path('img/BuktiPembayaran'), $fileName);
 
-            // Menyimpan informasi bukti pembayaran dalam basis data
             $dikirim->update([
                 'tanggal_pembayaran' => now(),
                 'bukti_pembayaran' => $fileName,
