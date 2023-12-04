@@ -11,7 +11,7 @@ class Pengiriman extends Model
     protected $primaryKey = 'id_pengiriman';
     
     protected $fillable = [
-        'resi_pengiriman',
+        'kode_pengiriman',
         'kapasitas_gas_masuk',
         'bukti_gas_masuk',
         'kapasitas_gas_keluar',

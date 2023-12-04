@@ -145,7 +145,7 @@
                                         <p class="text-white py-9">Belum ada bukti</p>
                                     </div>
                                 @else
-                                    <img src="{{ asset('assets/img/illustrations/illustration-signin.jpg') }}" class="w-100 rounded" alt="">
+                                    <img src="{{ asset('img/BuktiPembayaran/'.$transaksi->tagihan->bukti_pembayaran) }}" class="w-100 rounded" alt="">
                                 @endif
                             </div>
                             <div class="mb-2 col-6">

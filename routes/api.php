@@ -27,7 +27,6 @@ Route::middleware('auth:sanctum', 'check.pelanggan')->group(function () {
     Route::get('/pelanggan/index/{id}', [ApiPembelianController::class, 'index_transaksi']);
     Route::get('/pembelian/belum_bayar', [ApiPembelianController::class, 'transaksi_belum_bayar']);
     Route::get('/pembelian/sudah_bayar', [ApiPembelianController::class, 'transaksi_sudah_bayar']);
-    Route::post('/pembelian/update_pembayaran/{id}', [ApiPembelianController::class, 'update_pembayaran']);
     Route::post('/pembelian/create', [ApiPembelianController::class, 'create_transaksi']);
 });
 

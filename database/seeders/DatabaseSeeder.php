@@ -20,10 +20,10 @@ class DatabaseSeeder extends Seeder
             SopirSeeder::class,
             MobilSeeder::class,
             MobilSeeder::class,
-            TagihanSeeder::class,
-            TransaksiSeeder::class,
-            PesananSeeder::class,
-            PengirimanSeeder::class,
+            // TagihanSeeder::class,
+            // TransaksiSeeder::class,
+            // PesananSeeder::class,
+            // PengirimanSeeder::class,
         ]);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pelanggan;
+use App\Models\Pengiriman;
 use App\Models\Transaksi;
 use App\Models\Tagihan;
 use App\Models\Pesanan;
@@ -20,7 +21,6 @@ class ApiPembelianController extends Controller
     public function index_transaksi($id_pelanggan)
     {
         try {
-            // Ambil semua data transaksi berdasarkan id_pelanggan
             $transaksi = Transaksi::where('id_pelanggan', $id_pelanggan)->get();
 
             return response()->json([
@@ -36,121 +36,212 @@ class ApiPembelianController extends Controller
             ], 500);
         }
     }
-        
+
     public function create_transaksi(Request $request)
     {
-        // Validasi input
         $validator = Validator::make($request->all(), [
             'id_pelanggan' => 'required|exists:pelanggan,id_pelanggan',
             'jumlah_pesanan' => 'required|integer|min:1',
-            // 'durasi_jatuh_tempo' => 'required|in:2,3,4', // Menambahkan validasi durasi
         ]);
 
-        // Cek jika validasi gagal
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
                 'message' => 'Validasi gagal',
                 'errors' => $validator->errors(),
             ], 422);
-        }
-
-        // Mulai transaksi database
-        DB::beginTransaction();
-
-        try {
-            // Periksa apakah masih dalam batas waktu dua minggu dari pembelian sebelumnya
-            $pelanggan = Pelanggan::find($request->input('id_pelanggan'));
-            $batas_waktu = now()->subWeeks($pelanggan->jenis_pembayaran);
-            $transaksi_terakhir = Transaksi::where('id_pelanggan', $request->input('id_pelanggan'))
-                ->orderBy('tanggal_transaksi', 'desc')
+        } else {
+            $tagihan_terbaru = Tagihan::where('id_pelanggan', $request->input('id_pelanggan'))
+                ->orderBy('created_at', 'desc')
                 ->first();
+            if (!$tagihan_terbaru) {
+                $pelanggan = Pelanggan::find($request->input('id_pelanggan'));
+                $tanggal_jatuh_tempo_baru = now()->addWeeks($pelanggan->jenis_pembayaran)->format('Y-m-d');
+                $tagihan = new Tagihan([
+                    'tanggal_jatuh_tempo' => $tanggal_jatuh_tempo_baru,
+                    'jumlah_tagihan' => $request->input('jumlah_pesanan') * 100000,
+                    'status_tagihan' => 'Belum Bayar',
+                    'tanggal_pembayaran' => null,
+                    'bukti_pembayaran' => null,
+                    'id_pelanggan' => $request->input('id_pelanggan'),
+                ]);
+                $tagihan->save();
+                $resi_transaksi = 'GTK-' . now()->format('YmdHis') . Str::random(2);
+                $tagihan_baru = Tagihan::where('id_pelanggan', $request->input('id_pelanggan'))
+                    ->orderBy('created_at', 'desc')
+                    ->first();
+                $transaksi = new Transaksi([
+                    'resi_transaksi' => $resi_transaksi,
+                    'tanggal_transaksi' => now(),
+                    'id_pelanggan' => $request->input('id_pelanggan'),
+                    'id_tagihan' => $tagihan_baru->id_tagihan,
+                    'id_admin' => 1,
+                ]);
+                $transaksi->save();
+                $tanggal_sekarang = now();
+                $transaksi_baru = Transaksi::where('id_pelanggan', $request->input('id_pelanggan'))
+                    ->latest('created_at')
+                    ->first();
+                $pesanan = new Pesanan([
+                    'tanggal_pesanan' => $tanggal_sekarang,
+                    'jumlah_pesanan' => $request->input('jumlah_pesanan'),
+                    'harga_pesanan' => $request->input('jumlah_pesanan') * 100000,
+                    'id_transaksi' => $transaksi_baru->id_transaksi,
+                ]);
+                $pesanan->save();
+                $pesanan_baru = Pesanan::where('id_transaksi', $transaksi_baru->id_transaksi)
+                    ->latest('created_at')
+                    ->first();
+                $kode_pengiriman = 'GTK|SEND-' . now()->format('YmdHis') . Str::random(2);
+                $pengiriman = new Pengiriman([
+                    'kode_pengiriman' => $kode_pengiriman,
+                    'status_pengiriman' => 'Proses',
+                    'id_pesanan' => $pesanan_baru->id_pesanan,
+                ]);
+                $pengiriman->save();
 
-            // Cek jika ada transaksi sebelumnya dan masih dalam dua minggu
-            if ($transaksi_terakhir && $transaksi_terakhir->tanggal_transaksi > $batas_waktu) {
-                // Jika masih dalam dua minggu, pesanan baru tetap dapat dibuat
-                // tanpa memeriksa status pembayaran pesanan sebelumnya.
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Transaksi baru sudah ditambah !',
+                    'data_transaksi' => $transaksi_baru,
+                    'data_tagihan' => $tagihan_baru,
+                    'data_pesanan' => $pesanan,
+                    'data_pengiriman' => $pengiriman,
+                ], 200);
             } else {
-                // Jika tidak ada transaksi sebelumnya atau sudah lebih dari dua minggu,
-                // periksa apakah ada pesanan yang belum dilunasi
-                $belum_lunas = Tagihan::where('id_pelanggan', $request->input('id_pelanggan'))
-                    ->whereNull('tanggal_pembayaran')
-                    ->exists();
+                if ($tagihan_terbaru->status_tagihan === 'Belum Bayar') {
+                    $tanggal_sekarang = now();
+                    if ($tanggal_sekarang > $tagihan_terbaru->tanggal_jatuh_tempo) {
 
-                if ($belum_lunas) {
-                    throw new \Exception('Anda harus melunasi pesanan sebelumnya terlebih dahulu.');
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Anda memiliki tagihan yang belum dibayar !',
+                        ], 422);
+                    } else {
+                        $transaksi_terbaru = Transaksi::where('id_pelanggan', $request->input('id_pelanggan'))
+                            ->latest('created_at')
+                            ->first();
+                        $pesanan = new Pesanan([
+                            'tanggal_pesanan' => $tanggal_sekarang,
+                            'jumlah_pesanan' => $request->input('jumlah_pesanan'),
+                            'harga_pesanan' => $request->input('jumlah_pesanan') * 100000,
+                            'id_transaksi' => $transaksi_terbaru->id_transaksi,
+                        ]);
+                        $pesanan->save();
+                        $tagihan_terbaru->jumlah_tagihan = $tagihan_terbaru->jumlah_tagihan + ($request->input('jumlah_pesanan') * 100000);
+                        $tagihan_terbaru->save();
+                        $pesanan_baru = Pesanan::where('id_transaksi', $transaksi_terbaru->id_transaksi)
+                            ->latest('created_at')
+                            ->first();
+                        $kode_pengiriman = 'GTK|SEND-' . now()->format('YmdHis') . Str::random(2);
+                        $pengiriman = new Pengiriman([
+                            'kode_pengiriman' => $kode_pengiriman,
+                            'status_pengiriman' => 'Proses',
+                            'id_pesanan' => $pesanan_baru->id_pesanan,
+                        ]);
+                        $pengiriman->save();
+
+                        return response()->json([
+                            'success' => true,
+                            'message' => 'Pesanan baru sudah ditambah !',
+                            'data_pesanan' => $pesanan,
+                            'data_tagihan' => $tagihan_terbaru,
+                            'data_pengiriman' => $pengiriman,
+                        ], 200);
+                    }
+                } else {
+                    $pelanggan = Pelanggan::find($request->input('id_pelanggan'));
+                    $tanggal_jatuh_tempo_baru = now()->addWeeks($pelanggan->jenis_pembayaran)->format('Y-m-d');
+                    $tagihan = new Tagihan([
+                        'tanggal_jatuh_tempo' => $tanggal_jatuh_tempo_baru,
+                        'jumlah_tagihan' => $request->input('jumlah_pesanan') * 100000,
+                        'status_tagihan' => 'Belum Bayar',
+                        'tanggal_pembayaran' => null,
+                        'bukti_pembayaran' => null,
+                        'id_pelanggan' => $request->input('id_pelanggan'),
+                    ]);
+                    $tagihan->save();
+                    $resi_transaksi = 'GTK-' . now()->format('YmdHis') . Str::random(2);
+                    $tagihan_baru = Tagihan::where('id_pelanggan', $request->input('id_pelanggan'))
+                        ->orderBy('created_at', 'desc')
+                        ->first();
+                    $transaksi = new Transaksi([
+                        'resi_transaksi' => $resi_transaksi,
+                        'tanggal_transaksi' => now(),
+                        'id_pelanggan' => $request->input('id_pelanggan'),
+                        'id_tagihan' => $tagihan_baru->id_tagihan,
+                        'id_admin' => 1,
+                    ]);
+                    $transaksi->save();
+                    $tanggal_sekarang = now();
+                    $transaksi_baru = Transaksi::where('id_pelanggan', $request->input('id_pelanggan'))
+                        ->latest('created_at')
+                        ->first();
+                    $pesanan = new Pesanan([
+                        'tanggal_pesanan' => $tanggal_sekarang,
+                        'jumlah_pesanan' => $request->input('jumlah_pesanan'),
+                        'harga_pesanan' => $request->input('jumlah_pesanan') * 100000,
+                        'id_transaksi' => $transaksi_baru->id_transaksi,
+                    ]);
+                    $pesanan->save();
+                    $pesanan_baru = Pesanan::where('id_transaksi', $transaksi_baru->id_transaksi)
+                        ->latest('created_at')
+                        ->first();
+                    $kode_pengiriman = 'GTK|SEND-' . now()->format('YmdHis') . Str::random(2);
+                    $pengiriman = new Pengiriman([
+                        'kode_pengiriman' => $kode_pengiriman,
+                        'status_pengiriman' => 'Proses',
+                        'id_pesanan' => $pesanan_baru->id_pesanan,
+                    ]);
+                    $pengiriman->save();
+
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Transaksi baru sudah ditambah !',
+                        'data_transaksi' => $transaksi_baru,
+                        'data_tagihan' => $tagihan_baru,
+                        'data_pesanan' => $pesanan,
+                        'data_pengiriman' => $pengiriman,
+                    ], 200);
                 }
             }
+        }
+    }
 
-            // Periksa jika ada pesanan yang melewati jatuh tempo dan belum dibayar
-            $pesanan_lewat_jatuh_tempo = Tagihan::where('id_pelanggan', $request->input('id_pelanggan'))
-                ->where('tanggal_jatuh_tempo', '<', now())
-                ->exists();
+    public function cekData($id_pelanggan)
+    {
+        $tagihan_terbaru = Tagihan::where('id_pelanggan', $id_pelanggan)
+            ->orderBy('created_at', 'desc')
+            ->first();
+        $transaksi_terbaru = Transaksi::where('id_pelanggan', $id_pelanggan)
+            ->latest('created_at')
+            ->first();
 
-            // Periksa status pesanan yang sudah dibayar
-            $status_pesanan_dibayar = Tagihan::where('id_pelanggan', $request->input('id_pelanggan'))
-                ->where('tanggal_jatuh_tempo', '<', now())
-                ->where('status_tagihan', 'Sudah Bayar')
-                ->exists();
-
-            // Jika pesanan lewat jatuh tempo dan belum dibayar, tidak bisa memesan lagi
-            if ($pesanan_lewat_jatuh_tempo && !$status_pesanan_dibayar) {
+        if ($tagihan_terbaru->status_tagihan === 'Belum Bayar') {
+            $tanggal_sekarang = now();
+            if ($tanggal_sekarang > $tagihan_terbaru->tanggal_jatuh_tempo) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Pesanan melewati batas waktu pembayaran. Tidak dapat memesan lagi.',
+                    'message' => 'Anda memiliki tagihan yang belum dibayar !',
+                ], 422);
+            } else {
+                $pelanggan = Pelanggan::find($id_pelanggan);
+                $tanggal_jatuh_tempo_baru = now()->addWeeks($pelanggan->jenis_pembayaran)->format('Y-m-d');
+                $kode_pengiriman = 'GTK|SEND-' . now()->format('YmdHis') . Str::random(2);
+                return response()->json([
+                    'success' => true,
+                    'data_1' => $transaksi_terbaru->id_transaksi,
+                    'data_2' => $tanggal_jatuh_tempo_baru,
+                    'data_3' => $kode_pengiriman,
                 ], 422);
             }
-
-            // Pembuatan resi dengan UUID
-            $resi_transaksi = 'GTK-' . now()->format('YmdHis') . Str::random(2);
-
-            // Dapatkan nilai id_tagihan terakhir
-            $last_tagihan_id = Tagihan::max('id_tagihan');
-            $new_tagihan_id = $last_tagihan_id + 1;
-
-            // Tetapkan tanggal_jatuh_tempo, otomatis ditambahkan sesuai durasi
-            $tanggal_jatuh_tempo = now()->addWeeks($pelanggan->jenis_pembayaran);
-
-            // Tambahkan data ke tabel tagihan
-            $status_tagihan = 'Belum Bayar';
-
-            $tagihan = Tagihan::create([
-                'id_tagihan' => $new_tagihan_id,
-                'id_pelanggan' => $request->input('id_pelanggan'),
-                'tanggal_jatuh_tempo' => $tanggal_jatuh_tempo,
-                'jumlah_tagihan' => $request->input('jumlah_pesanan') * 500000,
-                'status_tagihan' => $status_tagihan,
-            ]);
-
-            // Tambahkan data ke tabel transaksi
-            $transaksi = Transaksi::create([
-                'resi_transaksi' => $resi_transaksi,
-                'tanggal_transaksi' => now(),
-                'id_pelanggan' => $request->input('id_pelanggan'),
-                'jumlah_pesanan' => $request->input('jumlah_pesanan'),
-                'harga_pesanan' => $request->input('harga_pesanan'), // Sesuaikan ini dengan kebutuhan
-                'id_tagihan' => $new_tagihan_id,
-                'id_admin' => 1,
-            ]);
-
-            // Commit transaksi jika tidak ada kesalahan
-            DB::commit();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Data berhasil ditambah',
-                'data' => $transaksi,
-            ], 201);
-        } catch (\Exception $e) {
-            // Rollback transaksi jika terjadi kesalahan
-            DB::rollback();
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal membuat transaksi',
-                'error' => $e->getMessage(),
-            ], 500);
         }
+
+        return response()->json([
+            'success' => true,
+            'data_1' => $tagihan_terbaru->tanggal_jatuh_tempo,
+            'data_2' => $transaksi_terbaru->id_transaksi,
+        ], 200);
     }
 
     public function transaksi_belum_bayar($id_pelanggan = null)
@@ -167,17 +258,17 @@ class ApiPembelianController extends Controller
         }
 
         $belum_bayar = $query
-        ->select([
-            'transaksi.id_transaksi',
-            'pelanggan.nama_perusahaan',
-            'pelanggan.nama_pemilik',
-            'transaksi.tanggal_transaksi',
-            'transaksi.resi_transaksi',
-            'tagihan.status_tagihan',
-            'tagihan.jumlah_tagihan',
-        ])
-        ->orderBy('transaksi.tanggal_transaksi', 'desc')
-        ->get();
+            ->select([
+                'transaksi.id_transaksi',
+                'pelanggan.nama_perusahaan',
+                'pelanggan.nama_pemilik',
+                'transaksi.tanggal_transaksi',
+                'transaksi.resi_transaksi',
+                'tagihan.status_tagihan',
+                'tagihan.jumlah_tagihan',
+            ])
+            ->orderBy('transaksi.tanggal_transaksi', 'desc')
+            ->get();
 
         if ($belum_bayar->isEmpty()) {
             return response()->json([
@@ -207,17 +298,17 @@ class ApiPembelianController extends Controller
         }
 
         $belum_bayar = $query
-        ->select([
-            'transaksi.id_transaksi',
-            'pelanggan.nama_perusahaan',
-            'pelanggan.nama_pemilik',
-            'transaksi.tanggal_transaksi',
-            'transaksi.resi_transaksi',
-            'tagihan.status_tagihan',
-            'tagihan.jumlah_tagihan',
-        ])
-        ->orderBy('transaksi.tanggal_transaksi', 'desc')
-        ->get();
+            ->select([
+                'transaksi.id_transaksi',
+                'pelanggan.nama_perusahaan',
+                'pelanggan.nama_pemilik',
+                'transaksi.tanggal_transaksi',
+                'transaksi.resi_transaksi',
+                'tagihan.status_tagihan',
+                'tagihan.jumlah_tagihan',
+            ])
+            ->orderBy('transaksi.tanggal_transaksi', 'desc')
+            ->get();
 
         if ($belum_bayar->isEmpty()) {
             return response()->json([

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Pelanggan;
 use App\Models\Pengiriman;
 use App\Models\Pesanan;
@@ -12,7 +13,8 @@ use Illuminate\Support\Carbon;
 
 class BerandaController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $data['title'] = 'Beranda';
 
         $transaksis = Transaksi::all();
@@ -40,11 +42,11 @@ class BerandaController extends Controller
         }
         $total_pemasukan_sekarang = Tagihan::whereMonth('tanggal_pembayaran', $bulan_sekarang)
             ->whereYear('tanggal_pembayaran', $tahun_sekarang)
-            ->where('status_tagihan','Sudah Bayar')
+            ->where('status_tagihan', 'Sudah Bayar')
             ->sum('jumlah_tagihan');
         $total_pemasukan_sebelumnya = Tagihan::whereMonth('tanggal_pembayaran', $bulan_sebelumnya)
             ->whereYear('tanggal_pembayaran', $tahun_sebelumnya)
-            ->where('status_tagihan','Sudah Bayar')
+            ->where('status_tagihan', 'Sudah Bayar')
             ->sum('jumlah_tagihan');
         $peningkatan_pemasukan = 0;
         if ($total_pemasukan_sebelumnya > 0) {
@@ -52,11 +54,11 @@ class BerandaController extends Controller
         }
 
         $pesanan_sekarang = Pesanan::whereDate('tanggal_pesanan', $tanggal_sekarang)
-        ->orderBy('tanggal_pesanan', 'ASC')
-        ->take(6)
-        ->get();
+            ->orderBy('tanggal_pesanan', 'ASC')
+            ->take(6)
+            ->get();
 
-        return view('auth.beranda.beranda',[
+        return view('auth.beranda.beranda', [
             'transaksis' => $transaksis,
             'peningkatan_pesanan' => $peningkatan_pesanan,
             'peningkatan_pemasukan' => $peningkatan_pemasukan,
@@ -66,14 +68,15 @@ class BerandaController extends Controller
         ], $data);
     }
 
-    public function realtimeData(){
+    public function realtimeData()
+    {
 
         $total_pelanggan = Pelanggan::count();
         $total_transaksi = Transaksi::count();
         $total_pesanan = Pesanan::count();
         $total_tagihan = Tagihan::where('status_tagihan', 'Sudah Bayar')->sum('jumlah_tagihan');
         $total_pemasukan = number_format($total_tagihan, 0, ',', '.');
-        
+
         // Chart 1
         $data_pesanan = Pesanan::selectRaw('SUM(jumlah_pesanan) as total_pesanan, DATE_FORMAT(tanggal_pesanan, "%d %b") as hari')
             ->join('transaksi', 'pesanan.id_transaksi', '=', 'transaksi.id_transaksi')
@@ -92,7 +95,7 @@ class BerandaController extends Controller
             ->take(10)
             ->get();
         $data_chart2 = $data_pemasukan->pluck('jumlah_tagihan');
-        $label_chart2 = $data_pemasukan->pluck('bulan'); 
+        $label_chart2 = $data_pemasukan->pluck('bulan');
 
         // Chart 3
         $now = Carbon::now();
@@ -106,7 +109,7 @@ class BerandaController extends Controller
             ->take(10)
             ->get();
         $data_chart3 = $data_pengiriman->pluck('jumlah_pengiriman');
-        $label_chart3 = $data_pengiriman->pluck('nama'); 
+        $label_chart3 = $data_pengiriman->pluck('nama');
 
         // Chart 4
         $data_pelanggan = Pelanggan::selectRaw('COUNT(pesanan.id_pesanan) as jumlah_pesanan, pelanggan.nama_perusahaan')
@@ -122,9 +125,9 @@ class BerandaController extends Controller
 
         // Tabel Pembelian
         $transaksis = Transaksi::with('pelanggan', 'tagihan')
-        ->orderByDesc('tanggal_transaksi')
-        ->get();
-    
+            ->orderByDesc('tanggal_transaksi')
+            ->get();
+
         return response()->json([
             'total_pelanggan' => $total_pelanggan,
             'total_transaksi' => $total_transaksi,

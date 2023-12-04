@@ -12,24 +12,26 @@ use Illuminate\Http\Request;
 
 class PengirimanController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $data['title'] = 'Pengiriman';
         $pesanans = Pesanan::all();
         $transaksis = Transaksi::all();
         $pengirimans = Pengiriman::where('status_pengiriman', 'Dikirim')->get();
 
-        return view('auth.pengiriman.pengiriman',[
+        return view('auth.pengiriman.pengiriman', [
             'pesanans' => $pesanans,
             'transaksis' => $transaksis,
             'pengirimans' => $pengirimans,
         ], $data);
     }
 
-    public function realtimeData() {
+    public function realtimeData()
+    {
         $total_pesanan = Pesanan::count();
         $pesanan_diproses = Pengiriman::where('status_pengiriman', 'Proses')->count();
         $pesanan_dikirim = Pengiriman::where('status_pengiriman', 'Dikirim')->count();
-        
+
         $prosess = Pengiriman::where('status_pengiriman', 'Proses')
             ->with('pesanan')->orderBy('created_at', 'desc')->get();
         $sopirs = Sopir::where('ketersediaan_sopir', 'tersedia')
@@ -38,7 +40,7 @@ class PengirimanController extends Controller
         $mobils = Mobil::where('ketersediaan_mobil', 'tersedia')
             ->where('status_mobil', 'aktif')
             ->get();
-        
+
         $pengirimans = Pengiriman::where('status_pengiriman', 'Dikirim')
             ->with('pesanan')->orderBy('created_at', 'desc')->get();
         $nama_sopir = Sopir::all();
@@ -60,11 +62,12 @@ class PengirimanController extends Controller
         ]);
     }
 
-    public function updateKirim(Request $request) {
+    public function updateKirim(Request $request)
+    {
         $id_pengiriman = $request->input('id_pengiriman');
         $sopir = $request->input('id_kurir');
         $mobil = $request->input('id_mobil');
-    
+
         if ($mobil === 'Belum Memilih' || $sopir === 'Belum Memilih') {
             Session::flash('error', 'Sopir dan Mobil harus dipilih!');
             return response()->json(['error' => true]);
@@ -74,7 +77,7 @@ class PengirimanController extends Controller
             $pengiriman->id_sopir = $sopir;
             $pengiriman->id_mobil = $mobil;
             $pengiriman->save();
-            
+
             $sopir = Sopir::find($sopir);
             $sopir->ketersediaan_sopir = 'tidak tersedia';
             $sopir->save();
@@ -86,5 +89,5 @@ class PengirimanController extends Controller
             Session::flash('success', 'Pesanan berhasil dikirim!');
             return response()->json(['success' => true]);
         }
-    }    
+    }
 }
