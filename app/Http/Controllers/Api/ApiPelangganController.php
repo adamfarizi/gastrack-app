@@ -55,7 +55,7 @@ class ApiPelangganController extends Controller
                 'message' => 'Akun tidak terdaftar!',
             ], 404);
         }
-
+ 
         // Verifikasi password
         if (password_verify($request->password, $pelanggan->password)) {
             $token = $pelanggan->createToken('myappToken')->plainTextToken;

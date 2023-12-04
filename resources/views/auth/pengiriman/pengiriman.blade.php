@@ -472,7 +472,8 @@
                             var namaPelanggan = '';
                             $.each(data.transaksis, function(index, transaksi) {
                                 if (pengiriman.pesanan.id_transaksi === transaksi.id_transaksi) {
-                                    namaPelanggan = transaksi.pelanggan.nama;
+                                    namaPerusahaan = transaksi.pelanggan.nama_perusahaan;
+                                    namaPelanggan = transaksi.pelanggan.nama_pemilik;
                                 }
                             });
 
@@ -481,8 +482,8 @@
                                     '<td class="align-middle font-weight-bold text-sm text-center">' + pengiriman.kode_pengiriman + '</td>' +
                                     '<td>' +
                                         '<div class="text-center">';
-                                        if (namaPelanggan !== '') {
-                                            row += '<h6 class="mb-1 text-sm">' + namaPelanggan + '</h6>';
+                                        if (namaPelanggan !== '' && namaPerusahaan ) {
+                                            row += '<h5 class="mb-1 text-sm">' + namaPerusahaan + '<span class="mb-1 text-sm"> (' + namaPelanggan + ')</span></h5>';
                                         }
                                         row += '<p class="text-xs text-secondary mb-0">Jumlah  : ' + pengiriman.pesanan.jumlah_pesanan + ' bar' +
                                         '</p>' +
@@ -587,7 +588,8 @@
                             var namaPelanggan = '';
                             $.each(data.transaksis, function(index, transaksi) {
                                 if (pengiriman.pesanan.id_transaksi === transaksi.id_transaksi) {
-                                    namaPelanggan = transaksi.pelanggan.nama;
+                                    namaPerusahaan = transaksi.pelanggan.nama_perusahaan;
+                                    namaPelanggan = transaksi.pelanggan.nama_pemilik;
                                 }
                             });
                             var namaSopir = '';
@@ -609,7 +611,7 @@
                                     '<td>' +
                                         '<div class="text-center">';
                                         if (namaPelanggan !== '') {
-                                            row += '<h6 class="mb-1 text-sm">' + namaPelanggan + '</h6>';
+                                            row += '<h5 class="mb-1 text-sm">' + namaPerusahaan + '<span class="mb-1 text-sm"> (' + namaPelanggan + ')</span></h5>';
                                         }
                                         row += '<p class="text-xs text-secondary mb-0">Jumlah  : ' + pengiriman.pesanan.jumlah_pesanan + ' bar' +
                                         '</p>' +

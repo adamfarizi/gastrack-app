@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ApiPelangganController;
+use App\Http\Controllers\Api\ApiSupirController;
 use App\Http\Controllers\Api\ApiPembelianController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,3 +34,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/pelanggan/pesan', [ApiPembelianController::class, 'create_transaksi']);
     Route::get('/pelanggan/tagihan/{id}', [ApiPembelianController::class, 'index_tagihanPelanggan']);
 });
+
+Route::get('/sopir/pengiriman/{id}', [ApiSupirController::class, 'getDataPengiriman']);
