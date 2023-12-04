@@ -18,6 +18,7 @@ class Sopir extends Model implements Authenticatable
         'nama',
         'email',
         'password',
+        'role',
         'no_hp',
         'ketersediaan_sopir',
         'status_sopir',
@@ -26,5 +27,10 @@ class Sopir extends Model implements Authenticatable
     public function pengirimans()
     {
         return $this->belongsTo(Pengiriman::class, 'id_sopir');
+    }
+
+    public function hasRole($role)
+    {
+        return $this->role === $role;
     }
 }

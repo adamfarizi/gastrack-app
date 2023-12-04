@@ -15,9 +15,11 @@ class Pelanggan extends Model implements Authenticatable
     protected $primaryKey = 'id_pelanggan';
     
     protected $fillable = [
-        'nama',
+        'nama_perusahaan',
+        'nama_pemilik',
         'email',
         'password',
+        'role',
         'alamat',
         'koordinat',
         'no_hp',
@@ -28,6 +30,11 @@ class Pelanggan extends Model implements Authenticatable
     public function transaksis()
     {
         return $this->hasMany(Transaksi::class, 'id_pelanggan');
+    }
+
+    public function hasRole($role)
+    {
+        return $this->role === $role;
     }
 
 }

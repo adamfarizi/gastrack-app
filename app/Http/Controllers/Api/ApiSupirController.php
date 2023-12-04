@@ -4,10 +4,65 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pengiriman;
+use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Models\Sopir;
 
 class ApiSupirController extends Controller
 {
+    public function login_action(Request $request)
+    {
+        $request->validate([
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+
+        $sopir = Sopir::where('email', $request->email)->first();
+
+        if (!$sopir) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Akun tidak terdaftar!',
+            ], 404);
+        }
+
+        // Verifikasi password
+        if (password_verify($request->password, $sopir->password)) {
+            $token = $sopir->createToken('myappToken')->plainTextToken;
+
+            return response()->json([
+                'success' => true,
+                'token' => $token,
+                'datauser' => $sopir,
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kombinasi email dan password tidak valid!',
+            ], 422);
+        }
+    }
+
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+
+        if ($user) {
+            // Revoke the user's access tokens
+            $user->tokens()->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Logout berhasil.',
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal logout. Pengguna tidak ditemukan.',
+            ], 401);
+        }
+    }
+
     public function getDataPengiriman(string $id){
         Carbon::setLocale('id');
         $pengiriman = Pengiriman::where('id_sopir', $id)
