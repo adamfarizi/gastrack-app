@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\BayarTagihanEvent;
+use App\Events\Chart1Event;
+use App\Events\Chart4Event;
+use App\Events\PesananBaruEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Pelanggan;
 use App\Models\Pengiriman;
@@ -10,6 +14,7 @@ use App\Models\Tagihan;
 use App\Models\Pesanan;
 use App\Events\newTranEvent;
 use App\Events\updateTranEvent;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -100,6 +105,15 @@ class ApiPembelianController extends Controller
                 ]);
                 $pengiriman->save();
 
+                // Broadcast
+                $nama_perusahaan = $pelanggan->nama_perusahaan;
+                $jumlah_pesanan = $request->input('jumlah_pesanan');
+                $hari = Carbon::parse($pesanan_baru->tanggal_pesanan)->format('d M');
+                $total_pesanan = 1;
+                broadcast(new PesananBaruEvent($nama_perusahaan));
+                broadcast(new Chart1Event($nama_perusahaan,$jumlah_pesanan,$hari));
+                broadcast(new Chart4Event($nama_perusahaan,$total_pesanan));
+
                 return response()->json([
                     'success' => true,
                     'message' => 'Transaksi baru sudah ditambah !',
@@ -140,6 +154,16 @@ class ApiPembelianController extends Controller
                             'id_pesanan' => $pesanan_baru->id_pesanan,
                         ]);
                         $pengiriman->save();
+
+                        // Broadcast
+                        $pelanggan = Pelanggan::find($request->input('id_pelanggan'));
+                        $nama_perusahaan = $pelanggan->nama_perusahaan;
+                        $jumlah_pesanan = $request->input('jumlah_pesanan');
+                        $hari = Carbon::parse($pesanan_baru->tanggal_pesanan)->format('d M');
+                        $total_pesanan = 1;
+                        broadcast(new PesananBaruEvent($nama_perusahaan));
+                        broadcast(new Chart1Event($nama_perusahaan,$jumlah_pesanan,$hari));
+                        broadcast(new Chart4Event($nama_perusahaan,$total_pesanan));
 
                         return response()->json([
                             'success' => true,
@@ -195,6 +219,15 @@ class ApiPembelianController extends Controller
                     ]);
                     $pengiriman->save();
 
+                    // Broadcast
+                    $nama_perusahaan = $pelanggan->nama_perusahaan;
+                    $jumlah_pesanan = $request->input('jumlah_pesanan');
+                    $hari = Carbon::parse($pesanan_baru->tanggal_pesanan)->format('d M');
+                    $total_pesanan = 1;
+                    broadcast(new PesananBaruEvent($nama_perusahaan));
+                    broadcast(new Chart1Event($nama_perusahaan,$jumlah_pesanan,$hari));
+                    broadcast(new Chart4Event($nama_perusahaan,$total_pesanan));
+
                     return response()->json([
                         'success' => true,
                         'message' => 'Transaksi baru sudah ditambah !',
@@ -206,42 +239,6 @@ class ApiPembelianController extends Controller
                 }
             }
         }
-    }
-
-    public function cekData($id_pelanggan)
-    {
-        $tagihan_terbaru = Tagihan::where('id_pelanggan', $id_pelanggan)
-            ->orderBy('created_at', 'desc')
-            ->first();
-        $transaksi_terbaru = Transaksi::where('id_pelanggan', $id_pelanggan)
-            ->latest('created_at')
-            ->first();
-
-        if ($tagihan_terbaru->status_tagihan === 'Belum Bayar') {
-            $tanggal_sekarang = now();
-            if ($tanggal_sekarang > $tagihan_terbaru->tanggal_jatuh_tempo) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Anda memiliki tagihan yang belum dibayar !',
-                ], 422);
-            } else {
-                $pelanggan = Pelanggan::find($id_pelanggan);
-                $tanggal_jatuh_tempo_baru = now()->addWeeks($pelanggan->jenis_pembayaran)->format('Y-m-d');
-                $kode_pengiriman = 'GTK|SEND-' . now()->format('YmdHis') . Str::random(2);
-                return response()->json([
-                    'success' => true,
-                    'data_1' => $transaksi_terbaru->id_transaksi,
-                    'data_2' => $tanggal_jatuh_tempo_baru,
-                    'data_3' => $kode_pengiriman,
-                ], 422);
-            }
-        }
-
-        return response()->json([
-            'success' => true,
-            'data_1' => $tagihan_terbaru->tanggal_jatuh_tempo,
-            'data_2' => $transaksi_terbaru->id_transaksi,
-        ], 200);
     }
 
     public function transaksi_belum_bayar($id_pelanggan = null)
@@ -324,13 +321,13 @@ class ApiPembelianController extends Controller
         }
     }
 
-    public function update_pembayaran($id, Request $request)
+    public function update_pembayaran($id_tagihan, Request $request)
     {
         $request->validate([
             'bukti_pembayaran' => 'required|image|mimes:jpeg,jpg,png|max:2048',
         ]);
 
-        $dikirim = Tagihan::where('id_tagihan', $id)->first();
+        $dikirim = Tagihan::where('id_tagihan', $id_tagihan)->first();
 
         if (!$dikirim) {
             return response()->json([
@@ -338,7 +335,6 @@ class ApiPembelianController extends Controller
                 'message' => 'Data tidak ditemukan!',
             ], 422);
         }
-
 
         if ($request->hasFile('bukti_pembayaran')) {
             $file = $request->file('bukti_pembayaran');
@@ -350,6 +346,11 @@ class ApiPembelianController extends Controller
                 'bukti_pembayaran' => $fileName,
             ]);
         }
+
+        // Broadcast
+        $pelanggan = Pelanggan::where('id_pelanggan', $dikirim->id_pelanggan)->first();
+        $nama_perusahaan = $pelanggan->nama_perusahaan;
+        broadcast(new BayarTagihanEvent($nama_perusahaan));
 
         return response()->json([
             'success' => true,

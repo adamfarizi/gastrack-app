@@ -35,12 +35,66 @@
         @yield('navbar')
         <div class="container-fluid py-4 pe-3">
             {{-- Notifikasi --}}
+            @if (Auth::check())
+                <div class="position-fixed top-2 end-1 d-flex flex-column" style="z-index: 100;">
+                    <div class="toast fade show p-2 bg-white" role="alert" style="display: none;" aria-live="assertive" id="pesanan_baru" aria-atomic="true">
+                        <div class="toast-header border-0">
+                            <i class="material-icons text-primary me-2">inventory</i>
+                            <span class="me-auto font-weight-bold">Pesanan Masuk!</span>
+                            <i class="material-icons text-sm text-secondary me-1">schedule</i>
+                            <small class="text-body">sekarang</small>
+                            <i class="fas fa-times text-md ms-3 cursor-pointer" data-bs-dismiss="toast" aria-label="Close"></i>
+                        </div>
+                        <hr class="horizontal dark m-0">
+                        <div class="toast-body">
+                            <p class="text-sm text-secondary">
+                                Pesanan dari 
+                                <span class="text-primary" id="nama_perusahaan_1"></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="toast fade show p-2 bg-white" role="alert" style="display: none;" aria-live="assertive" id="tagihan_dibayar" aria-atomic="true">
+                        <div class="toast-header border-0">
+                            <i class="material-icons text-info me-2">monetization_on</i>
+                            <span class="me-auto font-weight-bold">Pesanan Dibayar!</span>
+                            <i class="material-icons text-sm text-secondary me-1">schedule</i>
+                            <small class="text-body">sekarang</small>
+                            <i class="fas fa-times text-md ms-3 cursor-pointer" data-bs-dismiss="toast" aria-label="Close"></i>
+                        </div>
+                        <hr class="horizontal dark m-0">
+                        <div class="toast-body">
+                            <p class="text-sm text-secondary">
+                                Tagihan dari 
+                                <span class="text-info" id="nama_perusahaan_2"></span>
+                                telah dibayar
+                            </p>
+                        </div>
+                    </div>
+                    <div class="toast fade show p-2 bg-white" role="alert" style="display: none;" aria-live="assertive" id="pesanan_diterima" aria-atomic="true">
+                        <div class="toast-header border-0">
+                            <i class="material-symbols-outlined text-warning me-2">deployed_code_account</i>
+                            <span class="me-auto font-weight-bold">Pesanan Diterima!</span>
+                            <i class="material-icons text-sm text-secondary me-1">schedule</i>
+                            <small class="text-body">sekarang</small>
+                            <i class="fas fa-times text-md ms-3 cursor-pointer" data-bs-dismiss="toast" aria-label="Close"></i>
+                        </div>
+                        <hr class="horizontal dark m-0">
+                        <div class="toast-body">
+                            <p class="text-sm text-secondary">
+                                Pesanan telah diterima oleh
+                                <span class="text-warning" id="nama_perusahaan_3"></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            @endif
             <div class="position-fixed top-2 end-1 d-flex flex-column" style="z-index: 100;">
                 @if (session('success'))
                     <div class="toast fade show p-2 bg-white" role="alert" aria-live="assertive" id="successToast" aria-atomic="true">
                         <div class="toast-header border-0">
                             <i class="material-icons text-success me-2">check</i>
                             <span class="me-auto font-weight-bold">Success!</span>
+                            <i class="material-icons text-sm text-secondary me-1">schedule</i>
                             <small class="text-body">sekarang</small>
                             <i class="fas fa-times text-md ms-3 cursor-pointer" data-bs-dismiss="toast" aria-label="Close"></i>
                         </div>
@@ -55,6 +109,7 @@
                         <div class="toast-header border-0">
                             <i class="material-icons text-danger me-2">campaign</i>
                             <span class="me-auto text-gradient text-danger font-weight-bold">Peringatan !</span>
+                            <i class="material-icons text-sm text-secondary me-1">schedule</i>
                             <small class="text-body">sekarang</small>
                             <i class="fas fa-times text-md ms-3 cursor-pointer" data-bs-dismiss="toast" aria-label="Close"></i>
                         </div>
@@ -70,6 +125,7 @@
                             <div class="toast-header border-0">
                                 <i class="material-icons text-danger me-2">campaign</i>
                                 <span class="me-auto text-gradient text-danger font-weight-bold">Peringatan !</span>
+                                <i class="material-icons text-sm text-secondary me-1">schedule</i>
                                 <small class="text-body">sekarang</small>
                                 <i class="fas fa-times text-md ms-3 cursor-pointer" data-bs-dismiss="toast" aria-label="Close"></i>
                             </div>
@@ -191,6 +247,28 @@
                 }
                 Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
             }
+        });
+
+        // Event listener
+        document.addEventListener("DOMContentLoaded", function(event) { 
+            Echo.channel(`PesananBaru-channel`).listen('PesananBaruEvent', (e) => {
+                    const pesanan_baru = document.getElementById('pesanan_baru');
+                    const nama_perusahaan = document.getElementById('nama_perusahaan_1');
+                    nama_perusahaan.textContent = e.nama_perusahaan;
+                    pesanan_baru.style.display = 'block';
+                    setTimeout(function() {
+                        pesanan_baru.style.display = 'none';
+                    }, 5000);
+            });
+            Echo.channel(`BayarTagihan-channel`).listen('BayarTagihanEvent', (e) => {
+                    const tagihan_dibayar = document.getElementById('tagihan_dibayar');
+                    const nama_perusahaan = document.getElementById('nama_perusahaan_2');
+                    nama_perusahaan.textContent = e.nama_perusahaan;
+                    tagihan_dibayar.style.display = 'block';
+                    setTimeout(function() {
+                        tagihan_dibayar.style.display = 'none';
+                    }, 5000);
+            });
         });
     </script>
     <!-- Github buttons -->

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Chart3Event;
 use App\Models\Mobil;
 use App\Models\Pengiriman;
 use App\Models\Pesanan;
@@ -85,6 +86,11 @@ class PengirimanController extends Controller
             $mobil = Mobil::find($mobil);
             $mobil->ketersediaan_mobil = 'tidak tersedia';
             $mobil->save();
+
+            // $jumlah_pengiriman = Pesanan::where('id_pesanan', $pengiriman->id_pesanan)->value('jumlah_pesanan');
+            // $dataSopir = Sopir::where('id_sopir', $sopir)->first();
+            // $nama = $dataSopir->nama;
+            // broadcast(new Chart3Event($jumlah_pengiriman, $nama));
 
             Session::flash('success', 'Pesanan berhasil dikirim!');
             return response()->json(['success' => true]);

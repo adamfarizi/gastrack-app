@@ -683,5 +683,12 @@
             realTime_Proses();
             realTime_Dikirim();
         });
+        document.addEventListener("DOMContentLoaded", function(event) { 
+            Echo.channel(`PesananBaru-channel`).listen('PesananBaruEvent', (e) => {
+                realtime_Nav();
+                realTime_Proses();
+                realTime_Dikirim();
+            });
+        });
     </script>
 @endsection

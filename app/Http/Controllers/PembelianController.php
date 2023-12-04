@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Chart2Event;
 use App\Models\Pelanggan;
 use App\Models\Pesanan;
 use App\Models\Transaksi;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -90,6 +92,11 @@ class PembelianController extends Controller
             } else {
                 $transaksi->tagihan->status_tagihan = "Sudah Bayar";
                 $transaksi->tagihan->save();
+
+                $nama_perusahaan = $transaksi->pelanggan->nama_perusahaan;
+                $jumlah_tagihan = $transaksi->tagihan->jumlah_tagihan;
+                $bulan = Carbon::parse($transaksi->tagihan->tanggal_pembayaran)->format('M Y');
+                broadcast(new Chart2Event($nama_perusahaan, $jumlah_tagihan, $bulan));
 
                 return redirect()->route('pembelian')->with('success', 'Pembayaran berhasil dikonfirmasi !');
             }

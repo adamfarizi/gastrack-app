@@ -10,20 +10,21 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class UpdateTranEvent implements ShouldBroadcast
+class Chart3Event implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $pembeli_name;
-
+    public $jumlah_pengiriman;
+    public $nama;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($pembeli_name,)
+    public function __construct($jumlah_pengiriman, $nama)
     {
-        $this->pembeli_name = $pembeli_name;
+        $this->jumlah_pengiriman = $jumlah_pengiriman;
+        $this->nama = $nama;
     }
 
     /**
@@ -33,6 +34,6 @@ class UpdateTranEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('updateTran-channel');
+        return new Channel('Chart3-channel');
     }
 }

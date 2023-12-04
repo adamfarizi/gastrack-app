@@ -16,6 +16,7 @@ class Pengiriman extends Model
         'bukti_gas_masuk',
         'kapasitas_gas_keluar',
         'bukti_gas_keluar',
+        'status_pengiriman',
         'sisa_gas',
         'id_pesanan',
         'id_sopir',

@@ -357,7 +357,7 @@
         <div class="col-lg-4 col-md-6">
             <div class="card h-100">
                 <div class="card-header pb-0">
-                    <h6>Pesanan Hari ini</h6>
+                    <h6>Riwayat Pesanan Hari ini</h6>
                     <div class="d-flex">
                         <i class="material-symbols-outlined text-dark text-sm fw-bold me-1">calendar_month</i>
                         <p class="mb-0 text-sm text-dark fw-light me-1">tanggal {{ date('d F') }}</p>
@@ -918,6 +918,88 @@
             dataChart2();
             dataChart3();
             dataChart4();
+        });
+    </script>
+
+    {{-- EventListener --}}
+    <script>
+        let dataChart = {
+            labels: [],
+            data: [],
+        };
+        document.addEventListener("DOMContentLoaded", function(event) { 
+            Echo.channel(`PesananBaru-channel`).listen('PesananBaruEvent', (e) => {
+                realtime_Nav();
+                realTime_Pembelian();
+            });
+            Echo.channel(`Chart1-channel`).listen('Chart1Event', (e) => {
+                if (chart1) {
+                    const labelIndex = chart1.data.labels.indexOf(e.hari);
+                    if (labelIndex !== -1) {
+                        chart1.data.datasets[0].data[labelIndex] = parseInt(chart1.data.datasets[0].data[labelIndex]);
+                        chart1.data.datasets[0].data[labelIndex] += parseInt(e.jumlah_pesanan);
+                    } else {
+                        chart1.data.labels.push(e.hari);
+                        chart1.data.datasets[0].data.push(e.jumlah_pesanan);
+                    }
+                    if (chart1.data.labels.length > 7) {
+                        chart1.data.labels.shift();
+                        chart1.data.datasets[0].data.shift();
+                    }
+                    chart1.update();
+                }
+            });
+            Echo.channel(`Chart2-channel`).listen('Chart2Event', (e) => {
+                if (chart2) {
+                    const labelIndex = chart2.data.labels.indexOf(e.bulan);
+                    if (labelIndex !== -1) {
+                        chart2.data.datasets[0].data[labelIndex] = parseInt(chart2.data.datasets[0].data[labelIndex]);
+                        chart2.data.datasets[0].data[labelIndex] += parseInt(e.jumlah_tagihan);
+                    } else {
+                        chart2.data.labels.push(e.bulan);
+                        chart2.data.datasets[0].data.push(e.jumlah_tagihan);
+                    }
+                    if (chart2.data.labels.length > 7) {
+                        chart2.data.labels.shift();
+                        chart2.data.datasets[0].data.shift();
+                    }
+                    chart2.update();
+                }
+            });
+            Echo.channel(`Chart3-channel`).listen('Chart3Event', (e) => {
+                if (chart3) {
+                    const labelIndex = chart3.data.labels.indexOf(e.nama);
+                    if (labelIndex !== -1) {
+                        chart3.data.datasets[0].data[labelIndex] = parseInt(chart3.data.datasets[0].data[labelIndex]);
+                        chart3.data.datasets[0].data[labelIndex] += parseInt(e.jumlah_pengiriman);
+                    } else {
+                        chart3.data.labels.push(e.nama);
+                        chart3.data.datasets[0].data.push(e.jumlah_pengiriman);
+                    }
+                    if (chart3.data.labels.length > 7) {
+                        chart3.data.labels.shift();
+                        chart3.data.datasets[0].data.shift();
+                    }
+                    chart3.update();
+                }
+            });
+            Echo.channel(`Chart4-channel`).listen('Chart4Event', (e) => {
+                if (chart4) {
+                    const labelIndex = chart4.data.labels.indexOf(e.nama_perusahaan);
+                    if (labelIndex !== -1) {
+                        chart4.data.datasets[0].data[labelIndex] = parseInt(chart4.data.datasets[0].data[labelIndex]);
+                        chart4.data.datasets[0].data[labelIndex] += parseInt(e.total_pesanan);
+                    } else {
+                        chart4.data.labels.push(e.nama_perusahaan);
+                        chart4.data.datasets[0].data.push(e.total_pesanan);
+                    }
+                    if (chart4.data.labels.length > 7) {
+                        chart4.data.labels.shift();
+                        chart4.data.datasets[0].data.shift();
+                    }
+                    chart4.update();
+                }
+            });
         });
     </script>
 @endsection

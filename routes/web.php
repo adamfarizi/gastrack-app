@@ -75,5 +75,3 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/profil/edit/password/{id}', [ProfilController::class,'edit_password_action']);
     
 });
-
-Route::post('/transaksi/create', [ApiPelangganController::class,'create_transaksi']);

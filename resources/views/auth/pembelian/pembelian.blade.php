@@ -590,6 +590,14 @@
             realTime_Pembelian();
             realTime_Riwayat_Pembelian();
         });
+
+        document.addEventListener("DOMContentLoaded", function(event) { 
+            Echo.channel(`PesananBaru-channel`).listen('PesananBaruEvent', (e) => {
+                realtime_Nav();
+                realTime_Pembelian();
+                realTime_Riwayat_Pembelian();
+            });
+        });
     </script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
