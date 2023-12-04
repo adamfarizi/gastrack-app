@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/pelanggan/login', [ApiPelangganController::class, 'login_action']);
 Route::post('/sopir/login', [ApiSopirController::class, 'login_action']);
 
-Route::middleware('auth:sanctum', 'check.pelanggan')->group(function () {
+Route::middleware(['auth:sanctum', 'check.pelanggan'])->group(function () {
     Route::post('/pelanggan/logout', [ApiPelangganController::class, 'logout']);
     Route::put('/pelanggan/update/{id}', [ApiPelangganController::class, 'edit_action']);
     Route::get('/pelanggan/index/{id}', [ApiPembelianController::class, 'index_transaksi']);
@@ -30,7 +30,7 @@ Route::middleware('auth:sanctum', 'check.pelanggan')->group(function () {
     Route::post('/pembelian/create', [ApiPembelianController::class, 'create_transaksi']);
 });
 
-Route::middleware('auth:sanctum', 'check.sopir')->group(function(){
+Route::middleware(['auth:sanctum', 'check.sopir'])->group(function(){
     Route::get('/sopir/index', [ApiSopirController::class, 'index']);
     Route::post('/sopir/logout', [ApiSopirController::class, 'logout']);
 });
