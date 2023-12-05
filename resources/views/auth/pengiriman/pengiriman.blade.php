@@ -129,13 +129,13 @@
 @endsection
 @section('content')
     <div class="row">
-        {{-- Total  --}}
+        {{-- Total Pesanan--}}
         <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card p-3 pt-2">
                     <div
                         class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                        <i class="material-icons opacity-10">receipt_long</i>
+                        <i class="material-symbols-outlined opacity-10">list_alt</i>                    
                     </div>
                     <div class="text-end pt-1">
                         <p class="text-sm mb-0 text-capitalize">Total Pesanan</p>

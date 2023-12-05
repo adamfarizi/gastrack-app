@@ -36,8 +36,8 @@
         <div class="container-fluid py-4 pe-3">
             {{-- Notifikasi --}}
             @if (Auth::check())
-                <div class="position-fixed top-2 end-1 d-flex flex-column" style="z-index: 100;">
-                    <div class="toast fade show p-2 bg-white" role="alert" style="display: none;" aria-live="assertive" id="pesanan_baru" aria-atomic="true">
+                <div class="position-fixed top-2 end-1 d-flex flex-column" style="z-index: 100;" id="container_notif">
+                    <div class="toast fade show p-2 bg-white mb-2" role="alert" style="display: none;" aria-live="assertive" id="pesanan_baru" aria-atomic="true">
                         <div class="toast-header border-0">
                             <i class="material-icons text-primary me-2">inventory</i>
                             <span class="me-auto font-weight-bold">Pesanan Masuk!</span>
@@ -53,7 +53,7 @@
                             </p>
                         </div>
                     </div>
-                    <div class="toast fade show p-2 bg-white" role="alert" style="display: none;" aria-live="assertive" id="tagihan_dibayar" aria-atomic="true">
+                    <div class="toast fade show p-2 bg-white mb-2" role="alert" style="display: none;" aria-live="assertive" id="tagihan_dibayar" aria-atomic="true">
                         <div class="toast-header border-0">
                             <i class="material-icons text-info me-2">monetization_on</i>
                             <span class="me-auto font-weight-bold">Pesanan Dibayar!</span>
@@ -70,7 +70,7 @@
                             </p>
                         </div>
                     </div>
-                    <div class="toast fade show p-2 bg-white" role="alert" style="display: none;" aria-live="assertive" id="pesanan_diterima" aria-atomic="true">
+                    <div class="toast fade show p-2 bg-white mb-2" role="alert" style="display: none;" aria-live="assertive" id="pesanan_diterima" aria-atomic="true">
                         <div class="toast-header border-0">
                             <i class="material-symbols-outlined text-warning me-2">deployed_code_account</i>
                             <span class="me-auto font-weight-bold">Pesanan Diterima!</span>
@@ -249,25 +249,168 @@
             }
         });
 
+        // Notif pesanan masuk
+        function pesananMasukElement(namaPerusahaan) {
+            // Buat elemen toast baru
+            const newToast = document.createElement('div');
+            newToast.className = 'toast fade show p-2 bg-white mb-2';
+            newToast.role = 'alert';
+            newToast.style.display = 'none';
+            newToast.setAttribute('aria-live', 'assertive');
+            newToast.id = 'pesanan_baru';
+            newToast.setAttribute('aria-atomic', 'true');
+
+            // Header toast
+            const header = document.createElement('div');
+            header.className = 'toast-header border-0';
+
+            const iconInventory = document.createElement('i');
+            iconInventory.className = 'material-icons text-primary me-2';
+            iconInventory.textContent = 'inventory';
+
+            const title = document.createElement('span');
+            title.className = 'me-auto font-weight-bold';
+            title.textContent = 'Pesanan Masuk!';
+
+            const iconSchedule = document.createElement('i');
+            iconSchedule.className = 'material-icons text-sm text-secondary me-1';
+            iconSchedule.textContent = 'schedule';
+
+            const time = document.createElement('small');
+            time.className = 'text-body';
+            time.textContent = 'sekarang';
+
+            const closeButton = document.createElement('i');
+            closeButton.className = 'fas fa-times text-md ms-3 cursor-pointer';
+            closeButton.setAttribute('data-bs-dismiss', 'toast');
+            closeButton.setAttribute('aria-label', 'Close');
+            closeButton.addEventListener('click', () => newToast.style.display = 'none');
+
+            header.appendChild(iconInventory);
+            header.appendChild(title);
+            header.appendChild(iconSchedule);
+            header.appendChild(time);
+            header.appendChild(closeButton);
+
+            // Garis pemisah
+            const hr = document.createElement('hr');
+            hr.className = 'horizontal dark m-0';
+
+            // Body toast
+            const body = document.createElement('div');
+            body.className = 'toast-body';
+
+            const paragraph = document.createElement('p');
+            paragraph.className = 'text-sm text-secondary';
+            paragraph.textContent = 'Pesanan dari ';
+
+            const companyName = document.createElement('span');
+            companyName.className = 'text-primary';
+            companyName.id = 'nama_perusahaan_1';
+            companyName.textContent = namaPerusahaan;
+
+            paragraph.appendChild(companyName);
+            body.appendChild(paragraph);
+
+            // Gabungkan semua elemen
+            newToast.appendChild(header);
+            newToast.appendChild(hr);
+            newToast.appendChild(body);
+
+            return newToast;
+        }
+
+        // Notif pembayaran tagihan
+        function tagihanDibayarElement(namaPerusahaan) {
+            // Buat elemen toast baru
+            const newToast = document.createElement('div');
+            newToast.className = 'toast fade show p-2 bg-white mb-2';
+            newToast.role = 'alert';
+            newToast.style.display = 'none';
+            newToast.setAttribute('aria-live', 'assertive');
+            newToast.id = 'pesanan_baru';
+            newToast.setAttribute('aria-atomic', 'true');
+
+            // Header toast
+            const header = document.createElement('div');
+            header.className = 'toast-header border-0';
+
+            const iconInventory = document.createElement('i');
+            iconInventory.className = 'material-icons text-info me-2';
+            iconInventory.textContent = 'monetization_on';
+
+            const title = document.createElement('span');
+            title.className = 'me-auto font-weight-bold';
+            title.textContent = 'Pesanan Dibayar!';
+
+            const iconSchedule = document.createElement('i');
+            iconSchedule.className = 'material-icons text-sm text-secondary me-1';
+            iconSchedule.textContent = 'schedule';
+
+            const time = document.createElement('small');
+            time.className = 'text-body';
+            time.textContent = 'sekarang';
+
+            const closeButton = document.createElement('i');
+            closeButton.className = 'fas fa-times text-md ms-3 cursor-pointer';
+            closeButton.setAttribute('data-bs-dismiss', 'toast');
+            closeButton.setAttribute('aria-label', 'Close');
+            closeButton.addEventListener('click', () => newToast.style.display = 'none');
+
+            header.appendChild(iconInventory);
+            header.appendChild(title);
+            header.appendChild(iconSchedule);
+            header.appendChild(time);
+            header.appendChild(closeButton);
+
+            // Garis pemisah
+            const hr = document.createElement('hr');
+            hr.className = 'horizontal dark m-0';
+
+            // Body toast
+            const body = document.createElement('div');
+            body.className = 'toast-body';
+
+            const paragraph = document.createElement('p');
+            paragraph.className = 'text-sm text-secondary';
+
+            const companyName = document.createElement('span');
+            companyName.className = 'text-info';
+            companyName.id = 'nama_perusahaan_2';
+            companyName.textContent = namaPerusahaan;
+
+            paragraph.appendChild(document.createTextNode('Tagihan dari '));
+            paragraph.appendChild(companyName);
+            paragraph.appendChild(document.createTextNode(' telah dibayar'));
+
+            body.appendChild(paragraph);
+
+            // Gabungkan semua elemen
+            newToast.appendChild(header);
+            newToast.appendChild(hr);
+            newToast.appendChild(body);
+
+            return newToast;
+        }
+
         // Event listener
         document.addEventListener("DOMContentLoaded", function(event) { 
             Echo.channel(`PesananBaru-channel`).listen('PesananBaruEvent', (e) => {
-                    const pesanan_baru = document.getElementById('pesanan_baru');
-                    const nama_perusahaan = document.getElementById('nama_perusahaan_1');
-                    nama_perusahaan.textContent = e.nama_perusahaan;
-                    pesanan_baru.style.display = 'block';
-                    setTimeout(function() {
-                        pesanan_baru.style.display = 'none';
-                    }, 5000);
+                const container = document.getElementById('container_notif');
+                const newToast = pesananMasukElement(e.nama_perusahaan);
+                
+                // Tambahkan elemen toast baru ke dalam container
+                container.appendChild(newToast);
+                newToast.style.display = 'block';
             });
+
             Echo.channel(`BayarTagihan-channel`).listen('BayarTagihanEvent', (e) => {
-                    const tagihan_dibayar = document.getElementById('tagihan_dibayar');
-                    const nama_perusahaan = document.getElementById('nama_perusahaan_2');
-                    nama_perusahaan.textContent = e.nama_perusahaan;
-                    tagihan_dibayar.style.display = 'block';
-                    setTimeout(function() {
-                        tagihan_dibayar.style.display = 'none';
-                    }, 5000);
+                const container = document.getElementById('container_notif');
+                const newToast = tagihanDibayarElement(e.nama_perusahaan);
+                
+                // Tambahkan elemen toast baru ke dalam container
+                container.appendChild(newToast);
+                newToast.style.display = 'block';
             });
         });
     </script>

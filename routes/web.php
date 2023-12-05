@@ -40,6 +40,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pembelian/more/pesanan/{id}', [PembelianController::class, 'detail_pesanan']);
     Route::get('/pembelian/more/tagihan/{id}', [PembelianController::class, 'detail_tagihan']);
     Route::post('/pembelian/more/tagihan/{id}', [PembelianController::class, 'konfirmasi_pembayaran']);
+    Route::get('/pembelian/more/print/{id}', [PembelianController::class, 'print_invoice']);
+    Route::post('/pembelian/gas/edit/{id}', [PembelianController::class, 'edit_gas']);
     
     Route::get('/pengiriman', [PengirimanController::class,'index'])->name('pengiriman');
     Route::get('/pengiriman/data', [PengirimanController::class,'realtimeData']);
