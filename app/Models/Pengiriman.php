@@ -25,16 +25,16 @@ class Pengiriman extends Model
 
     public function pesanan()
     {
-        return $this->hasOne(Pesanan::class, 'id_pesanan');
+        return $this->belongsTo(Pesanan::class, 'id_pesanan', 'id_pesanan');
     }
 
     public function sopir()
     {
-        return $this->hasOne(Sopir::class, 'id_sopir');
+        return $this->belongsTo(Sopir::class, 'id_sopir', 'id_sopir');
     }
 
     public function mobil()
     {
-        return $this->hasOne(Mobil::class, 'id_mobil');
+        return $this->belongsTo(Mobil::class, 'id_mobil', 'id_mobil');
     }
 }

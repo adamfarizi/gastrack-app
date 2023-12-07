@@ -90,7 +90,7 @@
             @endif
             <div class="position-fixed top-2 end-1 d-flex flex-column" style="z-index: 100;">
                 @if (session('success'))
-                    <div class="toast fade show p-2 bg-white" role="alert" aria-live="assertive" id="successToast" aria-atomic="true">
+                    <div class="toast fade show p-2 bg-white mb-2" role="alert" aria-live="assertive" id="successToast" aria-atomic="true">
                         <div class="toast-header border-0">
                             <i class="material-icons text-success me-2">check</i>
                             <span class="me-auto font-weight-bold">Success!</span>
@@ -105,7 +105,7 @@
                     </div>
                 @endif
                 @if (session('error'))
-                    <div class="toast fade show p-2 bg-white" role="alert" aria-live="assertive" id="dangerToast" aria-atomic="true">
+                    <div class="toast fade show p-2 bg-white mb-2" role="alert" aria-live="assertive" id="dangerToast" aria-atomic="true">
                         <div class="toast-header border-0">
                             <i class="material-icons text-danger me-2">campaign</i>
                             <span class="me-auto text-gradient text-danger font-weight-bold">Peringatan !</span>
@@ -121,7 +121,7 @@
                 @endif
                 @if ($errors->any())
                     @foreach ($errors->all() as $err)
-                        <div class="toast fade show p-2 bg-white" role="alert" aria-live="assertive" id="dangerToast" aria-atomic="true">
+                        <div class="toast fade show p-2 bg-white mb-2" role="alert" aria-live="assertive" id="dangerToast" aria-atomic="true">
                             <div class="toast-header border-0">
                                 <i class="material-icons text-danger me-2">campaign</i>
                                 <span class="me-auto text-gradient text-danger font-weight-bold">Peringatan !</span>

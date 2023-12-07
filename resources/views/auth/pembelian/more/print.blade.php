@@ -133,18 +133,15 @@
                             </table>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row mb-5">
                         <div class="col ms-4 text-dark">
                             <p class="text-sm fw-bold mb-1">Metode Pembayaran :</p>
-                            <p class="text-sm mb-0">Bank Jago</p>
-                            <p class="text-sm mb-0">Bagus Adam Farizi</p>
-                            <p class="text-sm">123-456-789</p>
+                            <p class="text-sm mb-0">Tunai</p>
                         </div>
                         <div class="col ms-10 text-dark text-center">
                             <p class="text-sm fw-bold mb-4">Hormat Kami</p>
-                            <p class="text-sm mb-4">TTD</p>
-                            <p class="text-sm fw-bold mb-0">Bagus Adam Farizi</p>
-                            <p class="text-sm fw-bold">(Direktur Utama)</p>
+                            <p class="text-sm mb-4" style="color: #e9ecef;">TTD</p>
+                            <p class="text-sm mb-4">____________________</p>
                         </div>
                     </div>
                 </div>

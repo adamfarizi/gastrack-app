@@ -620,7 +620,7 @@
                                             row += '<h6 class="mb-1 text-sm">' + namaSopir + '</h6>';
                                         }
                                         if (namaMobil !== '') {
-                                            row += '<p class="text-xs text-secondary mb-0">Jumlah  : ' + namaMobil + '</p>';
+                                            row += '<p class="text-xs text-secondary mb-0">Mobil  : ' + namaMobil + '</p>';
                                         }
                                         row += '</div>' +
                                     '</td>' +

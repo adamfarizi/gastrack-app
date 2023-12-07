@@ -46,10 +46,14 @@ class PembelianController extends Controller
         $harga_gas = number_format($gas, 0, ',', '.');
         $transaksis = Transaksi::with('pelanggan', 'tagihan')->whereHas('tagihan', function ($query) {
             $query->whereIn('status_tagihan', ['Belum Bayar']);
-        })->get();
+        })
+        ->orderBy('created_at','desc')
+        ->get();
         $riwayat_transaksis = Transaksi::with('pelanggan', 'tagihan')->whereHas('tagihan', function ($query) {
             $query->whereIn('status_tagihan', ['Sudah Bayar']);
-        })->get();
+        })
+        ->orderBy('created_at','desc')
+        ->get();
 
         return response()->json([
             'total_transaksi' => $total_transaksi,
@@ -117,8 +121,8 @@ class PembelianController extends Controller
     {   
         $data['title'] = 'Print Invoice';
 
-        $transaksis = Transaksi::find($id_transaksi)->get();
-        $pesanans = Pesanan::find($id_transaksi)->get();
+        $transaksis = Transaksi::where('id_transaksi',$id_transaksi)->get();
+        $pesanans = Pesanan::where('id_transaksi',$id_transaksi)->get();
         $gas = Gas::sum('harga_gas');
         $harga_gas = number_format($gas, 0, ',', '.');
 

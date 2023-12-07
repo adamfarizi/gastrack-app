@@ -62,7 +62,7 @@ class ApiPembelianController extends Controller
                 ->first();
             $harga_gas = Gas::sum('harga_gas');
             if (!$tagihan_terbaru) {
-                $pelanggan = Pelanggan::find($request->input('id_pelanggan'));
+                $pelanggan = Pelanggan::where('id_pelanggan', $request->input('id_pelanggan'))->first();
                 $tanggal_jatuh_tempo_baru = now()->addWeeks($pelanggan->jenis_pembayaran)->format('Y-m-d');
                 $tagihan = new Tagihan([
                     'tanggal_jatuh_tempo' => $tanggal_jatuh_tempo_baru,
@@ -158,7 +158,7 @@ class ApiPembelianController extends Controller
                         $pengiriman->save();
 
                         // Broadcast
-                        $pelanggan = Pelanggan::find($request->input('id_pelanggan'));
+                        $pelanggan = Pelanggan::where('id_pelanggan', $request->input('id_pelanggan'))->first();
                         $nama_perusahaan = $pelanggan->nama_perusahaan;
                         $jumlah_pesanan = $request->input('jumlah_pesanan');
                         $hari = Carbon::parse($pesanan_baru->tanggal_pesanan)->format('d M');
@@ -176,7 +176,7 @@ class ApiPembelianController extends Controller
                         ], 200);
                     }
                 } else {
-                    $pelanggan = Pelanggan::find($request->input('id_pelanggan'));
+                    $pelanggan = Pelanggan::where('id_pelanggan', $request->input('id_pelanggan'))->first();
                     $tanggal_jatuh_tempo_baru = now()->addWeeks($pelanggan->jenis_pembayaran)->format('Y-m-d');
                     $tagihan = new Tagihan([
                         'tanggal_jatuh_tempo' => $tanggal_jatuh_tempo_baru,
