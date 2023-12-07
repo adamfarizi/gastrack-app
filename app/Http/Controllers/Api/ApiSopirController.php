@@ -75,7 +75,8 @@ class ApiSopirController extends Controller
         }
     }
 
-    public function getDataPengiriman(string $id){
+    public function getDataPengiriman(string $id)
+    {
         Carbon::setLocale('id');
         $pengiriman = Pengiriman::where('id_sopir', $id)
         ->join('pesanan', 'pengiriman.id_pesanan', '=', 'pesanan.id_pesanan')
@@ -110,4 +111,86 @@ class ApiSopirController extends Controller
             ], 200);
         }
     }
+
+    public function gas_masuk(Request $request, $id_pengiriman)
+    {
+        // Validasi request
+        $request->validate([
+            'kapasitas_gas_masuk' => 'string',
+            'bukti_gas_masuk' => 'required|image|mimes:jpeg,jpg,png|max:2048',
+        ]);
+    
+        // Ambil data pengiriman berdasarkan ID
+        $pengiriman = Pengiriman::find($id_pengiriman);
+    
+        if (!$pengiriman) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan!',
+            ], 422);
+        }
+
+        if ($request->hasFile('bukti_gas_masuk')) {
+            $file = $request->file('bukti_gas_masuk');
+            $fileName = $file->getClientOriginalName();
+            $file->move(public_path('img/GasMasuk'), $fileName);
+
+            $pengiriman->update([
+                'bukti_gas_masuk' => $fileName,
+            ]);
+        }
+
+        $pengiriman->kapasitas_gas_masuk = $request->kapasitas_gas_masuk;
+    
+        $pengiriman->save();
+    
+        return response()->json(['message' => 'Data pengiriman berhasil diupdate']);
+    }
+
+    public function gas_keluar(Request $request, $id_pengiriman)
+    {
+        // Validasi request
+        $request->validate([
+            'kapasitas_gas_keluar' => 'string',
+            'bukti_gas_keluar' => 'required|image|mimes:jpeg,jpg,png|max:2048',
+            'status_pengiriman' => 'string',
+        ]);
+    
+        // Ambil data pengiriman berdasarkan ID
+        $pengiriman = Pengiriman::find($id_pengiriman);
+    
+        if (!$pengiriman) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan!',
+            ], 422);
+        }
+
+        // Perhitungan sisa_gas
+        $sisa_gas = $pengiriman->kapasitas_gas_masuk - $request->kapasitas_gas_keluar;
+
+        // Update data pengiriman
+        $pengiriman->kapasitas_gas_keluar = $request->kapasitas_gas_keluar;
+        $pengiriman->sisa_gas = $sisa_gas;
+
+        if ($request->hasFile('bukti_gas_keluar')) {
+            $file = $request->file('bukti_gas_keluar');
+            $fileName = $file->getClientOriginalName();
+            $file->move(public_path('img/GasKeluar'), $fileName);
+
+            $pengiriman->update([
+                'bukti_gas_keluar' => $fileName,
+            ]);
+        }
+
+        $pengiriman->status_pengiriman = $request->status_pengiriman;
+    
+        $pengiriman->save();
+    
+        return response()->json([
+            'message' => 'Data pengiriman berhasil diupdate',
+            'sisa_gas' => $sisa_gas,
+        ]);
+    }
+
 }

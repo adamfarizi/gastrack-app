@@ -67,7 +67,7 @@
                     </h6>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="{{ url('/profil/'.Auth::user()->id_admin) }}">
+                    <a class="nav-link text-dark" href="{{ url('/profil/' . Auth::user()->id_admin) }}">
                         <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">person</i>
                         </div>
@@ -142,7 +142,7 @@
                         <div class="d-flex flex-row-reverse">
                             <span class="h5 ms-2 text-dark font-weight-bolder">Pesanan</span>
                             <h5 class="mb-0" id="total_pesanan"></h5>
-                        </div>                    
+                        </div>
                     </div>
                 </div>
             </div>
@@ -153,14 +153,14 @@
                 <div class="card p-3 pt-2">
                     <div
                         class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                        <i class="material-symbols-outlined opacity-10">deployed_code_history</i>                    
+                        <i class="material-symbols-outlined opacity-10">deployed_code_history</i>
                     </div>
                     <div class="text-end pt-1">
                         <p class="text-sm mb-0 text-capitalize">Pesanan Diproses</p>
                         <div class="d-flex flex-row-reverse">
                             <span class="h5 ms-2 text-dark font-weight-bolder">Pesanan</span>
                             <h5 class="mb-0" id="pesanan_diproses"></h5>
-                        </div>                    
+                        </div>
                     </div>
                 </div>
             </div>
@@ -178,7 +178,7 @@
                         <div class="d-flex flex-row-reverse">
                             <span class="h5 ms-2 text-dark font-weight-bolder">Pesanan</span>
                             <h5 class="mb-0" id="pesanan_dikirim"></h5>
-                        </div>                    
+                        </div>
                     </div>
                 </div>
             </div>
@@ -208,10 +208,7 @@
             <div class="card-body">
                 <div class="card-body px-0 pt-0 pb-2" style="min-height: 50px;">
                     <div class="table-responsive p-0" style="max-height: 300px; overflow-y: auto;">
-                        <div class="text-center" id="noResultsMessage_Diproses" style="display: none;">
-                            tidak ditemukan.
-                        </div>
-                        <table id="table__diproses" class="table align-items-center mb-0">
+                        <table id="table_diproses" class="table align-items-center mb-0">
                             <thead class="sticky-top bg-white z-index-1">
                                 <tr>
                                     <th
@@ -234,8 +231,8 @@
                                         Status</th>
                                 </tr>
                             </thead>
-                                <tbody>
-                                </tbody>
+                            <tbody>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -266,10 +263,7 @@
             <div class="card-body">
                 <div class="card-body px-0 pt-0 pb-2" style="min-height: 50px;">
                     <div class="table-responsive p-0" style="max-height: 300px; overflow-y: auto;">
-                        <div class="text-center" id="noResultsMessage_Dikirim" style="display: none;">
-                            tidak ditemukan.
-                        </div>
-                        <table id="table__dikirim" class="table align-items-center mb-0">
+                        <table id="table_dikirim" class="table align-items-center mb-0">
                             <thead class="sticky-top bg-white z-index-1">
                                 <tr>
                                     <th
@@ -324,19 +318,25 @@
                                 <li>
                                     <div class="row">
                                         <p class="col-4 text-sm fw-bold text-dark mb-0">Tanggal Pesanan</p>
-                                        <p class="col text-sm fw-bold text-dark mb-0">: <span class="fw-light">{{ date('d/m/Y', strtotime($pesanan->tanggal_pesanan)) }}</span></p>
+                                        <p class="col text-sm fw-bold text-dark mb-0">: <span
+                                                class="fw-light">{{ date('d/m/Y', strtotime($pesanan->tanggal_pesanan)) }}</span>
+                                        </p>
                                     </div>
                                 </li>
                                 <li>
                                     <div class="row">
                                         <p class="col-4 text-sm fw-bold text-dark mb-0">Jumlah Pesanan</p>
-                                        <p class="col text-sm fw-bold text-dark mb-0">: <span class="fw-light">{{ $pesanan->jumlah_pesanan }} bar</span></p>
+                                        <p class="col text-sm fw-bold text-dark mb-0">: <span
+                                                class="fw-light">{{ $pesanan->jumlah_pesanan }} bar</span></p>
                                     </div>
                                 </li>
                                 <li>
                                     <div class="row">
                                         <p class="col-4 text-sm fw-bold text-dark mb-0">Harga Pesanan</p>
-                                        <p class="col text-sm fw-bold text-dark mb-0">: <span class="fw-light">Rp.{{ number_format($pesanan->harga_pesanan, 0, ',', '.') }}</</span></p>
+                                        <p class="col text-sm fw-bold text-dark mb-0">: <span
+                                                class="fw-light">Rp.{{ number_format($pesanan->harga_pesanan, 0, ',', '.') }}
+                                                </< /span>
+                                        </p>
                                     </div>
                                 </li>
                             </ul>
@@ -349,13 +349,15 @@
                                         <li>
                                             <div class="row">
                                                 <p class="col-4 text-sm fw-bold text-dark mb-0">Nomor Hp</p>
-                                                <p class="col text-sm fw-bold text-dark mb-0">: <span class="fw-light">{{ $transaksi->pelanggan->no_hp }}</span></p>
+                                                <p class="col text-sm fw-bold text-dark mb-0">: <span
+                                                        class="fw-light">{{ $transaksi->pelanggan->no_hp }}</span></p>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="row">
                                                 <p class="col-4 text-sm fw-bold text-dark mb-0">Alamat</p>
-                                                <p class="col text-sm fw-bold text-dark mb-0">: <span class="fw-light">{{ $transaksi->pelanggan->alamat }}</span></p>
+                                                <p class="col text-sm fw-bold text-dark mb-0">: <span
+                                                        class="fw-light">{{ $transaksi->pelanggan->alamat }}</span></p>
                                             </div>
                                         </li>
                                     </ul>
@@ -364,14 +366,13 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary shadow"
-                        data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary shadow" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
         </div>
     @endforeach
-    
+
     {{-- Modal Gas Masuk --}}
     @foreach ($pengirimans as $pengiriman)
         <div class="modal fade" id="more-gas-masuk-{{ $pengiriman->id_pengiriman }}" tabindex="-1" role="dialog"
@@ -387,12 +388,12 @@
                                 <p class="text-white py-9">Belum ada bukti</p>
                             </div>
                         @else
-                            <img src="{{ asset('assets/img/illustrations/illustration-signin.jpg') }}" class="w-100 rounded" alt="">
+                            <img src="{{ asset('assets/img/illustrations/illustration-signin.jpg') }}"
+                                class="w-100 rounded" alt="">
                         @endif
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary shadow"
-                        data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary shadow" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -414,12 +415,12 @@
                                 <p class="text-white py-9">Belum ada bukti</p>
                             </div>
                         @else
-                            <img src="{{ asset('assets/img/illustrations/illustration-reset.jpg') }}" class="w-100 rounded" alt="">
+                            <img src="{{ asset('assets/img/illustrations/illustration-reset.jpg') }}"
+                                class="w-100 rounded" alt="">
                         @endif
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary shadow"
-                        data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary shadow" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -427,6 +428,66 @@
     @endforeach
 @endsection
 @section('js')
+    {{-- Script search --}}
+    <script>
+        $(document).ready(function () {
+            // Function to filter table rows
+            function filterTable(tableId, searchInputId) {
+                var table = $("#" + tableId);
+                var noResultsRow = $('<tr class="no-results text-dark">' +
+                                        '<td colspan="7" class="text-center fw-light text-secondary text-sm pt-5">Tidak ada pengiriman</td>' +
+                                    '</tr>');
+    
+                // Tampilkan pesan "Tidak ada pengiriman" pada awalnya
+                table.append(noResultsRow);
+    
+                $("#" + searchInputId).on("input", function () {
+                    var value = $(this).val().toLowerCase();
+    
+                    // Filter baris berdasarkan nilai pencarian
+                    $("#" + tableId + " tr:not(.no-results)").filter(function () {
+                        var isMatch = $(this).text().toLowerCase().indexOf(value) > -1;
+                        $(this).toggle(isMatch);
+                    });
+    
+                    // Tampilkan pesan "Tidak ada pengiriman" jika tidak ada hasil atau tabel kosong
+                    noResultsRow.toggle($("#" + tableId + " tr:not(.no-results):visible").length === 0);
+                });
+            }
+    
+            // Apply the filtering functionality to the first table
+            filterTable("table_diproses", "searchInput_Diproses");
+    
+            // Apply the filtering functionality to the second table
+            filterTable("table_dikirim", "searchInput_Dikirim");
+        });
+    </script>
+    
+    <script>
+        $(document).ready(function () {
+            var table = $("#table_kirim");
+            var noResultsRow = $('<tr class="no-results text-dark">' +
+                                    '<td colspan="7" class="text-center fw-light text-secondary text-sm pt-5">Tidak ada pengiriman</td>' +
+                                '</tr>');
+    
+            // Tampilkan pesan "Tidak ada pengiriman" pada awalnya
+            table.append(noResultsRow);
+    
+            $("#searchInput_Dikirim").on("input", function () {
+                var value = $(this).val().toLowerCase();
+    
+                // Filter baris berdasarkan nilai pencarian
+                $("#table_dikirim tr:not(.no-results)").filter(function () {
+                    var isMatch = $(this).text().toLowerCase().indexOf(value) > -1;
+                    $(this).toggle(isMatch);
+                });
+    
+                // Tampilkan pesan "Tidak ada pengiriman" jika tidak ada hasil atau tabel kosong
+                noResultsRow.toggle($("#table_dikirim tr:not(.no-results):visible").length === 0);
+            });
+        });
+    </script>      
+
     <script>
         function realtime_Nav() {
             $.ajax({
@@ -463,7 +524,7 @@
                     if (!data.prosess || data.prosess.length === 0) {
                         var row =
                             '<tr class="text-dark">' +
-                                '<td colspan="7" class="text-center fw-light text-secondary text-sm pt-5">Tidak ada pengiriman</td>' +
+                            '<td colspan="7" class="text-center fw-light text-secondary text-sm pt-5">Tidak ada pengiriman</td>' +
                             '</tr>';
 
                         table.append(row);
@@ -471,55 +532,66 @@
                         $.each(data.prosess, function(index, pengiriman) {
                             var namaPelanggan = '';
                             $.each(data.transaksis, function(index, transaksi) {
-                                if (pengiriman.pesanan.id_transaksi === transaksi.id_transaksi) {
+                                if (pengiriman.pesanan.id_transaksi === transaksi
+                                    .id_transaksi) {
                                     namaPelanggan = transaksi.pelanggan.nama_perusahaan;
                                 }
                             });
 
                             var row =
                                 '<tr class="text-dark">' +
-                                    '<td class="align-middle font-weight-bold text-sm text-center">' + pengiriman.kode_pengiriman + '</td>' +
-                                    '<td>' +
-                                        '<div class="text-center">';
-                                        if (namaPelanggan !== '') {
-                                            row += '<h6 class="mb-1 text-sm">' + namaPelanggan + '</h6>';
-                                        }
-                                        row += '<p class="text-xs text-secondary mb-0">Jumlah  : ' + pengiriman.pesanan.jumlah_pesanan + ' bar' +
-                                        '</p>' +
-                                    '</div>' +
-                                    '</td>' +
-                                    '<td class="align-middle text-sm text-center">' +
-                                        '<a href="#" type="button" data-id="' + pengiriman.pesanan.id_pesanan + '" data-bs-toggle="modal" data-bs-target="#more-info-proses-' + pengiriman.pesanan.id_pesanan + '">' +
-                                            '<p class="text-sm pt-3" style="text-decoration: underline;">Selengkapnya</p>' +
-                                        '</a>' +
-                                    '</td>' +
-                                    '<td class="align-middle text-sm text-center">' +
-                                        '<div class="border rounded-2">' +
-                                            '<select class="form-control text-center" id="id_kurir_' + pengiriman.id_pengiriman + '" name="nama_kurir" required>' +
-                                                '<option value="Belum Memilih"> Belum Memilih </option>';
-                                                $.each(data.sopirs, function(index, sopir) {
-                                                    row += '<option value="' + sopir.id_sopir + '">' + sopir.nama + '</option>';
-                                                });
-                                            row += '</select>' +
-                                        '</div>' +
-                                    '</td>' +
-                                    '<td class="align-middle text-sm text-center">' +
-                                        '<div class="border rounded-2">' +
-                                            '<select class="form-control text-center" id="id_mobil_' + pengiriman.id_pengiriman + '" name="nopol_mobil" required>' +
-                                                '<option value="Belum Memilih"> Belum Memilih </option>';
-                                                $.each(data.mobils, function(index, mobil) {
-                                                    row += '<option value="' + mobil.id_mobil + '">' + mobil.nopol_mobil + '</option>';
-                                                });
-                                            row += '</select>' +
-                                        '</div>' +
-                                    '</td>' +
-                                    '<td class="align-middle text-sm text-center pt-4">' +
-                                        '<button id="btn_kirim_' + pengiriman.id_pengiriman + '" value="' + pengiriman.id_pengiriman + '" type="submit" class="btn bg-gradient-success btn-icon btn-sm ps-3 mt-1">' +
-                                            '<span>' +
-                                                '<i class="fa fa-solid fa-paper-plane me-3" style="color: #ffffff;"></i>' +
-                                            '</span>Kirim' +
-                                        '</button>' +
-                                    '</td>' +
+                                '<td class="align-middle font-weight-bold text-sm text-center">' +
+                                pengiriman.kode_pengiriman + '</td>' +
+                                '<td>' +
+                                '<div class="text-center">';
+                            if (namaPelanggan !== '') {
+                                row += '<h6 class="mb-1 text-sm">' + namaPelanggan + '</h6>';
+                            }
+                            row += '<p class="text-xs text-secondary mb-0">Jumlah  : ' + pengiriman
+                                .pesanan.jumlah_pesanan + ' bar' +
+                                '</p>' +
+                                '</div>' +
+                                '</td>' +
+                                '<td class="align-middle text-sm text-center">' +
+                                '<a href="#" type="button" data-id="' + pengiriman.pesanan.id_pesanan +
+                                '" data-bs-toggle="modal" data-bs-target="#more-info-proses-' +
+                                pengiriman.pesanan.id_pesanan + '">' +
+                                '<p class="text-sm pt-3" style="text-decoration: underline;">Selengkapnya</p>' +
+                                '</a>' +
+                                '</td>' +
+                                '<td class="align-middle text-sm text-center">' +
+                                '<div class="border rounded-2">' +
+                                '<select class="form-control text-center" id="id_kurir_' + pengiriman
+                                .id_pengiriman + '" name="nama_kurir" required>' +
+                                '<option value="Belum Memilih"> Belum Memilih </option>';
+                            $.each(data.sopirs, function(index, sopir) {
+                                row += '<option value="' + sopir.id_sopir + '">' + sopir.nama +
+                                    '</option>';
+                            });
+                            row += '</select>' +
+                                '</div>' +
+                                '</td>' +
+                                '<td class="align-middle text-sm text-center">' +
+                                '<div class="border rounded-2">' +
+                                '<select class="form-control text-center" id="id_mobil_' + pengiriman
+                                .id_pengiriman + '" name="nopol_mobil" required>' +
+                                '<option value="Belum Memilih"> Belum Memilih </option>';
+                            $.each(data.mobils, function(index, mobil) {
+                                row += '<option value="' + mobil.id_mobil + '">' + mobil
+                                    .nopol_mobil + '</option>';
+                            });
+                            row += '</select>' +
+                                '</div>' +
+                                '</td>' +
+                                '<td class="align-middle text-sm text-center pt-4">' +
+                                '<button id="btn_kirim_' + pengiriman.id_pengiriman + '" value="' +
+                                pengiriman.id_pengiriman +
+                                '" type="submit" class="btn bg-gradient-success btn-icon btn-sm ps-3 mt-1">' +
+                                '<span>' +
+                                '<i class="fa fa-solid fa-paper-plane me-3" style="color: #ffffff;"></i>' +
+                                '</span>Kirim' +
+                                '</button>' +
+                                '</td>' +
                                 '</tr>';
 
                             table.append(row);
@@ -545,7 +617,7 @@
                                             var successToast = $('#successToast');
                                             successToast.find('.toast-body').text()
                                             successToast.toast('show');
-                                        }else if (response.error) {
+                                        } else if (response.error) {
                                             var dangerToast = $('#dangerToast');
                                             dangerToast.find('.toast-body').text();
                                             dangerToast.toast('show');
@@ -578,7 +650,7 @@
                     if (!data.pengirimans || data.pengirimans.length === 0) {
                         var row =
                             '<tr class="text-dark">' +
-                                '<td colspan="7" class="text-center fw-light text-secondary text-sm pt-5">Tidak ada pengiriman</td>' +
+                            '<td colspan="7" class="text-center fw-light text-secondary text-sm pt-5">Tidak ada pengiriman</td>' +
                             '</tr>';
 
                         table.append(row);
@@ -586,7 +658,8 @@
                         $.each(data.pengirimans, function(index, pengiriman) {
                             var namaPelanggan = '';
                             $.each(data.transaksis, function(index, transaksi) {
-                                if (pengiriman.pesanan.id_transaksi === transaksi.id_transaksi) {
+                                if (pengiriman.pesanan.id_transaksi === transaksi
+                                    .id_transaksi) {
                                     namaPelanggan = transaksi.pelanggan.nama_perusahaan;
                                 }
                             });
@@ -605,58 +678,65 @@
                             var statusBadge = getStatusBadge(pengiriman);
                             var row =
                                 '<tr class="text-dark">' +
-                                    '<td class="align-middle font-weight-bold text-sm text-center">' + pengiriman.kode_pengiriman + '</td>' +
-                                    '<td>' +
-                                        '<div class="text-center">';
-                                        if (namaPelanggan !== '') {
-                                            row += '<h6 class="mb-1 text-sm">' + namaPelanggan + '</h6>';
-                                        }
-                                        row += '<p class="text-xs text-secondary mb-0">Jumlah  : ' + pengiriman.pesanan.jumlah_pesanan + ' bar' +
-                                        '</p>' +
-                                    '</div>' +
-                                    '<td>' +
-                                        '<div class="text-center">';
-                                        if (namaSopir !== '') {
-                                            row += '<h6 class="mb-1 text-sm">' + namaSopir + '</h6>';
-                                        }
-                                        if (namaMobil !== '') {
-                                            row += '<p class="text-xs text-secondary mb-0">Jumlah  : ' + namaMobil + '</p>';
-                                        }
-                                        row += '</div>' +
-                                    '</td>' +
-                                    '<td class="text-center pt-4">' ;
-                                        if (pengiriman.kapasitas_gas_masuk == null) {
-                                            row += '<p class="text-sm mb-0">Gas Masuk : kosong </p>';
-                                        }
-                                        else{
-                                            row += '<p class="text-sm mb-0">Gas Masuk : ' + pengiriman.kapasitas_gas_masuk + ' bar' +'</p>';
-                                        }
-                                        row += '<a href="#" type="button" data-id="' + pengiriman.id_pengiriman + '" data-bs-toggle="modal" data-bs-target="#more-gas-masuk-' + pengiriman.id_pengiriman + '">' +
-                                            '<p class="text-sm" style="text-decoration: underline;">Bukti</p>' +
-                                        '</a>' +
-                                    '</td>' +
-                                    '<td class="text-center pt-4">' ;
-                                        if (pengiriman.kapasitas_gas_keluar == null) {
-                                            row += '<p class="text-sm mb-0">Gas Keluar : kosong </p>';
-                                        }
-                                        else{
-                                            row += '<p class="text-sm mb-0">Gas Keluar : ' + pengiriman.kapasitas_gas_keluar + ' bar' +'</p>';
-                                        }
-                                        row += '<a href="#" type="button" data-id="' + pengiriman.id_pengiriman + '" data-bs-toggle="modal" data-bs-target="#more-gas-keluar-' + pengiriman.id_pengiriman + '">' +
-                                            '<p class="text-sm" style="text-decoration: underline;">Bukti</p>' +
-                                        '</a>' +
-                                    '</td>' +
-                                    '<td class="text-center">' ;
-                                        if (pengiriman.sisa_gas == null) {
-                                            row += '<p class="text-sm mb-0">tidak tersisa </p>';
-                                        }
-                                        else{
-                                            row += '<p class="text-sm mb-0">Gas Keluar : ' + pengiriman.kapasitas_gas_keluar + ' bar' +'</p>';
-                                        }
-                                    row+= '</td>' +                                    
-                                    '<td class="align-middle text-center">' +
-                                        statusBadge +
-                                    '</td>' +
+                                '<td class="align-middle font-weight-bold text-sm text-center">' +
+                                pengiriman.kode_pengiriman + '</td>' +
+                                '<td>' +
+                                '<div class="text-center">';
+                            if (namaPelanggan !== '') {
+                                row += '<h6 class="mb-1 text-sm">' + namaPelanggan + '</h6>';
+                            }
+                            row += '<p class="text-xs text-secondary mb-0">Jumlah  : ' + pengiriman
+                                .pesanan.jumlah_pesanan + ' bar' +
+                                '</p>' +
+                                '</div>' +
+                                '<td>' +
+                                '<div class="text-center">';
+                            if (namaSopir !== '') {
+                                row += '<h6 class="mb-1 text-sm">' + namaSopir + '</h6>';
+                            }
+                            if (namaMobil !== '') {
+                                row += '<p class="text-xs text-secondary mb-0">Jumlah  : ' + namaMobil +
+                                    '</p>';
+                            }
+                            row += '</div>' +
+                                '</td>' +
+                                '<td class="text-center pt-4">';
+                            if (pengiriman.kapasitas_gas_masuk == null) {
+                                row += '<p class="text-sm mb-0">Gas Masuk : kosong </p>';
+                            } else {
+                                row += '<p class="text-sm mb-0">Gas Masuk : ' + pengiriman
+                                    .kapasitas_gas_masuk + ' bar' + '</p>';
+                            }
+                            row += '<a href="#" type="button" data-id="' + pengiriman.id_pengiriman +
+                                '" data-bs-toggle="modal" data-bs-target="#more-gas-masuk-' + pengiriman
+                                .id_pengiriman + '">' +
+                                '<p class="text-sm" style="text-decoration: underline;">Bukti</p>' +
+                                '</a>' +
+                                '</td>' +
+                                '<td class="text-center pt-4">';
+                            if (pengiriman.kapasitas_gas_keluar == null) {
+                                row += '<p class="text-sm mb-0">Gas Keluar : kosong </p>';
+                            } else {
+                                row += '<p class="text-sm mb-0">Gas Keluar : ' + pengiriman
+                                    .kapasitas_gas_keluar + ' bar' + '</p>';
+                            }
+                            row += '<a href="#" type="button" data-id="' + pengiriman.id_pengiriman +
+                                '" data-bs-toggle="modal" data-bs-target="#more-gas-keluar-' +
+                                pengiriman.id_pengiriman + '">' +
+                                '<p class="text-sm" style="text-decoration: underline;">Bukti</p>' +
+                                '</a>' +
+                                '</td>' +
+                                '<td class="text-center">';
+                            if (pengiriman.sisa_gas == null) {
+                                row += '<p class="text-sm mb-0">tidak tersisa </p>';
+                            } else {
+                                row += '<p class="text-sm mb-0">Gas Keluar : ' + pengiriman
+                                    .kapasitas_gas_keluar + ' bar' + '</p>';
+                            }
+                            row += '</td>' +
+                                '<td class="align-middle text-center">' +
+                                statusBadge +
+                                '</td>' +
                                 '</tr>';
 
                             table.append(row);
@@ -683,7 +763,7 @@
             realTime_Proses();
             realTime_Dikirim();
         });
-        document.addEventListener("DOMContentLoaded", function(event) { 
+        document.addEventListener("DOMContentLoaded", function(event) {
             Echo.channel(`PesananBaru-channel`).listen('PesananBaruEvent', (e) => {
                 realtime_Nav();
                 realTime_Proses();

@@ -316,16 +316,17 @@
                         </div>
                         <div class="col-md-3 col-sm-6 ml-auto">
                             <div class="input-group mb-3 border rounded-2">
-                                <span class="input-group-text text-body me-2"><i class="fas fa-search"
-                                        aria-hidden="true"></i></span>
-                                <input type="text" class="form-control ms-2" id="searchInput_Diproses"
-                                    placeholder="Cari  ...">
+                                <span class="input-group-text text-body me-2"><i class="fas fa-search" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control ms-2" id="searchInput_semua" placeholder="Cari ...">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="card-body px-3 pt-0 pb-2" style="min-height: 428px;">
                     <div class="table-responsive p-0" style="max-height: 450px; overflow-y: auto;">
+                        <div class="text-center" id="noResultsMessage" style="display: none;">
+                            Pesanan tidak ditemukan.
+                        </div>
                         <table class="table align-items-center mb-0" id="table_pembelian">
                             <thead class="sticky-top bg-white z-index-1">
                                 <tr>
@@ -397,6 +398,26 @@
     </div>
 @endsection
 @section('js')
+
+    {{-- Script search --}}
+    <script>
+        $(document).ready(function() {
+            $("#searchInput_semua").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#table_pembelian tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+
+                var noResultsMessage = $("#noResultsMessage");
+                if ($("#table_pembelian tr:visible").length === 0) {
+                    noResultsMessage.show();
+                } else {
+                    noResultsMessage.hide();
+                }
+            });
+        });
+    </script>
+
     {{-- realtime data --}}
     <script>
         function realtime_Nav() {

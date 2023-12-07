@@ -201,7 +201,7 @@
                                 <div class="input-group mb-3 border rounded-2">
                                     <span class="input-group-text text-body me-2"><i class="fas fa-search"
                                             aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control ms-2" id="searchInput_Diproses"
+                                    <input type="text" class="form-control ms-2" id="searchInput_Pembelian"
                                         placeholder="Cari  ...">
                                 </div>
                             </div>
@@ -209,6 +209,7 @@
                     </div>
                     <div class="card-body px-3 pt-0 pb-2" style="min-height: 428px;">
                         <div class="table-responsive p-0" style="max-height: 450px; overflow-y: auto;">
+                            <div id="noResultsMessage_pembelian" class="text-center" style="display: none;">Tidak ada hasil yang ditemukan.</div>
                             <table class="table align-items-center mb-0" id="table_pembelian">
                                 <thead class="sticky-top bg-white z-index-1">
                                     <tr>
@@ -222,7 +223,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                 </tbody>
                             </table>
                         </div>
@@ -244,7 +244,7 @@
                                 <div class="input-group mb-3 border rounded-2">
                                     <span class="input-group-text text-body me-2"><i class="fas fa-search"
                                             aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control ms-2" id="searchInput_Diproses"
+                                    <input type="text" class="form-control ms-2" id="searchInput_Riwayat"
                                         placeholder="Cari  ...">
                                 </div>
                             </div>
@@ -252,6 +252,7 @@
                     </div>
                     <div class="card-body px-3 pt-0 pb-2" style="min-height: 428px;">
                         <div class="table-responsive p-0" style="max-height: 450px; overflow-y: auto;">
+                            <div id="noResultsMessage_riwayat_pembelian" class="text-center" style="display: none;">Tidak ada hasil yang ditemukan.</div>
                             <table class="table align-items-center mb-0" id="table_riwayat_pembelian">
                                 <thead class="sticky-top bg-white z-index-1">
                                     <tr>
@@ -265,7 +266,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                 </tbody>
                             </table>
                         </div>
@@ -411,6 +411,40 @@
     @endforeach
 @endsection
 @section('js')
+
+    {{-- Script search --}}
+    <script>
+        $(document).ready(function() {
+            $("#searchInput_Pembelian").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#table_pembelian tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+
+                var noResultsMessage = $("#noResultsMessage_pembelian");
+                if ($("#table_pembelian tr:visible").length === 0) {
+                    noResultsMessage.show();
+                } else {
+                    noResultsMessage.hide();
+                }
+            });
+
+            $("#searchInput_Riwayat").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#table_riwayat_pembelian tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+
+                var noResultsMessage = $("#noResultsMessage_riwayat_pembelian");
+                if ($("#table_riwayat_pembelian tr:visible").length === 0) {
+                    noResultsMessage.show();
+                } else {
+                    noResultsMessage.hide();
+                }
+            });
+        });
+    </script>
+
     <script>
         function realtime_Nav() {
             $.ajax({
