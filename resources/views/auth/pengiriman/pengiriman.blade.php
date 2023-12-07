@@ -129,13 +129,13 @@
 @endsection
 @section('content')
     <div class="row">
-        {{-- Total  --}}
+        {{-- Total Pesanan--}}
         <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card p-3 pt-2">
                     <div
                         class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                        <i class="material-icons opacity-10">receipt_long</i>
+                        <i class="material-symbols-outlined opacity-10">list_alt</i>                    
                     </div>
                     <div class="text-end pt-1">
                         <p class="text-sm mb-0 text-capitalize">Total Pesanan</p>
@@ -678,65 +678,58 @@
                             var statusBadge = getStatusBadge(pengiriman);
                             var row =
                                 '<tr class="text-dark">' +
-                                '<td class="align-middle font-weight-bold text-sm text-center">' +
-                                pengiriman.kode_pengiriman + '</td>' +
-                                '<td>' +
-                                '<div class="text-center">';
-                            if (namaPelanggan !== '') {
-                                row += '<h6 class="mb-1 text-sm">' + namaPelanggan + '</h6>';
-                            }
-                            row += '<p class="text-xs text-secondary mb-0">Jumlah  : ' + pengiriman
-                                .pesanan.jumlah_pesanan + ' bar' +
-                                '</p>' +
-                                '</div>' +
-                                '<td>' +
-                                '<div class="text-center">';
-                            if (namaSopir !== '') {
-                                row += '<h6 class="mb-1 text-sm">' + namaSopir + '</h6>';
-                            }
-                            if (namaMobil !== '') {
-                                row += '<p class="text-xs text-secondary mb-0">Jumlah  : ' + namaMobil +
-                                    '</p>';
-                            }
-                            row += '</div>' +
-                                '</td>' +
-                                '<td class="text-center pt-4">';
-                            if (pengiriman.kapasitas_gas_masuk == null) {
-                                row += '<p class="text-sm mb-0">Gas Masuk : kosong </p>';
-                            } else {
-                                row += '<p class="text-sm mb-0">Gas Masuk : ' + pengiriman
-                                    .kapasitas_gas_masuk + ' bar' + '</p>';
-                            }
-                            row += '<a href="#" type="button" data-id="' + pengiriman.id_pengiriman +
-                                '" data-bs-toggle="modal" data-bs-target="#more-gas-masuk-' + pengiriman
-                                .id_pengiriman + '">' +
-                                '<p class="text-sm" style="text-decoration: underline;">Bukti</p>' +
-                                '</a>' +
-                                '</td>' +
-                                '<td class="text-center pt-4">';
-                            if (pengiriman.kapasitas_gas_keluar == null) {
-                                row += '<p class="text-sm mb-0">Gas Keluar : kosong </p>';
-                            } else {
-                                row += '<p class="text-sm mb-0">Gas Keluar : ' + pengiriman
-                                    .kapasitas_gas_keluar + ' bar' + '</p>';
-                            }
-                            row += '<a href="#" type="button" data-id="' + pengiriman.id_pengiriman +
-                                '" data-bs-toggle="modal" data-bs-target="#more-gas-keluar-' +
-                                pengiriman.id_pengiriman + '">' +
-                                '<p class="text-sm" style="text-decoration: underline;">Bukti</p>' +
-                                '</a>' +
-                                '</td>' +
-                                '<td class="text-center">';
-                            if (pengiriman.sisa_gas == null) {
-                                row += '<p class="text-sm mb-0">tidak tersisa </p>';
-                            } else {
-                                row += '<p class="text-sm mb-0">Gas Keluar : ' + pengiriman
-                                    .kapasitas_gas_keluar + ' bar' + '</p>';
-                            }
-                            row += '</td>' +
-                                '<td class="align-middle text-center">' +
-                                statusBadge +
-                                '</td>' +
+                                    '<td class="align-middle font-weight-bold text-sm text-center">' + pengiriman.kode_pengiriman + '</td>' +
+                                    '<td>' +
+                                        '<div class="text-center">';
+                                        if (namaPelanggan !== '') {
+                                            row += '<h6 class="mb-1 text-sm">' + namaPelanggan + '</h6>';
+                                        }
+                                        row += '<p class="text-xs text-secondary mb-0">Jumlah  : ' + pengiriman.pesanan.jumlah_pesanan + ' bar' +
+                                        '</p>' +
+                                    '</div>' +
+                                    '<td>' +
+                                        '<div class="text-center">';
+                                        if (namaSopir !== '') {
+                                            row += '<h6 class="mb-1 text-sm">' + namaSopir + '</h6>';
+                                        }
+                                        if (namaMobil !== '') {
+                                            row += '<p class="text-xs text-secondary mb-0">Mobil  : ' + namaMobil + '</p>';
+                                        }
+                                        row += '</div>' +
+                                    '</td>' +
+                                    '<td class="text-center pt-4">' ;
+                                        if (pengiriman.kapasitas_gas_masuk == null) {
+                                            row += '<p class="text-sm mb-0">Gas Masuk : kosong </p>';
+                                        }
+                                        else{
+                                            row += '<p class="text-sm mb-0">Gas Masuk : ' + pengiriman.kapasitas_gas_masuk + ' bar' +'</p>';
+                                        }
+                                        row += '<a href="#" type="button" data-id="' + pengiriman.id_pengiriman + '" data-bs-toggle="modal" data-bs-target="#more-gas-masuk-' + pengiriman.id_pengiriman + '">' +
+                                            '<p class="text-sm" style="text-decoration: underline;">Bukti</p>' +
+                                        '</a>' +
+                                    '</td>' +
+                                    '<td class="text-center pt-4">' ;
+                                        if (pengiriman.kapasitas_gas_keluar == null) {
+                                            row += '<p class="text-sm mb-0">Gas Keluar : kosong </p>';
+                                        }
+                                        else{
+                                            row += '<p class="text-sm mb-0">Gas Keluar : ' + pengiriman.kapasitas_gas_keluar + ' bar' +'</p>';
+                                        }
+                                        row += '<a href="#" type="button" data-id="' + pengiriman.id_pengiriman + '" data-bs-toggle="modal" data-bs-target="#more-gas-keluar-' + pengiriman.id_pengiriman + '">' +
+                                            '<p class="text-sm" style="text-decoration: underline;">Bukti</p>' +
+                                        '</a>' +
+                                    '</td>' +
+                                    '<td class="text-center">' ;
+                                        if (pengiriman.sisa_gas == null) {
+                                            row += '<p class="text-sm mb-0">tidak tersisa </p>';
+                                        }
+                                        else{
+                                            row += '<p class="text-sm mb-0">Gas Keluar : ' + pengiriman.kapasitas_gas_keluar + ' bar' +'</p>';
+                                        }
+                                    row+= '</td>' +                                    
+                                    '<td class="align-middle text-center">' +
+                                        statusBadge +
+                                    '</td>' +
                                 '</tr>';
 
                             table.append(row);

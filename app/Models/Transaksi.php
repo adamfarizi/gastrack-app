@@ -27,16 +27,16 @@ class Transaksi extends Model
 
     public function pelanggan()
     {
-        return $this->hasOne(Pelanggan::class, 'id_pelanggan');
+        return $this->belongsTo(Pelanggan::class, 'id_pelanggan', 'id_pelanggan');
     }
 
     public function tagihan()
     {
-        return $this->hasOne(Tagihan::class, 'id_tagihan');
+        return $this->belongsTo(Tagihan::class, 'id_tagihan', 'id_tagihan');
     }
 
     public function admin()
     {
-        return $this->hasOne(User::class, 'id_admin');
+        return $this->belongsTo(User::class, 'id_admin', 'id_admin');
     }
 }

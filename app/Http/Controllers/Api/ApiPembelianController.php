@@ -7,6 +7,7 @@ use App\Events\Chart1Event;
 use App\Events\Chart4Event;
 use App\Events\PesananBaruEvent;
 use App\Http\Controllers\Controller;
+use App\Models\Gas;
 use App\Models\Pelanggan;
 use App\Models\Pengiriman;
 use App\Models\Transaksi;
@@ -59,12 +60,13 @@ class ApiPembelianController extends Controller
             $tagihan_terbaru = Tagihan::where('id_pelanggan', $request->input('id_pelanggan'))
                 ->orderBy('created_at', 'desc')
                 ->first();
+            $harga_gas = Gas::sum('harga_gas');
             if (!$tagihan_terbaru) {
-                $pelanggan = Pelanggan::find($request->input('id_pelanggan'));
+                $pelanggan = Pelanggan::where('id_pelanggan', $request->input('id_pelanggan'))->first();
                 $tanggal_jatuh_tempo_baru = now()->addWeeks($pelanggan->jenis_pembayaran)->format('Y-m-d');
                 $tagihan = new Tagihan([
                     'tanggal_jatuh_tempo' => $tanggal_jatuh_tempo_baru,
-                    'jumlah_tagihan' => $request->input('jumlah_pesanan') * 100000,
+                    'jumlah_tagihan' => $request->input('jumlah_pesanan') * $harga_gas,
                     'status_tagihan' => 'Belum Bayar',
                     'tanggal_pembayaran' => null,
                     'bukti_pembayaran' => null,
@@ -90,7 +92,7 @@ class ApiPembelianController extends Controller
                 $pesanan = new Pesanan([
                     'tanggal_pesanan' => $tanggal_sekarang,
                     'jumlah_pesanan' => $request->input('jumlah_pesanan'),
-                    'harga_pesanan' => $request->input('jumlah_pesanan') * 100000,
+                    'harga_pesanan' => $request->input('jumlah_pesanan') * $harga_gas,
                     'id_transaksi' => $transaksi_baru->id_transaksi,
                 ]);
                 $pesanan->save();
@@ -138,11 +140,11 @@ class ApiPembelianController extends Controller
                         $pesanan = new Pesanan([
                             'tanggal_pesanan' => $tanggal_sekarang,
                             'jumlah_pesanan' => $request->input('jumlah_pesanan'),
-                            'harga_pesanan' => $request->input('jumlah_pesanan') * 100000,
+                            'harga_pesanan' => $request->input('jumlah_pesanan') * $harga_gas,
                             'id_transaksi' => $transaksi_terbaru->id_transaksi,
                         ]);
                         $pesanan->save();
-                        $tagihan_terbaru->jumlah_tagihan = $tagihan_terbaru->jumlah_tagihan + ($request->input('jumlah_pesanan') * 100000);
+                        $tagihan_terbaru->jumlah_tagihan = $tagihan_terbaru->jumlah_tagihan + ($request->input('jumlah_pesanan') * $harga_gas);
                         $tagihan_terbaru->save();
                         $pesanan_baru = Pesanan::where('id_transaksi', $transaksi_terbaru->id_transaksi)
                             ->latest('created_at')
@@ -156,7 +158,7 @@ class ApiPembelianController extends Controller
                         $pengiriman->save();
 
                         // Broadcast
-                        $pelanggan = Pelanggan::find($request->input('id_pelanggan'));
+                        $pelanggan = Pelanggan::where('id_pelanggan', $request->input('id_pelanggan'))->first();
                         $nama_perusahaan = $pelanggan->nama_perusahaan;
                         $jumlah_pesanan = $request->input('jumlah_pesanan');
                         $hari = Carbon::parse($pesanan_baru->tanggal_pesanan)->format('d M');
@@ -174,11 +176,11 @@ class ApiPembelianController extends Controller
                         ], 200);
                     }
                 } else {
-                    $pelanggan = Pelanggan::find($request->input('id_pelanggan'));
+                    $pelanggan = Pelanggan::where('id_pelanggan', $request->input('id_pelanggan'))->first();
                     $tanggal_jatuh_tempo_baru = now()->addWeeks($pelanggan->jenis_pembayaran)->format('Y-m-d');
                     $tagihan = new Tagihan([
                         'tanggal_jatuh_tempo' => $tanggal_jatuh_tempo_baru,
-                        'jumlah_tagihan' => $request->input('jumlah_pesanan') * 100000,
+                        'jumlah_tagihan' => $request->input('jumlah_pesanan') * $harga_gas,
                         'status_tagihan' => 'Belum Bayar',
                         'tanggal_pembayaran' => null,
                         'bukti_pembayaran' => null,
@@ -204,7 +206,7 @@ class ApiPembelianController extends Controller
                     $pesanan = new Pesanan([
                         'tanggal_pesanan' => $tanggal_sekarang,
                         'jumlah_pesanan' => $request->input('jumlah_pesanan'),
-                        'harga_pesanan' => $request->input('jumlah_pesanan') * 100000,
+                        'harga_pesanan' => $request->input('jumlah_pesanan') * $harga_gas,
                         'id_transaksi' => $transaksi_baru->id_transaksi,
                     ]);
                     $pesanan->save();

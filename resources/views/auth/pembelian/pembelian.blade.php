@@ -129,13 +129,31 @@
 @endsection
 @section('content')
     <div class="row">
-        {{-- Total Pesanan --}}
-        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+        {{-- Total Transaksi --}}
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card p-3 pt-2">
                     <div
                         class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                        <i class="material-icons opacity-10">receipt_long</i>
+                        <i class="material-symbols-outlined opacity-10">area_chart</i>                    
+                    </div>
+                    <div class="text-end pt-1">
+                        <p class="text-sm mb-0 text-capitalize">Total Transaksi</p>
+                        <div class="d-flex flex-row-reverse">
+                            <span class="h5 ms-2 text-dark font-weight-bolder">transaksi</span>
+                            <h5 class="mb-0" id="total_transaksi"></h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- Total Pesanan --}}
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card p-3 pt-2">
+                    <div
+                        class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                        <i class="material-symbols-outlined opacity-10">list_alt</i>                    
                     </div>
                     <div class="text-end pt-1">
                         <p class="text-sm mb-0 text-capitalize">Total Pesanan</p>
@@ -148,12 +166,12 @@
             </div>
         </div>
         {{-- Total Pesanan Masuk --}}
-        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card p-3 pt-2">
                     <div
                         class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                        <i class="material-symbols-outlined opacity-10">order_approve</i>
+                        <i class="material-icons text-white opacity-10">inventory</i>
                     </div>
                     <div class="text-end pt-1">
                         <p class="text-sm mb-0 text-capitalize">Pesanan Masuk</p>
@@ -165,20 +183,20 @@
                 </div>
             </div>
         </div>
-        {{-- Total pelanggan --}}
-        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+        {{-- Harga Gas --}}
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
-                <div class="card p-3 pt-2">
-                    <div
-                        class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                        <i class="material-icons opacity-10">factory</i>
-                    </div>
-                    <div class="text-end pt-1">
-                        <p class="text-sm mb-0 text-capitalize">Total Pelanggan</p>
-                        <div class="d-flex flex-row-reverse">
-                            <span class="h5 ms-2 text-dark font-weight-bolder">pelanggan</span>
-                            <h5 class="mb-0" id="total_pelanggan"></h5>
+                <div class="card px-3 pt-1 d-flex flex-row">
+                    <div class="col-8 pt-2 pb-2">
+                        <p class="text-sm mb-0 text-capitalize">Harga Gas</p>
+                        <div class="d-flex">
+                            <h5 class="mb-0" id="harga_gas"></h5>
+                            <span class="h5 ms-2 text-dark font-weight-bolder">/ bar</span>
                         </div>
+                    </div>
+                    <div class="col-4 py-1 mt-4 mb-3 ps-4 text-center">
+                        <i class="material-symbols-outlined opacity-10 text-primary" type="button" data-bs-toggle="modal" 
+                        data-bs-target="#rincianGas">edit</i>                            
                     </div>
                 </div>
             </div>
@@ -275,6 +293,33 @@
         </div>
     </div>
 
+    {{-- Modal Harga Gas --}}
+    @foreach ($data_gas as $gas)
+        <div class="modal fade" id="rincianGas" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title font-weight-bold">Ubah Data Gas</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ url('pembelian/gas/edit/'.$gas->id_gas) }}" method="POST">
+                            @csrf
+                            <label>Harga Gas <span class="text-danger">*</span></label>
+                            <div class="input-group mb-3 input-group-outline">
+                                <input name="harga_gas" type="number" class="form-control" placeholder="Masukkan harga gas"
+                                    aria-label="harga_gas" value="{{ $gas->harga_gas }}">
+                            </div>
+                            <div class="text-center ">
+                                <button type="submit" name="submit" class="btn bg-gradient-primary w-100 mt-4 mb-0"
+                                    values="Update">Ubah</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+    
     {{-- Modal Rincian --}}
     @foreach ($transaksis as $transaksi)
         <div class="modal fade" id="rincianModal{{ $transaksi->id_transaksi }}" tabindex="-1" role="dialog" aria-labelledby="modal-default{{ $transaksi->id_transaksi }}"
@@ -366,7 +411,7 @@
                                                                 </td>
                                                                 <td class="text-center">Gas Alam </td>
                                                                 <td class="text-center">{{ $pesanan->jumlah_pesanan }} bar</td>
-                                                                <td class="text-center">Rp.50.000 </td>
+                                                                <td class="text-center">{{ $harga_gas }}</td>
                                                                 <td class="text-center">Rp.{{ number_format($pesanan->harga_pesanan, 0, ',', '.') }}</td>
                                                             </tr>
                                                         @endif
@@ -385,15 +430,12 @@
                                     <div class="row">
                                         <div class="col ms-4 text-dark">
                                             <p class="text-sm fw-bold mb-1">Metode Pembayaran :</p>
-                                            <p class="text-sm mb-0">Bank Jago</p>
-                                            <p class="text-sm mb-0">Bagus Adam Farizi</p>
-                                            <p class="text-sm">123-456-789</p>
+                                            <p class="text-sm mb-0">Tunai</p>
                                         </div>
                                         <div class="col ms-10 text-dark text-center">
                                             <p class="text-sm fw-bold mb-4">Hormat Kami</p>
-                                            <p class="text-sm mb-4">TTD</p>
-                                            <p class="text-sm fw-bold mb-0">Bagus Adam Farizi</p>
-                                            <p class="text-sm fw-bold">(Direktur Utama)</p>
+                                            <p class="text-sm mb-4" style="color: #e9ecef;">TTD</p>
+                                            <p class="text-sm mb-4">____________________</p>
                                         </div>
                                     </div>
                                 </div>
@@ -403,7 +445,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary shadow"
                             data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Print Invoice</button>
+                        <a href="{{ url('/pembelian/more/print/'.$transaksi->id_transaksi) }}" type="button" class="btn btn-primary">Print Invoice</a>
                     </div>
                 </div>
             </div>
@@ -452,14 +494,17 @@
                 method: 'GET',
                 dataType: 'json',
                 success: function(data) {
+                    const totalTransaksiElement = document.getElementById('total_transaksi');
+                    totalTransaksiElement.textContent = data.total_transaksi;
+
                     const totalPesananElement = document.getElementById('total_pesanan');
                     totalPesananElement.textContent = data.total_pesanan;
 
                     const pesananMasukElement = document.getElementById('pesanan_masuk');
                     pesananMasukElement.textContent = data.pesanan_masuk;
 
-                    const totalPelangganElement = document.getElementById('total_pelanggan');
-                    totalPelangganElement.textContent = data.total_pelanggan;
+                    const hargaGasElement = document.getElementById('harga_gas');
+                    hargaGasElement.textContent = 'Rp.' + data.harga_gas;
 
                 },
                 error: function(error) {
@@ -541,7 +586,6 @@
                 success: function(data) {
                     var table = $('#table_riwayat_pembelian tbody');
                     table.empty();
-                    console.log(data.riwayat_transaksis);
                     if (!data.riwayat_transaksis || data.riwayat_transaksis.length === 0) {
                         var row =
                             '<tr class="text-dark">' +

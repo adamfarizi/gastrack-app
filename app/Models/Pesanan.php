@@ -19,7 +19,7 @@ class Pesanan extends Model
     
     public function transaksi()
     {
-        return $this->hasOne(Transaksi::class, 'id_transaksi');
+        return $this->belongsTo(Transaksi::class, 'id_transaksi', 'id_transaksi');
     }
 
     public function pengiriman()

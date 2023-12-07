@@ -383,7 +383,7 @@
                                                     Pesanan dari {{ $transaksi->pelanggan->nama_perusahaan }}, {{ $pesanan->jumlah_pesanan }} bar
                                                 </h6>
                                                 <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
-                                                    - {{ date('d M h:s', strtotime($pesanan->tanggal_pesanan)) }}
+                                                    - {{ date('d M h:m', strtotime($pesanan->tanggal_pesanan)) }}
                                                 </p>
                                             </div>
                                         </div>
