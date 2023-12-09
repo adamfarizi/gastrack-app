@@ -394,7 +394,7 @@
                                 <p class="text-white py-9">Belum ada bukti</p>
                             </div>
                         @else
-                            <img src="{{ asset('assets/img/illustrations/illustration-signin.jpg') }}"
+                            <img src="{{ asset('img/GasMasuk/'.$pengiriman->bukti_gas_masuk) }}"
                                 class="w-100 rounded" alt="">
                         @endif
                     </div>
@@ -421,7 +421,7 @@
                                 <p class="text-white py-9">Belum ada bukti</p>
                             </div>
                         @else
-                            <img src="{{ asset('assets/img/illustrations/illustration-reset.jpg') }}"
+                            <img src="{{ asset('img/GasKeluar/'.$pengiriman->bukti_gas_keluar) }}"
                                 class="w-100 rounded" alt="">
                         @endif
                     </div>
@@ -704,7 +704,7 @@
                                             row += '<p class="text-sm mb-0">tidak tersisa </p>';
                                         }
                                         else{
-                                            row += '<p class="text-sm mb-0">Gas Keluar : ' + pengiriman.kapasitas_gas_keluar + ' bar' +'</p>';
+                                            row += '<p class="text-sm mb-0">Sisa Gas : ' + pengiriman.kapasitas_gas_keluar + ' bar' +'</p>';
                                         }
                                     row+= '</td>' +                                    
                                     '<td class="align-middle text-center">' +
