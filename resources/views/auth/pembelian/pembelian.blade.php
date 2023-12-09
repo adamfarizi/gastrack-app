@@ -227,7 +227,6 @@
                     </div>
                     <div class="card-body px-3 pt-0 pb-2" style="min-height: 428px;">
                         <div class="table-responsive p-0" style="max-height: 450px; overflow-y: auto;">
-                            <div id="noResultsMessage_pembelian" class="text-center" style="display: none;">Tidak ada hasil yang ditemukan.</div>
                             <table class="table align-items-center mb-0" id="table_pembelian">
                                 <thead class="sticky-top bg-white z-index-1">
                                     <tr>
@@ -240,9 +239,12 @@
                                         <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7"></th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="table_pembelian_body">
                                 </tbody>
                             </table>
+                            <div class="text-center mt-5" id="noResultsMessage_pembelian" style="display: none;">
+                                <p class="fw-light">Pesanan tidak ditemukan.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -270,7 +272,6 @@
                     </div>
                     <div class="card-body px-3 pt-0 pb-2" style="min-height: 428px;">
                         <div class="table-responsive p-0" style="max-height: 450px; overflow-y: auto;">
-                            <div id="noResultsMessage_riwayat_pembelian" class="text-center" style="display: none;">Tidak ada hasil yang ditemukan.</div>
                             <table class="table align-items-center mb-0" id="table_riwayat_pembelian">
                                 <thead class="sticky-top bg-white z-index-1">
                                     <tr>
@@ -283,9 +284,12 @@
                                         <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7"></th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="table_riwayat_pembelian_body">
                                 </tbody>
                             </table>
+                            <div class="text-center mt-5" id="noResultsMessage_riwayat_pembelian" style="display: none;">
+                                <p class="fw-light">Pesanan tidak ditemukan.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -459,12 +463,12 @@
         $(document).ready(function() {
             $("#searchInput_Pembelian").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
-                $("#table_pembelian tr").filter(function() {
+                $("#table_pembelian_body tr").filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
                 });
 
                 var noResultsMessage = $("#noResultsMessage_pembelian");
-                if ($("#table_pembelian tr:visible").length === 0) {
+                if ($("#table_pembelian_body tr:visible").length === 0) {
                     noResultsMessage.show();
                 } else {
                     noResultsMessage.hide();
@@ -473,12 +477,12 @@
 
             $("#searchInput_Riwayat").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
-                $("#table_riwayat_pembelian tr").filter(function() {
+                $("#table_riwayat_pembelian_body tr").filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
                 });
 
                 var noResultsMessage = $("#noResultsMessage_riwayat_pembelian");
-                if ($("#table_riwayat_pembelian tr:visible").length === 0) {
+                if ($("#table_riwayat_pembelian_body tr:visible").length === 0) {
                     noResultsMessage.show();
                 } else {
                     noResultsMessage.hide();
