@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\GasKeluarEvent;
+use App\Events\GasMasukEvent;
 use App\Http\Controllers\Controller;
+use App\Models\Pesanan;
 use App\Models\Sopir;
 use App\Models\Pengiriman;
 use App\Http\Resources\PostResource;
+use App\Models\Transaksi;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -78,39 +82,46 @@ class ApiSopirController extends Controller
     public function getDataPengiriman(string $id)
     {
         Carbon::setLocale('id');
-        $pengiriman = Pengiriman::where('id_sopir', $id)
-        ->join('pesanan', 'pengiriman.id_pesanan', '=', 'pesanan.id_pesanan')
-        ->join('transaksi', 'pesanan.id_transaksi', '=', 'transaksi.id_transaksi')
-        ->join('pelanggan', 'transaksi.id_pelanggan', '=', 'pelanggan.id_pelanggan');
-
-        $data = $pengiriman
-        ->select(
-            'transaksi.resi_transaksi AS resi',
-            'pelanggan.koordinat',
-            'pelanggan.nama_perusahaan',
-            'pelanggan.alamat AS alamat_perusahaan',
-            'pesanan.jumlah_pesanan',
-            'pesanan.tanggal_pesanan AS tanggal_pemesanaan'
-        )->first();
-
-        $cek_data = Pengiriman::where('id_sopir', $id)->first();
+        $pengiriman = Pengiriman::where('status_pengiriman', 'Dikirim')
+            ->where('id_sopir', $id)
+            ->join('pesanan', 'pengiriman.id_pesanan', '=', 'pesanan.id_pesanan')
+            ->join('transaksi', 'pesanan.id_transaksi', '=', 'transaksi.id_transaksi')
+            ->join('pelanggan', 'transaksi.id_pelanggan', '=', 'pelanggan.id_pelanggan')
+            ->orderByDesc('pengiriman.created_at');
     
-        if (empty($cek_data)) {
+        if (!$pengiriman->exists()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Data tidak ditemukan!',
+                'message' => 'Belum ada pesanan!',
             ], 422);
-        }
-        else{
-            $formattedTanggal = Carbon::parse($data->tanggal_pemesanaan)->isoFormat('DD MMMM YYYY');
-            $data->tanggal_pemesanaan = $formattedTanggal;
-            return response()->json([
-                'success' => true,
-                'message' => 'Data berhasil ditemukan',
-                'data' => $data,
-            ], 200);
+        } else {
+            $data = $pengiriman
+                ->select(
+                    'transaksi.resi_transaksi AS resi',
+                    'pelanggan.koordinat',
+                    'pelanggan.nama_perusahaan',
+                    'pelanggan.alamat AS alamat_perusahaan',
+                    'pesanan.jumlah_pesanan',
+                    'pesanan.tanggal_pesanan AS tanggal_pemesanaan'
+                )->first();
+    
+            if ($data) {
+                $formattedTanggal = Carbon::parse($data->tanggal_pemesanaan)->isoFormat('DD MMMM YYYY');
+                $data->tanggal_pemesanaan = $formattedTanggal;
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Data berhasil ditemukan',
+                    'data' => $data,
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data tidak ditemukan!',
+                ], 422);
+            }
         }
     }
+    
 
     public function gas_masuk(Request $request, $id_pengiriman)
     {
@@ -140,9 +151,12 @@ class ApiSopirController extends Controller
             ]);
         }
 
+        $pengiriman->waktu_pengiriman = now();
         $pengiriman->kapasitas_gas_masuk = $request->kapasitas_gas_masuk;
-    
         $pengiriman->save();
+        
+        $nama_sopir = $pengiriman->sopir->nama;
+        broadcast(new GasMasukEvent($nama_sopir));
     
         return response()->json(['message' => 'Data pengiriman berhasil diupdate']);
     }
@@ -153,11 +167,13 @@ class ApiSopirController extends Controller
         $request->validate([
             'kapasitas_gas_keluar' => 'string',
             'bukti_gas_keluar' => 'required|image|mimes:jpeg,jpg,png|max:2048',
-            'status_pengiriman' => 'string',
         ]);
     
         // Ambil data pengiriman berdasarkan ID
-        $pengiriman = Pengiriman::find($id_pengiriman);
+        $pengiriman = Pengiriman::where('id_pengiriman', $id_pengiriman)
+        ->join('sopir', 'pengiriman.id_sopir', '=', 'sopir.id_sopir')
+        ->join('mobil', 'pengiriman.id_mobil', '=', 'mobil.id_mobil')
+        ->first();
     
         if (!$pengiriman) {
             return response()->json([
@@ -170,6 +186,7 @@ class ApiSopirController extends Controller
         $sisa_gas = $pengiriman->kapasitas_gas_masuk - $request->kapasitas_gas_keluar;
 
         // Update data pengiriman
+        $pengiriman->waktu_diterima = now();
         $pengiriman->kapasitas_gas_keluar = $request->kapasitas_gas_keluar;
         $pengiriman->sisa_gas = $sisa_gas;
 
@@ -183,10 +200,16 @@ class ApiSopirController extends Controller
             ]);
         }
 
-        $pengiriman->status_pengiriman = $request->status_pengiriman;
-    
-        $pengiriman->save();
-    
+        $pengiriman->status_pengiriman = 'Diterima';
+        $pengiriman->sopir->ketersediaan_sopir = 'tersedia';
+        $pengiriman->mobil->ketersediaan_mobil = 'tersedia';
+        $pengiriman->push();
+        
+        $pesanan = Pesanan::where('id_pesanan', $pengiriman->id_pesanan)->first();
+        $transaksi = Transaksi::where('id_transaksi', $pesanan->id_transaksi)->first();
+        $nama_perusahaan = $transaksi->pelanggan->nama_perusahaan;
+        broadcast(new GasKeluarEvent($nama_perusahaan));
+
         return response()->json([
             'message' => 'Data pengiriman berhasil diupdate',
             'sisa_gas' => $sisa_gas,

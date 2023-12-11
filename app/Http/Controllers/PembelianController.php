@@ -4,15 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Events\Chart2Event;
 use App\Models\Gas;
-use App\Models\Pelanggan;
+use App\Models\Pengiriman;
 use App\Models\Pesanan;
 use App\Models\Transaksi;
+use App\Models\Mobil;
+use App\Models\Sopir;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
-use App\Events\newTranEvent;
-use Illuminate\Support\Facades\DB;
 
 class PembelianController extends Controller
 {
@@ -73,11 +71,14 @@ class PembelianController extends Controller
         $pesanans = Pesanan::where('id_transaksi', $id_transaksi)->get();
         $pesananAkhir = Pesanan::where('id_transaksi', $id_transaksi)->orderBy('tanggal_pesanan', 'desc')->first();
 
+        $pengirimans = Pengiriman::all();
+
         return view('auth.pembelian.more.pesanan', [
             'transaksis' => $transaksis,
             'pesananAwal' => $pesananAwal,
             'pesanans' => $pesanans,
             'pesananAkhir' => $pesananAkhir,
+            'pengirimans' => $pengirimans,
         ], $data);
     }
 
@@ -151,6 +152,33 @@ class PembelianController extends Controller
     
             return redirect()->back()->with('success', 'Harga gas berhasil diubah !');
         }
+    }
+    
+    public function detail_pengiriman($id_pesanan)
+    {   
+        $data['title'] = 'Detail Pengiriman';
+        $pengirimans = Pengiriman::where('id_pesanan', $id_pesanan)
+            ->with('pesanan')
+            ->orderBy('created_at', 'desc')
+            ->get();
+    
+        $sopirs = Sopir::all();
+        $mobils = Mobil::all();
+    
+        foreach ($pengirimans as $pengiriman) {
+            $sopir = $sopirs->where('id_sopir', $pengiriman->id_sopir)->first();
+            $mobil = $mobils->where('id_mobil', $pengiriman->id_mobil)->first();
+        }
+    
+        // Mengambil pelanggan terkait dengan transaksi terakhir
+        $pelanggan = $pengirimans->last()->pesanan->transaksi->pelanggan;
+
+        return view('auth.pembelian.more.pengiriman', [
+            'pengirimans' => $pengirimans,
+            'pelanggan' => $pelanggan,
+            'sopir' => $sopir,
+            'mobil' => $mobil,
+        ], $data);
     }
     
 }

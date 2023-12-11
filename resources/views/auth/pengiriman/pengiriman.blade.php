@@ -742,6 +742,15 @@
                 realTime_Proses();
                 realTime_Dikirim();
             });
+            Echo.channel(`GasMasuk-channel`).listen('GasMasukEvent', (e) => {
+                realtime_Nav();
+                realTime_Dikirim();
+            });
+
+            Echo.channel(`GasKeluar-channel`).listen('GasKeluarEvent', (e) => {
+                realtime_Nav();
+                realTime_Dikirim();
+            });
         });
     </script>
 @endsection

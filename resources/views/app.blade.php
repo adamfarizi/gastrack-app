@@ -393,6 +393,78 @@
             return newToast;
         }
 
+        // Notif pesanan diterima
+        function pesananDiterimaElement(namaPerusahaan) {
+            // Buat elemen toast baru
+            const newToast = document.createElement('div');
+            newToast.className = 'toast fade show p-2 bg-white mb-2';
+            newToast.role = 'alert';
+            newToast.style.display = 'none';
+            newToast.setAttribute('aria-live', 'assertive');
+            newToast.id = 'pesanan_diterima';
+            newToast.setAttribute('aria-atomic', 'true');
+
+            // Header toast
+            const header = document.createElement('div');
+            header.className = 'toast-header border-0';
+
+            const iconCode = document.createElement('i');
+            iconCode.className = 'material-symbols-outlined text-warning me-2';
+            iconCode.textContent = 'deployed_code_account';
+
+            const title = document.createElement('span');
+            title.className = 'me-auto font-weight-bold';
+            title.textContent = 'Pesanan Diterima!';
+
+            const iconSchedule = document.createElement('i');
+            iconSchedule.className = 'material-icons text-sm text-secondary me-1';
+            iconSchedule.textContent = 'schedule';
+
+            const time = document.createElement('small');
+            time.className = 'text-body';
+            time.textContent = 'sekarang';
+
+            const closeButton = document.createElement('i');
+            closeButton.className = 'fas fa-times text-md ms-3 cursor-pointer';
+            closeButton.setAttribute('data-bs-dismiss', 'toast');
+            closeButton.setAttribute('aria-label', 'Close');
+            closeButton.addEventListener('click', () => newToast.style.display = 'none');
+
+            header.appendChild(iconCode);
+            header.appendChild(title);
+            header.appendChild(iconSchedule);
+            header.appendChild(time);
+            header.appendChild(closeButton);
+
+            // Garis pemisah
+            const hr = document.createElement('hr');
+            hr.className = 'horizontal dark m-0';
+
+            // Body toast
+            const body = document.createElement('div');
+            body.className = 'toast-body';
+
+            const paragraph = document.createElement('p');
+            paragraph.className = 'text-sm text-secondary';
+
+            const companyName = document.createElement('span');
+            companyName.className = 'text-warning';
+            companyName.id = 'nama_perusahaan_3';
+            companyName.textContent = namaPerusahaan;
+
+            paragraph.appendChild(document.createTextNode('Pesanan telah diterima oleh '));
+            paragraph.appendChild(companyName);
+
+            body.appendChild(paragraph);
+
+            // Gabungkan semua elemen
+            newToast.appendChild(header);
+            newToast.appendChild(hr);
+            newToast.appendChild(body);
+
+            return newToast;
+        }
+
         // Event listener
         document.addEventListener("DOMContentLoaded", function(event) { 
             Echo.channel(`PesananBaru-channel`).listen('PesananBaruEvent', (e) => {
@@ -407,6 +479,15 @@
             Echo.channel(`BayarTagihan-channel`).listen('BayarTagihanEvent', (e) => {
                 const container = document.getElementById('container_notif');
                 const newToast = tagihanDibayarElement(e.nama_perusahaan);
+                
+                // Tambahkan elemen toast baru ke dalam container
+                container.appendChild(newToast);
+                newToast.style.display = 'block';
+            });
+
+            Echo.channel(`GasKeluar-channel`).listen('GasKeluarEvent', (e) => {
+                const container = document.getElementById('container_notif');
+                const newToast = pesananDiterimaElement(e.nama_perusahaan);
                 
                 // Tambahkan elemen toast baru ke dalam container
                 container.appendChild(newToast);
