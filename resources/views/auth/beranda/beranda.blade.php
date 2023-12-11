@@ -322,11 +322,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body px-3 pt-0 pb-2" style="min-height: 428px;">
+                <div class="card-body px-3 pt-0 mb-4" style="min-height: 428px;">
                     <div class="table-responsive p-0" style="max-height: 450px; overflow-y: auto;">
-                        <div class="text-center" id="noResultsMessage" style="display: none;">
-                            Pesanan tidak ditemukan.
-                        </div>
                         <table class="table align-items-center mb-0" id="table_pembelian">
                             <thead class="sticky-top bg-white z-index-1">
                                 <tr>
@@ -346,10 +343,12 @@
                                         Status</th>
                                 </tr>
                             </thead>
-                            <tbody>
-
+                            <tbody id="table_pembelian_body">
                             </tbody>
                         </table>
+                        <div class="text-center mt-5" id="noResultsMessage" style="display: none;">
+                            <p class="fw-light">Pesanan tidak ditemukan.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -404,12 +403,12 @@
         $(document).ready(function() {
             $("#searchInput_semua").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
-                $("#table_pembelian tr").filter(function() {
+                $("#table_pembelian_body tr").filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
                 });
 
                 var noResultsMessage = $("#noResultsMessage");
-                if ($("#table_pembelian tr:visible").length === 0) {
+                if ($("#table_pembelian_body tr:visible").length === 0) {
                     noResultsMessage.show();
                 } else {
                     noResultsMessage.hide();
@@ -453,24 +452,6 @@
                 success: function(data) {
                     var table = $('#table_pembelian tbody');
                     table.empty();
-                    
-                    function formatDateTime(datetimeString) {
-                        var datetime = new Date(datetimeString);
-                        var tanggal = datetime.getDate() + '-' + (datetime.getMonth() + 1) + '-' + datetime.getFullYear();
-                        var jam = datetime.getHours() + ':' + datetime.getMinutes() + ':' + datetime.getSeconds();
-
-                        return {
-                            tanggal: tanggal,
-                            jam: jam
-                        };
-                    }
-                    function getStatusBadge(transaksi) {
-                        if (transaksi.tagihan.status_tagihan === 'Belum Bayar') {
-                            return '<span class="badge badge-sm bg-gradient-danger">Belum Bayar</span>';
-                        } else {
-                            return '<span class="badge badge-sm bg-gradient-success">Sudah Bayar</span>';
-                        }
-                    }
 
                     if (!data.transaksis || data.transaksis.length === 0) {
                         var row =
@@ -513,6 +494,25 @@
                         });
                     }
                     table.show();
+
+                    function formatDateTime(datetimeString) {
+                        var datetime = new Date(datetimeString);
+                        var tanggal = datetime.getDate() + '-' + (datetime.getMonth() + 1) + '-' + datetime.getFullYear();
+                        var jam = datetime.getHours() + ':' + datetime.getMinutes() + ':' + datetime.getSeconds();
+
+                        return {
+                            tanggal: tanggal,
+                            jam: jam
+                        };
+                    }
+
+                    function getStatusBadge(transaksi) {
+                        if (transaksi.tagihan.status_tagihan === 'Belum Bayar') {
+                            return '<span class="badge badge-sm bg-gradient-danger">Belum Bayar</span>';
+                        } else {
+                            return '<span class="badge badge-sm bg-gradient-success">Sudah Bayar</span>';
+                        }
+                    }
 
                 },
                 error: function(xhr, status, error) {

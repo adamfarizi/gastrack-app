@@ -231,9 +231,12 @@
                                         Status</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="table_diproses_body">
                             </tbody>
                         </table>
+                        <div class="text-center mt-5" id="noResultsMessage_diproses" style="display: none;">
+                            <p class="fw-light">Pesanan tidak ditemukan.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -289,9 +292,12 @@
                                         Status</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="table_dikirim_body">
                             </tbody>
                         </table>
+                        <div class="text-center mt-5" id="noResultsMessage_dikirim" style="display: none;">
+                            <p class="fw-light">Pesanan tidak ditemukan.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -388,7 +394,7 @@
                                 <p class="text-white py-9">Belum ada bukti</p>
                             </div>
                         @else
-                            <img src="{{ asset('assets/img/illustrations/illustration-signin.jpg') }}"
+                            <img src="{{ asset('img/GasMasuk/'.$pengiriman->bukti_gas_masuk) }}"
                                 class="w-100 rounded" alt="">
                         @endif
                     </div>
@@ -415,7 +421,7 @@
                                 <p class="text-white py-9">Belum ada bukti</p>
                             </div>
                         @else
-                            <img src="{{ asset('assets/img/illustrations/illustration-reset.jpg') }}"
+                            <img src="{{ asset('img/GasKeluar/'.$pengiriman->bukti_gas_keluar) }}"
                                 class="w-100 rounded" alt="">
                         @endif
                     </div>
@@ -428,65 +434,39 @@
     @endforeach
 @endsection
 @section('js')
+
     {{-- Script search --}}
     <script>
-        $(document).ready(function () {
-            // Function to filter table rows
-            function filterTable(tableId, searchInputId) {
-                var table = $("#" + tableId);
-                var noResultsRow = $('<tr class="no-results text-dark">' +
-                                        '<td colspan="7" class="text-center fw-light text-secondary text-sm pt-5">Tidak ada pengiriman</td>' +
-                                    '</tr>');
-    
-                // Tampilkan pesan "Tidak ada pengiriman" pada awalnya
-                table.append(noResultsRow);
-    
-                $("#" + searchInputId).on("input", function () {
-                    var value = $(this).val().toLowerCase();
-    
-                    // Filter baris berdasarkan nilai pencarian
-                    $("#" + tableId + " tr:not(.no-results)").filter(function () {
-                        var isMatch = $(this).text().toLowerCase().indexOf(value) > -1;
-                        $(this).toggle(isMatch);
-                    });
-    
-                    // Tampilkan pesan "Tidak ada pengiriman" jika tidak ada hasil atau tabel kosong
-                    noResultsRow.toggle($("#" + tableId + " tr:not(.no-results):visible").length === 0);
-                });
-            }
-    
-            // Apply the filtering functionality to the first table
-            filterTable("table_diproses", "searchInput_Diproses");
-    
-            // Apply the filtering functionality to the second table
-            filterTable("table_dikirim", "searchInput_Dikirim");
-        });
-    </script>
-    
-    <script>
-        $(document).ready(function () {
-            var table = $("#table_kirim");
-            var noResultsRow = $('<tr class="no-results text-dark">' +
-                                    '<td colspan="7" class="text-center fw-light text-secondary text-sm pt-5">Tidak ada pengiriman</td>' +
-                                '</tr>');
-    
-            // Tampilkan pesan "Tidak ada pengiriman" pada awalnya
-            table.append(noResultsRow);
-    
-            $("#searchInput_Dikirim").on("input", function () {
+        $(document).ready(function() {
+            $("#searchInput_Diproses").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
-    
-                // Filter baris berdasarkan nilai pencarian
-                $("#table_dikirim tr:not(.no-results)").filter(function () {
-                    var isMatch = $(this).text().toLowerCase().indexOf(value) > -1;
-                    $(this).toggle(isMatch);
+                $("#table_diproses_body tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
                 });
-    
-                // Tampilkan pesan "Tidak ada pengiriman" jika tidak ada hasil atau tabel kosong
-                noResultsRow.toggle($("#table_dikirim tr:not(.no-results):visible").length === 0);
+
+                var noResultsMessage = $("#noResultsMessage_diproses");
+                if ($("#table_diproses_body tr:visible").length === 0) {
+                    noResultsMessage.show();
+                } else {
+                    noResultsMessage.hide();
+                }
+            });
+
+            $("#searchInput_Dikirim").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#table_dikirim_body tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+
+                var noResultsMessage = $("#noResultsMessage_dikirim");
+                if ($("#table_dikirim_body tr:visible").length === 0) {
+                    noResultsMessage.show();
+                } else {
+                    noResultsMessage.hide();
+                }
             });
         });
-    </script>      
+    </script>
 
     <script>
         function realtime_Nav() {
@@ -518,7 +498,7 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    var table = $('#table__diproses tbody');
+                    var table = $('#table_diproses tbody');
                     table.empty();
 
                     if (!data.prosess || data.prosess.length === 0) {
@@ -644,7 +624,7 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    var table = $('#table__dikirim tbody');
+                    var table = $('#table_dikirim tbody');
                     table.empty();
 
                     if (!data.pengirimans || data.pengirimans.length === 0) {
@@ -724,7 +704,7 @@
                                             row += '<p class="text-sm mb-0">tidak tersisa </p>';
                                         }
                                         else{
-                                            row += '<p class="text-sm mb-0">Gas Keluar : ' + pengiriman.kapasitas_gas_keluar + ' bar' +'</p>';
+                                            row += '<p class="text-sm mb-0">Sisa Gas : ' + pengiriman.kapasitas_gas_keluar + ' bar' +'</p>';
                                         }
                                     row+= '</td>' +                                    
                                     '<td class="align-middle text-center">' +
@@ -760,6 +740,15 @@
             Echo.channel(`PesananBaru-channel`).listen('PesananBaruEvent', (e) => {
                 realtime_Nav();
                 realTime_Proses();
+                realTime_Dikirim();
+            });
+            Echo.channel(`GasMasuk-channel`).listen('GasMasukEvent', (e) => {
+                realtime_Nav();
+                realTime_Dikirim();
+            });
+
+            Echo.channel(`GasKeluar-channel`).listen('GasKeluarEvent', (e) => {
+                realtime_Nav();
                 realTime_Dikirim();
             });
         });

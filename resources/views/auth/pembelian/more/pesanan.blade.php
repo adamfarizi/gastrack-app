@@ -221,20 +221,24 @@
                                                 <p class="text-sm mb-0">tanggal :
                                                     {{ date('d/m/Y', strtotime($pesananAwal->tanggal_pesanan)) }}</p>
                                                 <p class="text-sm mb-0">jam :
-                                                    {{ date('h:i', strtotime($pesananAwal->tanggal_pesanan)) }}</p>
+                                                    {{ date('H:i', strtotime($pesananAwal->tanggal_pesanan)) }}</p>
                                             </td>
                                             <td class="text-center">{{ $pesananAwal->jumlah_pesanan }} bar</td>
                                             <td class="text-center">
                                                 Rp. {{ number_format($pesananAwal->harga_pesanan, 0, ',', '.') }}
                                             </td>
                                             <td class="text-center">
-                                                @if ($pesananAwal->pengiriman->status_pengiriman == 'Proses')
-                                                    <span class="badge badge-sm bg-gradient-danger">Belum Dikirim</span>
-                                                @elseif ($pesananAwal->pengiriman->status_pengiriman == 'Dikirim')
-                                                    <span class="badge badge-sm bg-gradient-info">Dikirim</span>
-                                                @else
-                                                    <span class="badge badge-sm bg-gradient-success">Diterima</span>
-                                                @endif
+                                                @foreach ($pengirimans as $pengiriman)
+                                                    @if ($pesananAwal->id_pesanan == $pengiriman->id_pesanan)
+                                                        @if ($pengiriman->status_pengiriman == 'Proses')
+                                                            <span class="badge badge-sm bg-gradient-danger">Belum Dikirim</span>
+                                                        @elseif ($pengiriman->status_pengiriman == 'Dikirim')
+                                                            <span class="badge badge-sm bg-gradient-info">Dikirim</span>
+                                                        @else
+                                                            <a href="{{ url('/pembelian/more/pesanan/pengiriman/' . $pesananAwal->id_pesanan) }}" class="badge badge-sm bg-gradient-success text-white">Diterima</a>
+                                                        @endif
+                                                    @endif    
+                                                @endforeach
                                             </td>
                                         </tr>
                                     </tbody>
@@ -268,20 +272,24 @@
                                                 <p class="text-sm mb-0">tanggal :
                                                     {{ date('d/m/Y', strtotime($pesananAkhir->tanggal_pesanan)) }}</p>
                                                 <p class="text-sm mb-0">jam :
-                                                    {{ date('h:i', strtotime($pesananAkhir->tanggal_pesanan)) }}</p>
+                                                    {{ date('H:i', strtotime($pesananAkhir->tanggal_pesanan)) }}</p>
                                             </td>
                                             <td class="text-center">{{ $pesananAkhir->jumlah_pesanan }} bar</td>
                                             <td class="text-center">
                                                 Rp. {{ number_format($pesananAkhir->harga_pesanan, 0, ',', '.') }}
                                             </td>
                                             <td class="text-center">
-                                                @if ($pesananAwal->pengiriman->status_pengiriman == 'Proses')
-                                                    <span class="badge badge-sm bg-gradient-danger">Belum Dikirim</span>
-                                                @elseif ($pesananAkhir->pengiriman->status_pengiriman == 'Dikirim')
-                                                    <span class="badge badge-sm bg-gradient-info">Dikirim</span>
-                                                @else
-                                                    <span class="badge badge-sm bg-gradient-success">Diterima</span>
-                                                @endif
+                                                @foreach ($pengirimans as $pengiriman)
+                                                    @if ($pesananAkhir->id_pesanan == $pengiriman->id_pesanan)
+                                                        @if ($pengiriman->status_pengiriman == 'Proses')
+                                                            <span class="badge badge-sm bg-gradient-danger">Belum Dikirim</span>
+                                                        @elseif ($pengiriman->status_pengiriman == 'Dikirim')
+                                                            <span class="badge badge-sm bg-gradient-info">Dikirim</span>
+                                                        @else
+                                                            <a href="{{ url('/pembelian/more/pesanan/pengiriman/' . $pesananAkhir->id_pesanan) }}" class="badge badge-sm bg-gradient-success text-white">Diterima</a>
+                                                        @endif
+                                                    @endif    
+                                                @endforeach
                                             </td>
                                         </tr>
                                     </tbody>
@@ -320,20 +328,24 @@
                                                     <p class="text-sm mb-0">tanggal :
                                                         {{ date('d/m/Y', strtotime($pesanan->tanggal_pesanan)) }}</p>
                                                     <p class="text-sm mb-0">jam :
-                                                        {{ date('h:i', strtotime($pesanan->tanggal_pesanan)) }}</p>
+                                                        {{ date('H:i', strtotime($pesanan->tanggal_pesanan)) }}</p>
                                                 </td>
                                                 <td class="text-center">{{ $pesanan->jumlah_pesanan }} bar</td>
                                                 <td class="text-center">
                                                     Rp. {{ number_format($pesanan->harga_pesanan, 0, ',', '.') }}
                                                 </td>
                                                 <td class="text-center">
-                                                    @if ($pesananAwal->pengiriman->status_pengiriman == 'Proses')
-                                                        <span class="badge badge-sm bg-gradient-danger">Belum Dikirim</span>
-                                                    @elseif ($pesanan->pengiriman->status_pengiriman == 'Dikirim')
-                                                        <span class="badge badge-sm bg-gradient-info">Dikirim</span>
-                                                    @else
-                                                        <span class="badge badge-sm bg-gradient-success">Diterima</span>
-                                                    @endif
+                                                    @foreach ($pengirimans as $pengiriman)
+                                                        @if ($pesanan->id_pesanan == $pengiriman->id_pesanan)
+                                                            @if ($pengiriman->status_pengiriman == 'Proses')
+                                                                <span class="badge badge-sm bg-gradient-danger">Belum Dikirim</span>
+                                                            @elseif ($pengiriman->status_pengiriman == 'Dikirim')
+                                                                <span class="badge badge-sm bg-gradient-info">Dikirim</span>
+                                                            @else
+                                                                <a href="{{ url('/pembelian/more/pesanan/pengiriman/' . $pesanan->id_pesanan) }}" class="badge badge-sm bg-gradient-success text-white">Diterima</a>
+                                                            @endif
+                                                        @endif    
+                                                    @endforeach
                                                 </td>
                                             </tr>
                                         @endforeach
