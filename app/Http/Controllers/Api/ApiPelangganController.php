@@ -12,26 +12,27 @@ use Illuminate\Validation\ValidationException;
 
 class ApiPelangganController extends Controller
 {
-    public function index($id){
+    public function index($id)
+    {
         $pelanggan = Pelanggan::find($id);
-    
-        if($pelanggan){
+
+        if ($pelanggan) {
             return new PostResource(true, 'Get Berhasil', $pelanggan);
         } else {
             return response()->json(["message" => "Not Found 404"], 404);
         }
     }
 
-    public function detail_user(string $id){
+    public function detail_user(string $id)
+    {
         $pelanggan = Pelanggan::where('id_pelanggan', $id)->first();
-    
+
         if (empty($pelanggan)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Data tidak ditemukan!',
             ], 422);
-        }
-        else{
+        } else {
             return response()->json([
                 'success' => true,
                 'message' => 'Data berhasil ditemukan',
@@ -55,7 +56,7 @@ class ApiPelangganController extends Controller
                 'message' => 'Akun tidak terdaftar!',
             ], 404);
         }
- 
+
         // Verifikasi password
         if (password_verify($request->password, $pelanggan->password)) {
             $token = $pelanggan->createToken('myappToken')->plainTextToken;
@@ -93,16 +94,16 @@ class ApiPelangganController extends Controller
         }
     }
 
-    public function edit_index(string $id){
+    public function edit_index(string $id)
+    {
         $pelanggan = Pelanggan::where('id_pelanggan', $id)->first();
-    
+
         if (empty($pelanggan)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Data tidak ditemukan!',
             ], 422);
-        }
-        else{
+        } else {
             $pelanggan->no_hp = $this->hidePhoneNumber($pelanggan->no_hp);
             $pelanggan->email = $this->encryptEmail($pelanggan->email);
             return response()->json([
@@ -112,8 +113,9 @@ class ApiPelangganController extends Controller
             ], 200);
         }
     }
-    
-    public function edit_action(string $id, Request $request){
+
+    public function edit_action(string $id, Request $request)
+    {
         try {
             $request->validate([
                 'nama' => 'required|string|max:255',
@@ -121,7 +123,7 @@ class ApiPelangganController extends Controller
                 'alamat' => 'required|string|max:255',
                 'no_hp' => 'required|string|max:15',
             ]);
-    
+
             $pelanggan = Pelanggan::find($id);
             if (empty($pelanggan)) {
                 return response()->json([
@@ -129,18 +131,18 @@ class ApiPelangganController extends Controller
                     'message' => 'Data tidak ditemukan!',
                 ], 422);
             }
-    
+
             $pelanggan->nama = $request->input('nama');
             $pelanggan->email = $request->input('email');
-            $pelanggan->no_hp = $request->input('no_hp');        
+            $pelanggan->no_hp = $request->input('no_hp');
             $pelanggan->alamat = $request->input('alamat');
             $pelanggan->save();
-    
+
             return response()->json([
                 'success' => true,
                 'message' => 'Data berhasil diubah',
                 'datauser' => $pelanggan,
-            ], 200);    
+            ], 200);
         } catch (ValidationException $e) {
             return response()->json([
                 'success' => false,
@@ -150,12 +152,13 @@ class ApiPelangganController extends Controller
         }
     }
 
-    public function edit_name(string $id, Request $request){
+    public function edit_name(string $id, Request $request)
+    {
         try {
             $request->validate([
                 'name' => 'required|string|max:255',
             ]);
-        
+
             // Lanjutkan dengan operasi lain jika validasi berhasil
         } catch (ValidationException $e) {
             return response()->json([
@@ -164,7 +167,7 @@ class ApiPelangganController extends Controller
                 'errors' => $e->validator->errors()->all(),
             ], 422);
         }
-    
+
         $pelanggan = Pelanggan::find($id);
         if (empty($pelanggan)) {
             return response()->json([
@@ -180,15 +183,16 @@ class ApiPelangganController extends Controller
             'success' => true,
             'message' => 'Data berhasil diubah',
             'datauser' => $pelanggan,
-        ], 200);   
+        ], 200);
     }
 
-    public function edit_perusahaan(string $id, Request $request){
+    public function edit_perusahaan(string $id, Request $request)
+    {
         try {
             $request->validate([
                 'perusahaan' => 'required|string|max:255',
             ]);
-        
+
             // Lanjutkan dengan operasi lain jika validasi berhasil
         } catch (ValidationException $e) {
             return response()->json([
@@ -197,7 +201,7 @@ class ApiPelangganController extends Controller
                 'errors' => $e->validator->errors()->all(),
             ], 422);
         }
-    
+
         $pelanggan = Pelanggan::find($id);
         if (empty($pelanggan)) {
             return response()->json([
@@ -213,32 +217,32 @@ class ApiPelangganController extends Controller
             'success' => true,
             'message' => 'Data berhasil diubah',
             'datauser' => $pelanggan,
-        ], 200);   
+        ], 200);
     }
 
-    public function edit_email(string $id, Request $request) {
+    public function edit_email(string $id, Request $request)
+    {
         try {
             $request->validate([
                 'email' => 'required|email|max:255',
             ]);
-    
+
             // Check if the new email already exists
             $existingEmail = Pelanggan::where('email', $request->input('email'))->first();
             if ($existingEmail) {
-                if ($existingEmail['id_pelanggan']== $id) {
+                if ($existingEmail['id_pelanggan'] == $id) {
                     return response()->json([
                         'success' => false,
                         'message' => 'Anda tidak melakukan perubahan email.',
                     ], 422);
+                } else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Email sudah terdaftar.',
+                    ], 422);
                 }
-                else{
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Email sudah terdaftar.',
-                ], 422);
             }
-            }
-    
+
             $pelanggan = Pelanggan::find($id);
             if (empty($pelanggan)) {
                 return response()->json([
@@ -246,10 +250,10 @@ class ApiPelangganController extends Controller
                     'message' => 'Data tidak ditemukan!',
                 ], 422);
             }
-    
+
             $pelanggan->email = $request->input('email');
             $pelanggan->save();
-    
+
             return response()->json([
                 'success' => true,
                 'message' => 'Data berhasil diubah',
@@ -263,14 +267,15 @@ class ApiPelangganController extends Controller
             ], 422);
         }
     }
-    
 
-    public function edit_no_hp(string $id, Request $request){
+
+    public function edit_no_hp(string $id, Request $request)
+    {
         try {
             $request->validate([
                 'no_hp' => 'required|string|max:15',
             ]);
-        
+
             // Lanjutkan dengan operasi lain jika validasi berhasil
         } catch (ValidationException $e) {
             return response()->json([
@@ -279,7 +284,7 @@ class ApiPelangganController extends Controller
                 'errors' => $e->validator->errors()->all(),
             ], 422);
         }
-    
+
         $pelanggan = Pelanggan::find($id);
         if (empty($pelanggan)) {
             return response()->json([
@@ -295,16 +300,17 @@ class ApiPelangganController extends Controller
             'success' => true,
             'message' => 'Data berhasil diubah',
             'datauser' => $pelanggan,
-        ], 200);   
+        ], 200);
     }
 
-    public function edit_alamat(string $id, Request $request){
+    public function edit_alamat(string $id, Request $request)
+    {
         try {
             $request->validate([
                 'alamat' => 'required|string|max:255',
                 'koordinat' => 'required|string|max:255',
             ]);
-        
+
             // Lanjutkan dengan operasi lain jika validasi berhasil
         } catch (ValidationException $e) {
             return response()->json([
@@ -313,7 +319,7 @@ class ApiPelangganController extends Controller
                 'errors' => $e->validator->errors()->all(),
             ], 422);
         }
-    
+
         $pelanggan = Pelanggan::find($id);
         if (empty($pelanggan)) {
             return response()->json([
@@ -330,17 +336,18 @@ class ApiPelangganController extends Controller
             'success' => true,
             'message' => 'Data berhasil diubah',
             'datauser' => $pelanggan,
-        ], 200);   
+        ], 200);
     }
-    
-    public function edit_password(string $id, Request $request){
+
+    public function edit_password(string $id, Request $request)
+    {
         try {
             $request->validate([
                 'old_password' => 'required',
-                'new_password' => 'required',        
-                'new_password_confirmation' => 'required',        
+                'new_password' => 'required',
+                'new_password_confirmation' => 'required',
             ]);
-        
+
             // Lanjutkan dengan operasi lain jika validasi berhasil
         } catch (ValidationException $e) {
             return response()->json([
@@ -379,57 +386,56 @@ class ApiPelangganController extends Controller
                 'message' => 'Password lama tidak cocok!',
             ], 422);
         }
-        
     }
 
     private function hidePhoneNumber($phoneNumber)
-{
-    // Menyembunyikan karakter kecuali 4 digit terakhir
-    $visibleDigits = 4;
-    $length = strlen($phoneNumber);
+    {
+        // Menyembunyikan karakter kecuali 4 digit terakhir
+        $visibleDigits = 4;
+        $length = strlen($phoneNumber);
 
-    if ($length <= $visibleDigits) {
-        return $phoneNumber;
+        if ($length <= $visibleDigits) {
+            return $phoneNumber;
+        }
+
+        $hiddenPart = str_repeat('*', $length - $visibleDigits);
+        $visiblePart = substr($phoneNumber, -$visibleDigits);
+
+        return $hiddenPart . $visiblePart;
+    }
+    private function encryptEmail($email)
+    {
+        $emailParts = explode('@', $email);
+
+        if (count($emailParts) === 2) {
+            $username = $emailParts[0];
+            $domain = $emailParts[1];
+
+            // Enkripsi huruf di tengah
+            $encryptedUsername = $this->encryptMiddle($username);
+
+            // Gabungkan kembali
+            $encryptedEmail = $encryptedUsername . '@' . $domain;
+
+            return $encryptedEmail;
+        }
+
+        return $email;
     }
 
-    $hiddenPart = str_repeat('*', $length - $visibleDigits);
-    $visiblePart = substr($phoneNumber, -$visibleDigits);
+    private function encryptMiddle($text)
+    {
+        $length = strlen($text);
 
-    return $hiddenPart . $visiblePart;
-}
-private function encryptEmail($email)
-{
-    $emailParts = explode('@', $email);
-    
-    if (count($emailParts) === 2) {
-        $username = $emailParts[0];
-        $domain = $emailParts[1];
+        if ($length <= 2) {
+            return $text;
+        }
 
-        // Enkripsi huruf di tengah
-        $encryptedUsername = $this->encryptMiddle($username);
+        $start = substr($text, 0, 1);
+        $end = substr($text, -1);
 
-        // Gabungkan kembali
-        $encryptedEmail = $encryptedUsername . '@' . $domain;
+        $middle = str_repeat('*', $length - 2);
 
-        return $encryptedEmail;
+        return $start . $middle . $end;
     }
-
-    return $email;
-}
-
-private function encryptMiddle($text)
-{
-    $length = strlen($text);
-
-    if ($length <= 2) {
-        return $text;
-    }
-
-    $start = substr($text, 0, 1);
-    $end = substr($text, -1);
-
-    $middle = str_repeat('*', $length - 2);
-
-    return $start . $middle . $end;
-}
 }
