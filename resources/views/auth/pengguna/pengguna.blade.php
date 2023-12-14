@@ -351,13 +351,14 @@
                         Apakah Anda yakin ingin menghapus pengguna ini?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn" data-dismiss="modal">Batal</button>
+                        <button type="button" class="btn" onclick="closeModalPengguna()">Batal</button>
                         <button type="submit" class="btn btn-danger">Hapus</button>
                     </div>
                 </div>
             </div>
         </div>
     </form>
+        
 
     {{-- Modal Konfirmasi delete admin --}}
     <form action="{{ url('/pengguna/admin/delete/'.$admin->id_admin) }}" method="POST" enctype="multipart/form-data">
@@ -373,13 +374,25 @@
                         Apakah Anda yakin ingin menghapus pengguna ini?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn" data-dismiss="modal">Batal</button>
+                        <button type="button" class="btn" onclick="closeModalAdmin()">Batal</button>
                         <button type="submit" class="btn btn-danger">Hapus</button>
                     </div>
                 </div>
             </div>
         </div>
     </form>
+
+    <script>
+        function closeModalPengguna() {
+            $('#confirmDeletePengguna').modal('hide');
+        }
+    </script> 
+
+    <script>
+        function closeModalAdmin() {
+            $('#confirmDeleteAdmin').modal('hide');
+        }
+    </script> 
 
     @include('auth.pengguna.create.create_pelanggan')
     @include('auth.pengguna.create.create_admin')

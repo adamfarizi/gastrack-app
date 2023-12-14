@@ -361,13 +361,14 @@
                         Apakah Anda yakin ingin menghapus sopir ini?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn" data-dismiss="modal">Batal</button>
+                        <button type="button" class="btn" onclick="closeModalSopir()">Batal</button>
                         <button type="submit" class="btn btn-danger">Hapus</button>
                     </div>
                 </div>
             </div>
         </div>
     </form>
+ 
 
     {{-- Modal Konfirmasi delete kendaraan --}}
     <form action="{{ url('/kendaraan/delete/' . $kendaraan->id_mobil) }}" method="POST" enctype="multipart/form-data">
@@ -383,13 +384,25 @@
                         Apakah Anda yakin ingin menghapus kendaraan ini?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn" data-dismiss="modal">Batal</button>
+                        <button type="button" class="btn" onclick="closeModalKendaraan()">Batal</button>
                         <button type="submit" class="btn btn-danger">Hapus</button>
                     </div>
                 </div>
             </div>
         </div>
     </form>
+
+    <script>
+        function closeModalSopir() {
+            $('#confirmDeleteSopir').modal('hide');
+        }
+    </script>
+
+    <script>
+        function closeModalKendaraan() {
+            $('#confirmDeleteKendaraan').modal('hide');
+        }
+    </script> 
 
     @include('auth.sopir.create.create_sopir')
     @include('auth.sopir.create.create_kendaraan')
