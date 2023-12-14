@@ -45,6 +45,17 @@ class ApiPembelianController extends Controller
 
     public function create_transaksi(Request $request)
     {
+        $pelangganAktif = Pelanggan::where('id_pelanggan', $request->input('id_pelanggan'))
+        ->where('status', 'aktif')
+        ->first();
+
+        if (!$pelangganAktif) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pelanggan tidak aktif. Transaksi tidak dapat dilakukan.',
+            ], 422);
+        }
+        
         $validator = Validator::make($request->all(), [
             'id_pelanggan' => 'required|exists:pelanggan,id_pelanggan',
             'jumlah_pesanan' => 'required|integer|min:1',
@@ -56,7 +67,7 @@ class ApiPembelianController extends Controller
                 'message' => 'Validasi gagal',
                 'errors' => $validator->errors(),
             ], 422);
-        } else {
+        }else {
             $tagihan_terbaru = Tagihan::where('id_pelanggan', $request->input('id_pelanggan'))
                 ->orderBy('created_at', 'desc')
                 ->first();
