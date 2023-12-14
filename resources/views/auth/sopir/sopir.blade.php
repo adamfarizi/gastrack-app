@@ -237,14 +237,10 @@
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <form action="{{ url('/sopir/delete/' . $sopir->id_sopir) }}" method="POST">
-                                                            @csrf
-                                                            @method('delete')
-                                                            <button type="submit" class="dropdown-item border-radius-md">
-                                                                <i class="fa fa-solid fa-trash" style="color: #ea0606;"></i>
-                                                                <span class="ms-3 text-danger">Hapus</span>
-                                                            </button>
-                                                        </form>
+                                                        <a href="#" class="dropdown-item border-radius-md" data-bs-toggle="modal" data-bs-target="#confirmDeleteSopir">
+                                                            <i class="fa fa-solid fa-trash" style="color: #ea0606;"></i>
+                                                            <span class="ms-3 text-danger">Hapus</span>
+                                                        </a>                                                                                                                                                          
                                                     </li>
                                                 </ul>
                                             </td>
@@ -333,14 +329,10 @@
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <form action="{{ url('/kendaraan/delete/' . $kendaraan->id_mobil) }}" method="POST">
-                                                            @csrf
-                                                            @method('delete')
-                                                            <button type="submit" class="dropdown-item border-radius-md">
-                                                                <i class="fa fa-solid fa-trash" style="color: #ea0606;"></i>
-                                                                <span class="ms-3 text-danger">Hapus</span>
-                                                            </button>
-                                                        </form>
+                                                        <a href="#" class="dropdown-item border-radius-md" data-bs-toggle="modal" data-bs-target="#confirmDeleteKendaraan">
+                                                            <i class="fa fa-solid fa-trash" style="color: #ea0606;"></i>
+                                                            <span class="ms-3 text-danger">Hapus</span>
+                                                        </a>  
                                                     </li>
                                                 </ul>
                                             </td>
@@ -354,6 +346,51 @@
             </div>
         </div>
     </div>
+
+    {{-- Modal Konfirmasi delete sopir --}}
+    <form action="{{ url('/sopir/delete/' . $sopir->id_sopir) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('DELETE')
+        <div class="modal fade" id="confirmDeleteSopir" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteSopirLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteSopirLabel">Konfirmasi Hapus</h5>
+                    </div>
+                    <div class="modal-body">
+                        Apakah Anda yakin ingin menghapus sopir ini?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-danger">Hapus</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {{-- Modal Konfirmasi delete kendaraan --}}
+    <form action="{{ url('/kendaraan/delete/' . $kendaraan->id_mobil) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('DELETE')
+        <div class="modal fade" id="confirmDeleteKendaraan" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteKendaraanLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteKendaraanLabel">Konfirmasi Hapus</h5>
+                    </div>
+                    <div class="modal-body">
+                        Apakah Anda yakin ingin menghapus kendaraan ini?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-danger">Hapus</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
     @include('auth.sopir.create.create_sopir')
     @include('auth.sopir.create.create_kendaraan')
 @endsection

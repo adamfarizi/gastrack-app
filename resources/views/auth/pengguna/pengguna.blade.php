@@ -257,13 +257,9 @@
                                             </a>
                                         </td>
                                         <td class="text-center">
-                                            <form action="{{ url('/pengguna/pelanggan/delete/'.$pelanggan->id_pelanggan) }}" method="POST">
-                                                @csrf
-                                                @method('delete')
-                                                <button type="submit" name="Delete" class="text-dark font-weight-bold border-0 bg-transparent">
-                                                    <i class="fa fa-solid fa-trash" style="color: #ea0606;"></i>
-                                                </button>
-                                            </form>
+                                            <a href="#" class="dropdown-item border-radius-md" data-bs-toggle="modal" data-bs-target="#confirmDeletePengguna">
+                                                <i class="fa fa-solid fa-trash" style="color: #ea0606;"></i>
+                                            </a> 
                                         </td>
                                     </tr>
                                 @endforeach                                
@@ -325,13 +321,9 @@
                                                 </a>
                                             </td>
                                             <td class="text-center">
-                                                <form action="{{ url('/pengguna/admin/delete/'.$admin->id_admin) }}" method="POST">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button type="submit" name="Delete" class="text-dark font-weight-bold border-0 bg-transparent">
-                                                        <i class="fa fa-solid fa-trash" style="color: #ea0606;"></i>
-                                                    </button>                                        
-                                                </form>
+                                                <a href="#" class="dropdown-item border-radius-md" data-bs-toggle="modal" data-bs-target="#confirmDeleteAdmin">
+                                                    <i class="fa fa-solid fa-trash" style="color: #ea0606;"></i>
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -344,6 +336,51 @@
             </div>
         @endif
     </div>
+
+    {{-- Modal Konfirmasi delete pengguna --}}
+    <form action="{{ url('/pengguna/pelanggan/delete/'.$pelanggan->id_pelanggan) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('DELETE')
+        <div class="modal fade" id="confirmDeletePengguna" tabindex="-1" role="dialog" aria-labelledby="confirmDeletePenggunaLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeletePenggunaLabel">Konfirmasi Hapus</h5>
+                    </div>
+                    <div class="modal-body">
+                        Apakah Anda yakin ingin menghapus pengguna ini?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-danger">Hapus</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {{-- Modal Konfirmasi delete admin --}}
+    <form action="{{ url('/pengguna/admin/delete/'.$admin->id_admin) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('DELETE')
+        <div class="modal fade" id="confirmDeleteAdmin" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteAdminLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteAdminLabel">Konfirmasi Hapus</h5>
+                    </div>
+                    <div class="modal-body">
+                        Apakah Anda yakin ingin menghapus pengguna ini?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-danger">Hapus</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
     @include('auth.pengguna.create.create_pelanggan')
     @include('auth.pengguna.create.create_admin')
 @endsection
