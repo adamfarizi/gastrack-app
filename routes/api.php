@@ -25,6 +25,11 @@ Route::middleware(['auth:sanctum', 'check.pelanggan'])->group(function () {
     Route::post('/pelanggan/logout', [ApiPelangganController::class, 'logout']);
     Route::get('/pelanggan/update/{id}', [ApiPelangganController::class, 'edit_index']);
     Route::put('/pelanggan/update/{id}', [ApiPelangganController::class, 'edit_action']);
+    Route::put('/pelanggan/update/perusahaan/{id}', [ApiPelangganController::class, 'edit_perusahaan']);
+    Route::put('/pelanggan/update/name/{id}', [ApiPelangganController::class, 'edit_name']);
+    Route::put('/pelanggan/update/email/{id}', [ApiPelangganController::class, 'edit_email']);
+    Route::put('/pelanggan/update/no_hp/{id}', [ApiPelangganController::class, 'edit_no_hp']);
+    Route::put('/pelanggan/update/alamat/{id}', [ApiPelangganController::class, 'edit_alamat']);
     Route::get('/pelanggan/index/{id}', [ApiPembelianController::class, 'index_transaksi']);
     Route::get('/pembelian/belum_bayar', [ApiPembelianController::class, 'transaksi_belum_bayar']);
     Route::get('/pembelian/sudah_bayar', [ApiPembelianController::class, 'transaksi_sudah_bayar']);
