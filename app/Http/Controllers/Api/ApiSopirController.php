@@ -40,7 +40,7 @@ class ApiSopirController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Akun tidak terdaftar!',
-            ], 404);
+            ], 422);
         }
 
         // Verifikasi password
@@ -55,7 +55,7 @@ class ApiSopirController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Kombinasi email dan password tidak valid!',
+                'message' => 'Password Anda salah!!',
             ], 422);
         }
     }
@@ -129,7 +129,7 @@ class ApiSopirController extends Controller
     {
         // Validasi request
         $request->validate([
-            'kapasitas_gas_masuk' => 'string',
+            'kapasitas_gas_masuk' => 'required',
             'bukti_gas_masuk' => 'required|image|mimes:jpeg,jpg,png',
         ]);
     
