@@ -11,6 +11,7 @@ use App\Models\Pengiriman;
 use App\Http\Resources\PostResource;
 use App\Models\Transaksi;
 use Carbon\Carbon;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 
 class ApiSopirController extends Controller
@@ -97,6 +98,7 @@ class ApiSopirController extends Controller
         } else {
             $data = $pengiriman
                 ->select(
+                    'pengiriman.id_pengiriman',
                     'transaksi.resi_transaksi AS resi',
                     'pelanggan.koordinat',
                     'pelanggan.nama_perusahaan',
@@ -215,7 +217,7 @@ class ApiSopirController extends Controller
             'sisa_gas' => $sisa_gas,
         ]);
     }
-    
+
     public function edit_index(string $id){
         $sopir = Sopir::where('id_sopir', $id)->first();
     
@@ -234,6 +236,122 @@ class ApiSopirController extends Controller
                 'datauser' => $sopir,
             ], 200);
         }
+    }
+
+    public function edit_name(string $id, Request $request)
+    {
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+            ]);
+
+            // Lanjutkan dengan operasi lain jika validasi berhasil
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $e->validator->errors()->all(),
+            ], 422);
+        }
+
+        $sopir = Sopir::find($id);
+        if (empty($sopir)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan!',
+            ], 422);
+        }
+
+        $sopir->nama_sopir = $request->input('name');
+        $sopir->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data berhasil diubah',
+            'datauser' => $sopir,
+        ], 200);
+    }
+
+    public function edit_email(string $id, Request $request)
+    {
+        try {
+            $request->validate([
+                'email' => 'required|email|max:255',
+            ]);
+
+            // Check if the new email already exists
+            $existingEmail = Sopir::where('email', $request->input('email'))->first();
+            if ($existingEmail) {
+                if ($existingEmail['id_sopir'] == $id) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Anda tidak melakukan perubahan email.',
+                    ], 422);
+                } else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Email sudah terdaftar.',
+                    ], 422);
+                }
+            }
+
+            $sopir = Sopir::find($id);
+            if (empty($sopir)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data tidak ditemukan!',
+                ], 422);
+            }
+
+            $sopir->email = $request->input('email');
+            $sopir->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil diubah',
+                'datauser' => $sopir,
+            ], 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $e->validator->errors()->all(),
+            ], 422);
+        }
+    }
+
+    public function edit_no_hp(string $id, Request $request)
+    {
+        try {
+            $request->validate([
+                'no_hp' => 'required|string|max:15',
+            ]);
+
+            // Lanjutkan dengan operasi lain jika validasi berhasil
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $e->validator->errors()->all(),
+            ], 422);
+        }
+
+        $sopir = Sopir::find($id);
+        if (empty($sopir)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan!',
+            ], 422);
+        }
+
+        $sopir->no_hp = $request->input('no_hp');
+        $sopir->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data berhasil diubah',
+            'datauser' => $sopir,
+        ], 200);
     }
 
     private function hidePhoneNumber($phoneNumber)
