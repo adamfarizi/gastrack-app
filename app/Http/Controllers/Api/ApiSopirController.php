@@ -130,7 +130,7 @@ class ApiSopirController extends Controller
         // Validasi request
         $request->validate([
             'kapasitas_gas_masuk' => 'string',
-            'bukti_gas_masuk' => 'required|image|mimes:jpeg,jpg,png|max:2048',
+            'bukti_gas_masuk' => 'required|image|mimes:jpeg,jpg,png',
         ]);
     
         // Ambil data pengiriman berdasarkan ID
@@ -168,7 +168,7 @@ class ApiSopirController extends Controller
         // Validasi request
         $request->validate([
             'kapasitas_gas_keluar' => 'string',
-            'bukti_gas_keluar' => 'required|image|mimes:jpeg,jpg,png|max:2048',
+            'bukti_gas_keluar' => 'required|image|mimes:jpeg,jpg,png',
         ]);
     
         // Ambil data pengiriman berdasarkan ID
