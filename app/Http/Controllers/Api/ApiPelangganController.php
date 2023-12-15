@@ -133,6 +133,193 @@ class ApiPelangganController extends Controller
             ], 422);
         }
     }
+
+    public function edit_name(string $id, Request $request)
+    {
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+            ]);
+
+            // Lanjutkan dengan operasi lain jika validasi berhasil
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $e->validator->errors()->all(),
+            ], 422);
+        }
+
+        $pelanggan = Pelanggan::find($id);
+        if (empty($pelanggan)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan!',
+            ], 422);
+        }
+
+        $pelanggan->nama_pemilik = $request->input('name');
+        $pelanggan->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data berhasil diubah',
+            'datauser' => $pelanggan,
+        ], 200);
+    }
+
+    public function edit_perusahaan(string $id, Request $request)
+    {
+        try {
+            $request->validate([
+                'perusahaan' => 'required|string|max:255',
+            ]);
+
+            // Lanjutkan dengan operasi lain jika validasi berhasil
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $e->validator->errors()->all(),
+            ], 422);
+        }
+
+        $pelanggan = Pelanggan::find($id);
+        if (empty($pelanggan)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan!',
+            ], 422);
+        }
+
+        $pelanggan->nama_perusahaan = $request->input('perusahaan');
+        $pelanggan->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data berhasil diubah',
+            'datauser' => $pelanggan,
+        ], 200);
+    }
+
+    public function edit_email(string $id, Request $request)
+    {
+        try {
+            $request->validate([
+                'email' => 'required|email|max:255',
+            ]);
+
+            // Check if the new email already exists
+            $existingEmail = Pelanggan::where('email', $request->input('email'))->first();
+            if ($existingEmail) {
+                if ($existingEmail['id_pelanggan'] == $id) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Anda tidak melakukan perubahan email.',
+                    ], 422);
+                } else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Email sudah terdaftar.',
+                    ], 422);
+                }
+            }
+
+            $pelanggan = Pelanggan::find($id);
+            if (empty($pelanggan)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data tidak ditemukan!',
+                ], 422);
+            }
+
+            $pelanggan->email = $request->input('email');
+            $pelanggan->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil diubah',
+                'datauser' => $pelanggan,
+            ], 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $e->validator->errors()->all(),
+            ], 422);
+        }
+    }
+
+
+    public function edit_no_hp(string $id, Request $request)
+    {
+        try {
+            $request->validate([
+                'no_hp' => 'required|string|max:15',
+            ]);
+
+            // Lanjutkan dengan operasi lain jika validasi berhasil
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $e->validator->errors()->all(),
+            ], 422);
+        }
+
+        $pelanggan = Pelanggan::find($id);
+        if (empty($pelanggan)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan!',
+            ], 422);
+        }
+
+        $pelanggan->no_hp = $request->input('no_hp');
+        $pelanggan->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data berhasil diubah',
+            'datauser' => $pelanggan,
+        ], 200);
+    }
+
+    public function edit_alamat(string $id, Request $request)
+    {
+        try {
+            $request->validate([
+                'alamat' => 'required|string|max:255',
+                'koordinat' => 'required|string|max:255',
+            ]);
+
+            // Lanjutkan dengan operasi lain jika validasi berhasil
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $e->validator->errors()->all(),
+            ], 422);
+        }
+
+        $pelanggan = Pelanggan::find($id);
+        if (empty($pelanggan)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan!',
+            ], 422);
+        }
+
+        $pelanggan->alamat = $request->input('alamat');
+        $pelanggan->koordinat = $request->input('koordinat');
+        $pelanggan->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data berhasil diubah',
+            'datauser' => $pelanggan,
+        ], 200);
+    }
     
     public function edit_password(string $id, Request $request){
         try {
