@@ -23,7 +23,8 @@ Route::post('/sopir/login', [ApiSopirController::class, 'login_action']);
 
 Route::middleware(['auth:sanctum', 'check.pelanggan'])->group(function () {
     Route::post('/pelanggan/logout', [ApiPelangganController::class, 'logout']);
-    Route::get('/pelanggan/update/{id}', [ApiPelangganController::class, 'edit_index']);
+    Route::get('/pelanggan/update/{id}', [ApiPelangganController::class, 'edit_index']);    
+    Route::get('/pelanggan/detail/{id}', [ApiPelangganController::class, 'detail_user']);
     Route::put('/pelanggan/update/{id}', [ApiPelangganController::class, 'edit_action']);
     Route::put('/pelanggan/update/perusahaan/{id}', [ApiPelangganController::class, 'edit_perusahaan']);
     Route::put('/pelanggan/update/name/{id}', [ApiPelangganController::class, 'edit_name']);
@@ -34,7 +35,8 @@ Route::middleware(['auth:sanctum', 'check.pelanggan'])->group(function () {
     Route::get('/pembelian/belum_bayar', [ApiPembelianController::class, 'transaksi_belum_bayar']);
     Route::get('/pembelian/sudah_bayar', [ApiPembelianController::class, 'transaksi_sudah_bayar']);
     Route::post('/pembelian/create', [ApiPembelianController::class, 'create_transaksi']);
-    Route::post('/pembelian/update_pembayaran/{id}', [ApiPembelianController::class, 'update_pembayaran']);
+    Route::post('/pembelian/update_pembayaran/{id}', [ApiPembelianController::class, 'update_pembayaran']);    
+    Route::get('/pelanggan/tagihan/{id}', [ApiPembelianController::class, 'index_tagihanPelanggan']);
 });
 
 Route::middleware(['auth:sanctum', 'check.sopir'])->group(function(){

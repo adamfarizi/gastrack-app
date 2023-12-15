@@ -77,6 +77,24 @@ class ApiPelangganController extends Controller
         }
     }
 
+    public function detail_user(string $id)
+    {
+        $pelanggan = Pelanggan::where('id_pelanggan', $id)->first();
+
+        if (empty($pelanggan)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan!',
+            ], 422);
+        } else {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil ditemukan',
+                'datauser' => $pelanggan,
+            ], 200);
+        }
+    }
+
     public function edit_index(string $id){
         $pelanggan = Pelanggan::where('id_pelanggan', $id)->first();
     
