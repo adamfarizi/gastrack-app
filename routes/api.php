@@ -23,6 +23,7 @@ Route::post('/sopir/login', [ApiSopirController::class, 'login_action']);
 
 Route::middleware(['auth:sanctum', 'check.pelanggan'])->group(function () {
     Route::post('/pelanggan/logout', [ApiPelangganController::class, 'logout']);
+    Route::get('/pelanggan/update/{id}', [ApiPelangganController::class, 'edit_index']);
     Route::put('/pelanggan/update/{id}', [ApiPelangganController::class, 'edit_action']);
     Route::get('/pelanggan/index/{id}', [ApiPembelianController::class, 'index_transaksi']);
     Route::get('/pembelian/belum_bayar', [ApiPembelianController::class, 'transaksi_belum_bayar']);
