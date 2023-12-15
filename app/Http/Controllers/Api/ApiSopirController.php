@@ -215,5 +215,77 @@ class ApiSopirController extends Controller
             'sisa_gas' => $sisa_gas,
         ]);
     }
+    
+    public function edit_index(string $id){
+        $sopir = Sopir::where('id_sopir', $id)->first();
+    
+        if (empty($sopir)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan!',
+            ], 422);
+        }
+        else{
+            $sopir->no_hp = $this->hidePhoneNumber($sopir->no_hp);
+            $sopir->email = $this->encryptEmail($sopir->email);
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil ditemukan',
+                'datauser' => $sopir,
+            ], 200);
+        }
+    }
+
+    private function hidePhoneNumber($phoneNumber)
+    {
+        // Menyembunyikan karakter kecuali 4 digit terakhir
+        $visibleDigits = 4;
+        $length = strlen($phoneNumber);
+    
+        if ($length <= $visibleDigits) {
+            return $phoneNumber;
+        }
+    
+        $hiddenPart = str_repeat('*', $length - $visibleDigits);
+        $visiblePart = substr($phoneNumber, -$visibleDigits);
+    
+        return $hiddenPart . $visiblePart;
+    }
+    
+    private function encryptEmail($email)
+    {
+        $emailParts = explode('@', $email);
+        
+        if (count($emailParts) === 2) {
+            $username = $emailParts[0];
+            $domain = $emailParts[1];
+    
+            // Enkripsi huruf di tengah
+            $encryptedUsername = $this->encryptMiddle($username);
+    
+            // Gabungkan kembali
+            $encryptedEmail = $encryptedUsername . '@' . $domain;
+    
+            return $encryptedEmail;
+        }
+    
+        return $email;
+    }
+    
+    private function encryptMiddle($text)
+    {
+        $length = strlen($text);
+    
+        if ($length <= 2) {
+            return $text;
+        }
+    
+        $start = substr($text, 0, 1);
+        $end = substr($text, -1);
+    
+        $middle = str_repeat('*', $length - 2);
+    
+        return $start . $middle . $end;
+    }
 
 }
