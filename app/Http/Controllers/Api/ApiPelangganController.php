@@ -87,6 +87,8 @@ class ApiPelangganController extends Controller
             ], 422);
         }
         else{
+            $pelanggan->no_hp = $this->hidePhoneNumber($pelanggan->no_hp);
+            $pelanggan->email = $this->encryptEmail($pelanggan->email);
             return response()->json([
                 'success' => true,
                 'message' => 'Data berhasil ditemukan',
