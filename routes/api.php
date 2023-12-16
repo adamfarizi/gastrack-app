@@ -30,12 +30,13 @@ Route::middleware(['auth:sanctum', 'check.pelanggan'])->group(function () {
     Route::put('/pelanggan/update/name/{id}', [ApiPelangganController::class, 'edit_name']);
     Route::put('/pelanggan/update/email/{id}', [ApiPelangganController::class, 'edit_email']);
     Route::put('/pelanggan/update/no_hp/{id}', [ApiPelangganController::class, 'edit_no_hp']);
-    Route::put('/pelanggan/update/alamat/{id}', [ApiPelangganController::class, 'edit_alamat']);
+    Route::put('/pelanggan/update/alamat/{id}', [ApiPelangganController::class, 'edit_alamat']);    
+    Route::put('/pelanggan/update/password/{id}', [ApiPelangganController::class, 'edit_password']);
     Route::get('/pelanggan/index/{id}', [ApiPembelianController::class, 'index_transaksi']);
     Route::get('/pembelian/belum_bayar', [ApiPembelianController::class, 'transaksi_belum_bayar']);
     Route::get('/pembelian/sudah_bayar', [ApiPembelianController::class, 'transaksi_sudah_bayar']);
-    Route::post('/pembelian/create', [ApiPembelianController::class, 'create_transaksi']);
-    Route::post('/pembelian/update_pembayaran/{id}', [ApiPembelianController::class, 'update_pembayaran']);    
+    Route::post('/pelanggan/pembelian', [ApiPembelianController::class, 'create_transaksi']);
+    Route::post('/pelanggan/update_pembayaran/{id}', [ApiPembelianController::class, 'update_pembayaran']);    
     Route::get('/pelanggan/tagihan/{id}', [ApiPembelianController::class, 'index_tagihanPelanggan']);
 });
 

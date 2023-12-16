@@ -174,7 +174,7 @@
                                 </div>
                                 <div class="row">
                                     <p class="col-4 fw-bold text-dark mb-0">Tanggal Pembayaran</p>
-                                    @if ($transaksi->tagihan->status_tagihan === 'Sudah Bayar')
+                                    @if ($transaksi->tagihan->status_tagihan === 'Sudah Bayar' || $transaksi->tagihan->status_tagihan === 'Diproses')
                                         <p class="col fw-bold text-dark mb-0">: <span class="ms-1 col fw-light text-second">{{ date('d/M/Y', strtotime($transaksi->tagihan->tanggal_pembayaran)) }}</span>
                                     @else
                                         <p class="col fw-bold text-dark mb-0">: <span class="ms-1 col fw-light text-danger">Belum Bayar</span>
@@ -198,6 +198,14 @@
                                     </p>
                                 </div>
                                 @if ($transaksi->tagihan->status_tagihan == 'Belum Bayar')
+                                    <div class="row">
+                                        <form action="{{ url('/pembelian/more/tagihan/'. $transaksi->id_transaksi) }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="btn bg-gradient-primary w-100 disabled">Konfirmasi Pembayaran</button>
+                                        </form>
+                                    </div>
+                                @endif
+                                @if ($transaksi->tagihan->status_tagihan == 'Diproses')
                                     <div class="row">
                                         <form action="{{ url('/pembelian/more/tagihan/'. $transaksi->id_transaksi) }}" method="POST">
                                             @csrf

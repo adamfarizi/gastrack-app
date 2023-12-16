@@ -386,6 +386,8 @@
                                         <div class="border border-1 border-dark text-center align-center p-1 w-75">
                                             @if ($transaksi->tagihan->status_tagihan == 'Belum Bayar')
                                                 <h6 class="text-danger m-0"><em>Belum Bayar</em></h6>
+                                            @elseif ($transaksi->tagihan->status_tagihan == 'Diproses')
+                                                <h6 class="text-warning m-0"><em>Menunggu konfirmasi pembayaran</em></h6>
                                             @else
                                                 <h6 class="text-success m-0"><em>Lunas</em></h6>
                                             @endif
@@ -662,6 +664,8 @@
         function getStatusBadge(transaksi) {
             if (transaksi.tagihan.status_tagihan === 'Belum Bayar') {
                 return '<a href="<?php echo url("/pembelian/more/tagihan/' + transaksi.id_transaksi + '"); ?>" class="badge badge-sm bg-gradient-danger text-white">Belum Bayar</a>';
+            }else if (transaksi.tagihan.status_tagihan === 'Diproses') {
+                return '<a href="<?php echo url("/pembelian/more/tagihan/' + transaksi.id_transaksi + '"); ?>" class="badge badge-sm bg-gradient-danger position-relative text-white">Belum Bayar<span class="material-symbols-outlined position-absolute top-0 start-100 translate-middle bg-warning border rounded-circle">info</span></a>';
             } else {
                 return '<a href="<?php echo url("/pembelian/more/tagihan/' + transaksi.id_transaksi + '"); ?>"  class="badge badge-sm bg-gradient-success text-white">Sudah Bayar</a>';
             }

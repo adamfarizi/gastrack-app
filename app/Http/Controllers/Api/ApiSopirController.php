@@ -157,8 +157,8 @@ class ApiSopirController extends Controller
         $pengiriman->kapasitas_gas_masuk = $request->kapasitas_gas_masuk;
         $pengiriman->save();
         
-        $nama_sopir = $pengiriman->sopir->nama;
-        broadcast(new GasMasukEvent($nama_sopir));
+        // $nama_sopir = $pengiriman->sopir->nama;
+        // broadcast(new GasMasukEvent($nama_sopir));
     
         return response()->json(['message' => 'Data pengiriman berhasil diupdate']);
     }

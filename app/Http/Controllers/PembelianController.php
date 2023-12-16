@@ -43,7 +43,7 @@ class PembelianController extends Controller
         $gas = Gas::sum('harga_gas');
         $harga_gas = number_format($gas, 0, ',', '.');
         $transaksis = Transaksi::with('pelanggan', 'tagihan')->whereHas('tagihan', function ($query) {
-            $query->whereIn('status_tagihan', ['Belum Bayar']);
+            $query->whereIn('status_tagihan', ['Belum Bayar'])->orWhereIn('status_tagihan', ['Diproses']);;
         })
         ->orderBy('created_at','desc')
         ->get();

@@ -13,7 +13,7 @@ class CreateTagihanTable extends Migration
             $table->id('id_tagihan');
             $table->date('tanggal_jatuh_tempo');
             $table->decimal('jumlah_tagihan', 50, 0);
-            $table->enum('status_tagihan',['Sudah Bayar','Belum Bayar'])->default('Belum Bayar');
+            $table->enum('status_tagihan',['Sudah Bayar','Belum Bayar','Diproses'])->default('Belum Bayar');
             $table->dateTime('tanggal_pembayaran')->nullable();
             $table->string('bukti_pembayaran')->nullable();
             $table->unsignedBigInteger('id_pelanggan');
