@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Pelanggan;
 use App\Http\Resources\PostResource;
+use App\Models\Pesanan;
 use App\Models\Tagihan;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Carbon\Carbon;
 
 
 class ApiPelangganController extends Controller
@@ -385,6 +387,120 @@ class ApiPelangganController extends Controller
             ], 422);
         }
         
+    }
+
+    public function getTransaksi($id_pelanggan)
+    {
+        $transaksi = Transaksi::where('transaksi.id_pelanggan', $id_pelanggan)
+            ->join('pelanggan', 'transaksi.id_pelanggan', '=', 'pelanggan.id_pelanggan')
+            ->join('tagihan', 'transaksi.id_tagihan', '=', 'tagihan.id_tagihan');
+        $pesanan = Pesanan::join('transaksi', 'transaksi.id_transaksi', '=', 'pesanan.id_transaksi')->
+                where('transaksi.id_pelanggan', $id_pelanggan)->get();
+
+        if (empty($transaksi)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan!',
+            ], 422);
+        }
+        else{   
+
+            $data = $transaksi 
+                ->select(
+                    'transaksi.resi_transaksi',
+                    'tagihan.jumlah_tagihan',
+                    'tagihan.status_tagihan',
+                )->get();
+
+                $formattedResult = $data->map(function ($item) {
+                    return [
+                        'resi' => $item->resi_transaksi,
+                        'total_tagihan' => number_format($item->jumlah_tagihan, 0, ',', '.'),
+                        'status_pembayaran' => $item->status_tagihan,
+                    ];
+                });
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil ditemukan',
+                'data' => $formattedResult,
+                'pesanan' => $pesanan
+            ], 200);
+        }
+    }
+
+    public function getDetailTransaksi($id_pelanggan)
+    {
+        $transaksi = Transaksi::where('transaksi.id_pelanggan', $id_pelanggan)
+            ->join('pelanggan', 'transaksi.id_pelanggan', '=', 'pelanggan.id_pelanggan')
+            ->join('tagihan', 'transaksi.id_tagihan', '=', 'tagihan.id_tagihan')
+            ->join('pesanan', 'transaksi.id_transaksi', '=', 'pesanan.id_transaksi');
+
+        $pesanan_awal = Pesanan::select('pesanan.tanggal_pesanan','pesanan.jumlah_pesanan','pesanan.harga_pesanan',)
+                    ->join('transaksi', 'transaksi.id_transaksi', '=', 'pesanan.id_transaksi')->
+                    where('transaksi.id_pelanggan', $id_pelanggan)->orderBy('tanggal_pesanan', 'asc')->first();
+        $pesanan_akhir = Pesanan::select('pesanan.tanggal_pesanan','pesanan.jumlah_pesanan','pesanan.harga_pesanan',)
+                    ->join('transaksi', 'transaksi.id_transaksi', '=', 'pesanan.id_transaksi')->
+                    where('transaksi.id_pelanggan', $id_pelanggan)->orderBy('tanggal_pesanan', 'desc')->first();
+        $pesanan = Pesanan::select('pesanan.tanggal_pesanan', 'pesanan.jumlah_pesanan','pesanan.harga_pesanan',)
+                    ->join('transaksi', 'transaksi.id_transaksi', '=', 'pesanan.id_transaksi')->
+                    where('transaksi.id_pelanggan', $id_pelanggan)->get();
+
+        if (empty($transaksi)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan!',
+            ], 422);
+        }
+        else{
+            Carbon::setLocale('id');
+            $formattedJumlahTagihan = number_format($pesanan_awal->harga_pesanan, 0, ',', '.');
+            $formattedTanggalJatuhTempo = Carbon::parse($pesanan_awal->tanggal_pesanan)->isoFormat('DD MMMM YYYY');
+
+            $formattedJumlahTagihanPesanan = number_format($pesanan_akhir->harga_pesanan, 0, ',', '.');
+            $formattedTanggalPesanan = Carbon::parse($pesanan_akhir->tanggal_pesanan)->isoFormat('DD MMMM YYYY');
+            
+            $pesanan_akhir->tanggal_pesanan = $formattedTanggalPesanan;
+            $pesanan_akhir->harga_pesanan = $formattedJumlahTagihanPesanan;
+            $pesanan_awal->tanggal_pesanan = $formattedTanggalJatuhTempo;
+            $pesanan_awal->harga_pesanan = $formattedJumlahTagihan;
+
+            $formattedPesanan = $pesanan->map(function ($item) {
+                return [
+                    'tanggal_pesanan' => Carbon::parse($item->tanggal_pesanan)->isoFormat('DD MMMM YYYY'),
+                    'jumlah_pesanan' => $item->jumlah_pesanan,
+                    'harga_pesanan' => number_format($item->harga_pesanan, 0, ',', '.'),
+                ];
+            });
+
+            $data = $transaksi 
+                ->select(
+                    'transaksi.resi_transaksi AS resi',
+                    'pelanggan.nama_perusahaan AS pelanggan',
+                    'pelanggan.no_hp',
+                    'pelanggan.alamat AS alamat',
+                    'tagihan.jumlah_tagihan AS total_tagihan',
+                    'pesanan.tanggal_pesanan',
+                    'pesanan.jumlah_pesanan',
+                    'pesanan.harga_pesanan',
+                )->first();
+
+             $formattedData = [
+                'resi' => $data->resi,
+                'pelanggan' => $data->pelanggan,
+                'no_hp' => $data->no_hp,
+                'alamat' => $data->alamat,
+                'pesanan_awal' => $pesanan_awal,
+                'pesanan_akhir' => $pesanan_akhir,
+                'pesanan' => $formattedPesanan
+            ];
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil ditemukan',
+                'data' => $formattedData,
+            ], 200);
+        }
     }
 
     private function hidePhoneNumber($phoneNumber)
