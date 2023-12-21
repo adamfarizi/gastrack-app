@@ -45,6 +45,15 @@ class ApiPelangganController extends Controller
 
         // Verifikasi password
         if (password_verify($request->password, $pelanggan->password)) {
+            // Periksa apakah pengguna sudah login di perangkat lain
+            if ($pelanggan->tokens()->count() > 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Pengguna sudah masuk di perangkat lain.',
+                ], 422);
+            }
+
+            // Buat token untuk perangkat saat ini
             $token = $pelanggan->createToken('myappToken')->plainTextToken;
 
             return response()->json([
