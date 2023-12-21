@@ -683,6 +683,12 @@
                 realTime_Pembelian();
                 realTime_Riwayat_Pembelian();
             });
+
+            Echo.channel(`BayarTagihan-channel`).listen('BayarTagihanEvent', (e) => {
+                realtime_Nav();
+                realTime_Pembelian();
+                realTime_Riwayat_Pembelian();
+            });
         });
     </script>
 
