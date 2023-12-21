@@ -16,10 +16,11 @@ use Carbon\Carbon;
 
 class ApiPelangganController extends Controller
 {
-    public function index($id){
+    public function index($id)
+    {
         $pelanggan = Pelanggan::find($id);
-    
-        if($pelanggan){
+
+        if ($pelanggan) {
             return new PostResource(true, 'Get Berhasil', $pelanggan);
         } else {
             return response()->json(["message" => "Not Found 404"], 404);
@@ -97,16 +98,16 @@ class ApiPelangganController extends Controller
         }
     }
 
-    public function edit_index(string $id){
+    public function edit_index(string $id)
+    {
         $pelanggan = Pelanggan::where('id_pelanggan', $id)->first();
-    
+
         if (empty($pelanggan)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Data tidak ditemukan!',
             ], 422);
-        }
-        else{
+        } else {
             $pelanggan->no_hp = $this->hidePhoneNumber($pelanggan->no_hp);
             $pelanggan->email = $this->encryptEmail($pelanggan->email);
             return response()->json([
@@ -116,8 +117,9 @@ class ApiPelangganController extends Controller
             ], 200);
         }
     }
-    
-    public function edit_action(string $id, Request $request){
+
+    public function edit_action(string $id, Request $request)
+    {
         try {
             $request->validate([
                 'nama' => 'required|string|max:255',
@@ -125,7 +127,7 @@ class ApiPelangganController extends Controller
                 'alamat' => 'required|string|max:255',
                 'no_hp' => 'required|string|max:15',
             ]);
-    
+
             $pelanggan = Pelanggan::find($id);
             if (empty($pelanggan)) {
                 return response()->json([
@@ -133,18 +135,18 @@ class ApiPelangganController extends Controller
                     'message' => 'Data tidak ditemukan!',
                 ], 422);
             }
-    
+
             $pelanggan->nama = $request->input('nama');
             $pelanggan->email = $request->input('email');
-            $pelanggan->no_hp = $request->input('no_hp');        
+            $pelanggan->no_hp = $request->input('no_hp');
             $pelanggan->alamat = $request->input('alamat');
             $pelanggan->save();
-    
+
             return response()->json([
                 'success' => true,
                 'message' => 'Data berhasil diubah',
                 'datauser' => $pelanggan,
-            ], 200);    
+            ], 200);
         } catch (ValidationException $e) {
             return response()->json([
                 'success' => false,
@@ -339,15 +341,16 @@ class ApiPelangganController extends Controller
             'datauser' => $pelanggan,
         ], 200);
     }
-    
-    public function edit_password(string $id, Request $request){
+
+    public function edit_password(string $id, Request $request)
+    {
         try {
             $request->validate([
                 'old_password' => 'required',
-                'new_password' => 'required',        
-                'new_password_confirmation' => 'required',        
+                'new_password' => 'required',
+                'new_password_confirmation' => 'required',
             ]);
-        
+
             // Lanjutkan dengan operasi lain jika validasi berhasil
         } catch (ValidationException $e) {
             return response()->json([
@@ -386,80 +389,73 @@ class ApiPelangganController extends Controller
                 'message' => 'Password lama tidak cocok!',
             ], 422);
         }
-        
     }
 
     public function getTransaksi($id_pelanggan)
     {
+        $cek_data = Transaksi::where('id_pelanggan', $id_pelanggan)->first();
+
         $transaksi = Transaksi::where('transaksi.id_pelanggan', $id_pelanggan)
             ->join('pelanggan', 'transaksi.id_pelanggan', '=', 'pelanggan.id_pelanggan')
             ->join('tagihan', 'transaksi.id_tagihan', '=', 'tagihan.id_tagihan');
-        $pesanan = Pesanan::join('transaksi', 'transaksi.id_transaksi', '=', 'pesanan.id_transaksi')->
-                where('transaksi.id_pelanggan', $id_pelanggan)->get();
 
-        if (empty($transaksi)) {
+        if (empty($cek_data)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Data tidak ditemukan!',
+                'message' => 'Belum ada transaksi',
             ], 422);
-        }
-        else{   
-
-            $data = $transaksi 
+        } else {
+            $data = $transaksi
                 ->select(
+                    'transaksi.id_transaksi',
                     'transaksi.resi_transaksi',
                     'tagihan.jumlah_tagihan',
                     'tagihan.status_tagihan',
                 )->get();
 
-                $formattedResult = $data->map(function ($item) {
-                    return [
-                        'resi' => $item->resi_transaksi,
-                        'total_tagihan' => number_format($item->jumlah_tagihan, 0, ',', '.'),
-                        'status_pembayaran' => $item->status_tagihan,
-                    ];
-                });
+            $formattedResult = $data->map(function ($item) {
+                return [
+                    'id_transaksi' => $item->id_transaksi,
+                    'resi' => $item->resi_transaksi,
+                    'total_tagihan' => number_format($item->jumlah_tagihan, 0, ',', '.'),
+                    'status_pembayaran' => $item->status_tagihan,
+                ];
+            });
 
             return response()->json([
                 'success' => true,
                 'message' => 'Data berhasil ditemukan',
                 'data' => $formattedResult,
-                'pesanan' => $pesanan
             ], 200);
         }
     }
 
-    public function getDetailTransaksi($id_pelanggan)
+    public function getDetailTransaksi($id_transaksi)
     {
-        $transaksi = Transaksi::where('transaksi.id_pelanggan', $id_pelanggan)
+        $transaksi = Transaksi::where('transaksi.id_transaksi', $id_transaksi)
             ->join('pelanggan', 'transaksi.id_pelanggan', '=', 'pelanggan.id_pelanggan')
             ->join('tagihan', 'transaksi.id_tagihan', '=', 'tagihan.id_tagihan')
             ->join('pesanan', 'transaksi.id_transaksi', '=', 'pesanan.id_transaksi');
-
-        $pesanan_awal = Pesanan::select('pesanan.tanggal_pesanan','pesanan.jumlah_pesanan','pesanan.harga_pesanan',)
-                    ->join('transaksi', 'transaksi.id_transaksi', '=', 'pesanan.id_transaksi')->
-                    where('transaksi.id_pelanggan', $id_pelanggan)->orderBy('tanggal_pesanan', 'asc')->first();
-        $pesanan_akhir = Pesanan::select('pesanan.tanggal_pesanan','pesanan.jumlah_pesanan','pesanan.harga_pesanan',)
-                    ->join('transaksi', 'transaksi.id_transaksi', '=', 'pesanan.id_transaksi')->
-                    where('transaksi.id_pelanggan', $id_pelanggan)->orderBy('tanggal_pesanan', 'desc')->first();
-        $pesanan = Pesanan::select('pesanan.tanggal_pesanan', 'pesanan.jumlah_pesanan','pesanan.harga_pesanan',)
-                    ->join('transaksi', 'transaksi.id_transaksi', '=', 'pesanan.id_transaksi')->
-                    where('transaksi.id_pelanggan', $id_pelanggan)->get();
 
         if (empty($transaksi)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Data tidak ditemukan!',
             ], 422);
-        }
-        else{
+        } else {
+            $pesanan_awal = Pesanan::select('tanggal_pesanan', 'jumlah_pesanan', 'harga_pesanan',)
+                ->where('id_transaksi', $id_transaksi)->orderBy('tanggal_pesanan', 'asc')->first();
+            $pesanan_akhir = Pesanan::select('tanggal_pesanan', 'jumlah_pesanan', 'harga_pesanan',)
+                ->where('id_transaksi', $id_transaksi)->orderBy('tanggal_pesanan', 'desc')->first();
+            $pesanan = Pesanan::select('tanggal_pesanan', 'jumlah_pesanan', 'harga_pesanan',)
+                ->where('id_transaksi', $id_transaksi)->get();
             Carbon::setLocale('id');
             $formattedJumlahTagihan = number_format($pesanan_awal->harga_pesanan, 0, ',', '.');
             $formattedTanggalJatuhTempo = Carbon::parse($pesanan_awal->tanggal_pesanan)->isoFormat('DD MMMM YYYY');
 
             $formattedJumlahTagihanPesanan = number_format($pesanan_akhir->harga_pesanan, 0, ',', '.');
             $formattedTanggalPesanan = Carbon::parse($pesanan_akhir->tanggal_pesanan)->isoFormat('DD MMMM YYYY');
-            
+
             $pesanan_akhir->tanggal_pesanan = $formattedTanggalPesanan;
             $pesanan_akhir->harga_pesanan = $formattedJumlahTagihanPesanan;
             $pesanan_awal->tanggal_pesanan = $formattedTanggalJatuhTempo;
@@ -473,7 +469,7 @@ class ApiPelangganController extends Controller
                 ];
             });
 
-            $data = $transaksi 
+            $data = $transaksi
                 ->select(
                     'transaksi.resi_transaksi AS resi',
                     'pelanggan.nama_perusahaan AS pelanggan',
@@ -485,7 +481,7 @@ class ApiPelangganController extends Controller
                     'pesanan.harga_pesanan',
                 )->first();
 
-             $formattedData = [
+            $formattedData = [
                 'resi' => $data->resi,
                 'pelanggan' => $data->pelanggan,
                 'no_hp' => $data->no_hp,
@@ -508,51 +504,50 @@ class ApiPelangganController extends Controller
         // Menyembunyikan karakter kecuali 4 digit terakhir
         $visibleDigits = 4;
         $length = strlen($phoneNumber);
-    
+
         if ($length <= $visibleDigits) {
             return $phoneNumber;
         }
-    
+
         $hiddenPart = str_repeat('*', $length - $visibleDigits);
         $visiblePart = substr($phoneNumber, -$visibleDigits);
-    
+
         return $hiddenPart . $visiblePart;
     }
-    
+
     private function encryptEmail($email)
     {
         $emailParts = explode('@', $email);
-        
+
         if (count($emailParts) === 2) {
             $username = $emailParts[0];
             $domain = $emailParts[1];
-    
+
             // Enkripsi huruf di tengah
             $encryptedUsername = $this->encryptMiddle($username);
-    
+
             // Gabungkan kembali
             $encryptedEmail = $encryptedUsername . '@' . $domain;
-    
+
             return $encryptedEmail;
         }
-    
+
         return $email;
     }
-    
+
     private function encryptMiddle($text)
     {
         $length = strlen($text);
-    
+
         if ($length <= 2) {
             return $text;
         }
-    
+
         $start = substr($text, 0, 1);
         $end = substr($text, -1);
-    
+
         $middle = str_repeat('*', $length - 2);
-    
+
         return $start . $middle . $end;
     }
-    
 }

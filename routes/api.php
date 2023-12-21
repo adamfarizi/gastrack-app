@@ -33,6 +33,7 @@ Route::middleware(['auth:sanctum', 'check.pelanggan'])->group(function () {
     Route::put('/pelanggan/update/alamat/{id}', [ApiPelangganController::class, 'edit_alamat']);    
     Route::put('/pelanggan/update/password/{id}', [ApiPelangganController::class, 'edit_password']);   
     Route::get('/pelanggan/transaksi/{id}', [ApiPelangganController::class, 'getTransaksi']);
+    Route::get('/pelanggan/detailtransaksi/{id}', [ApiPelangganController::class, 'getDetailTransaksi']);
     Route::get('/pembelian/belum_bayar', [ApiPembelianController::class, 'transaksi_belum_bayar']);
     Route::get('/pembelian/sudah_bayar', [ApiPembelianController::class, 'transaksi_sudah_bayar']);
     Route::post('/pelanggan/pembelian', [ApiPembelianController::class, 'create_transaksi']);
