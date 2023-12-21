@@ -51,16 +51,17 @@ class ApiPelangganController extends Controller
                     'success' => false,
                     'message' => 'Pengguna sudah masuk di perangkat lain.',
                 ], 422);
+            } else {
+
+                // Buat token untuk perangkat saat ini
+                $token = $pelanggan->createToken('myappToken')->plainTextToken;
+
+                return response()->json([
+                    'success' => true,
+                    'token' => $token,
+                    'datauser' => $pelanggan,
+                ], 200);
             }
-
-            // Buat token untuk perangkat saat ini
-            $token = $pelanggan->createToken('myappToken')->plainTextToken;
-
-            return response()->json([
-                'success' => true,
-                'token' => $token,
-                'datauser' => $pelanggan,
-            ], 200);
         } else {
             return response()->json([
                 'success' => false,

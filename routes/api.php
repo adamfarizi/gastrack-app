@@ -49,6 +49,7 @@ Route::middleware(['auth:sanctum', 'check.sopir'])->group(function(){
     Route::put('/sopir/update/email/{id}', [ApiSopirController::class, 'edit_email']);
     Route::put('/sopir/update/no_hp/{id}', [ApiSopirController::class, 'edit_no_hp']);
     Route::get('/sopir/pengiriman/{id}', [ApiSopirController::class, 'getDataPengiriman']);
+    Route::get('/sopir/detailpengiriman/{id}', [ApiSopirController::class, 'getDataDetailPengiriman']);
     Route::post('/sopir/update_gas_masuk/{id}', [ApiSopirController::class, 'gas_masuk']);
     Route::post('/sopir/update_gas_keluar/{id}', [ApiSopirController::class, 'gas_keluar']);
 });

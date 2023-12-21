@@ -123,6 +123,50 @@ class ApiSopirController extends Controller
             }
         }
     }
+
+    public function getDataDetailPengiriman(string $id)
+    {
+        Carbon::setLocale('id');
+
+        $pengiriman = Pengiriman::where('id_pengiriman', $id);
+    
+        if (!$pengiriman->exists()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan',
+            ], 422);
+        } else {
+            $data = $pengiriman
+                ->select(
+                    'kapasitas_gas_masuk',
+                    'bukti_gas_masuk',
+                    'waktu_pengiriman',
+                    'waktu_diterima',
+                    'kapasitas_gas_keluar',
+                    'bukti_gas_keluar',
+                    'status_pengiriman',
+                    'sisa_gas'
+                )->first();
+    
+            if ($data) {
+                $formattedTanggalpengiriman = Carbon::parse($data->waktu_pengiriman)->isoFormat('DD MMMM YYYY');
+                $formattedTanggalditerima = Carbon::parse($data->waktu_diterima)->isoFormat('DD MMMM YYYY');
+                
+                $data->waktu_pengiriman = $formattedTanggalpengiriman;
+                $data->waktu_diterima = $formattedTanggalditerima;
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Data berhasil ditemukan',
+                    'data' => $data,
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data tidak ditemukan!',
+                ], 422);
+            }
+        }
+    }
     
 
     public function gas_masuk(Request $request, $id_pengiriman)
